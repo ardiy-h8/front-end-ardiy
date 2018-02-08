@@ -3,6 +3,7 @@ import isEqual from 'lodash.isequal'
 
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
+import hiro from  '../assets/patt.hiro'
 
 class Sketch extends Component {
   state = {
@@ -48,6 +49,7 @@ class Sketch extends Component {
           scaleY={scaleY}
           rotation={rotation}
           onMarkerFound={this.handleMarkerFound}
+          pattern={hiro}
         />
         {markerFound &&
           <MoveControl
