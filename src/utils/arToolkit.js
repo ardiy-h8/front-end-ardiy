@@ -1,6 +1,6 @@
 /* globals THREEx */
 import cameraData from '../assets/camera_para.dat'
-import hiro from '../assets/patt.ktp'
+import hiro from '../assets/patt.hiro'
 
 const { ArMarkerControls, ArToolkitContext, ArToolkitSource } = THREEx
 

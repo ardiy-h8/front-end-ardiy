@@ -17,9 +17,9 @@ class App extends Component {
   render () {
     return (
       <div style={styles.container}>
-        {/* <Sketch /> */}
+        <Sketch />
         
-        <MarkerGenerator />
+        {/* <MarkerGenerator /> */}
         
       </div>
     )

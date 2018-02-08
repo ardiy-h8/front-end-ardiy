@@ -3,7 +3,7 @@ import isEqual from 'lodash.isequal'
 
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
-import hiro from  '../assets/patt.hiro'
+import hiro from  '../assets/patt.dota'
 
 class Sketch extends Component {
   state = {
