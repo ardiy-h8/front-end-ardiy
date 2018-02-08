@@ -54,7 +54,6 @@ export const sketchRendererFactory = ({
         function(collada) {
           that.avatar = collada.scene
           that.avatar.needsUpdate = true
-          console.log(collada)
           scene.add(that.avatar)
           markerRoot.add(that.avatar)
         }
