@@ -98,7 +98,7 @@ export const sketchRendererFactory = ({
     }
 
     componentDidUpdate() {
-      const { coordX, coordZ, scaleX, scaleY, rotation } = this.props
+      const { coordX, coordZ, scaleX, scaleY, scaleZ, rotation } = this.props
       this.avatar.position.x = coordX
       this.avatar.position.z = coordZ
       this.avatar.scale.x = scaleX
