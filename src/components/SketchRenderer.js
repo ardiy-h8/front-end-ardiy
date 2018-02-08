@@ -16,12 +16,13 @@ export const sketchRendererFactory = ({
   const { Camera, Group, Scene } = THREE
 
   return class SketchRenderer extends Component {
-    componentDidMount () {
+    componentDidMount() {
       const {
         coordX,
         coordZ,
         scaleX,
         scaleY,
+        scaleZ,
         rotation,
         onMarkerFound
       } = this.props
@@ -50,7 +51,7 @@ export const sketchRendererFactory = ({
       let that = this
       this.loader.load(
         'http://ar-coba.s3-website-ap-southeast-1.amazonaws.com/elf.dae',
-        function (collada) {
+        function(collada) {
           that.avatar = collada.scene
           that.avatar.needsUpdate = true
           console.log(collada)
@@ -66,14 +67,14 @@ export const sketchRendererFactory = ({
       scene.add(directionalLight)
 
       // render the scene
-      onRenderFcts.push(function () {
+      onRenderFcts.push(function() {
         renderer.render(scene, camera)
       })
 
       // run the rendering loop
       var lastTimeMsec = null
 
-      function animate (nowMsec) {
+      function animate(nowMsec) {
         // keep looping
         requestAnimationFrame(animate)
         // measure time
@@ -88,7 +89,7 @@ export const sketchRendererFactory = ({
       requestAnimationFrame(animate)
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
       this.renderer.dispose()
     }
 
@@ -96,18 +97,19 @@ export const sketchRendererFactory = ({
       this.canvas = node
     }
 
-    componentDidUpdate () {
+    componentDidUpdate() {
       const { coordX, coordZ, scaleX, scaleY, rotation } = this.props
       this.avatar.position.x = coordX
       this.avatar.position.z = coordZ
       this.avatar.scale.x = scaleX
       this.avatar.scale.y = scaleY
+      this.avatar.scale.z = scaleZ
       this.avatar.rotation.z = rotation
       this.avatar.needsUpdate = true
     }
 
-    render () {
-      return <canvas id='root' ref={this.storeRef} />
+    render() {
+      return <canvas id="root" ref={this.storeRef} />
     }
   }
 }
