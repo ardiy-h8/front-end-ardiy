@@ -30,7 +30,7 @@ class LoginScreen extends Component {
   }
   componentWillMount () {
     if (localStorage.getItem(appTokenKey)) {
-      this.props.history.push('/headline')
+      this.props.history.push('/home')
       return
     }
     firebaseAuth().onAuthStateChanged(user => {
@@ -38,7 +38,7 @@ class LoginScreen extends Component {
         console.log('User signed in: ', JSON.stringify(user))
         localStorage.removeItem(firebaseAuthKey)
         localStorage.setItem(appTokenKey, user.uid)
-        this.props.history.push('/headline')
+        this.props.history.push('/home')
       }
     })
   }
