@@ -5,6 +5,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
+import HomeScreen from './components/HomeScreen'
+import UserScreen from './components/UserScreen'
 import MarkerGenerator from './components/MarkerGenerator'
 
 const styles = {
@@ -25,6 +27,8 @@ class App extends Component {
         <div style={styles.container}>
           <Route exact path='/' component={LoginScreen} />
           <Route exact path='/sketch' component={Sketch} />
+          <Route exact path='/home' component={HomeScreen} />
+          <Route exact path='/content-input' component={UserScreen} />
         </div>
       </Router>
     )

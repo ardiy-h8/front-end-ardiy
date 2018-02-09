@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import isEqual from 'lodash.isequal'
+import { Button, Icon } from 'material-ui'
+import KeyboardBackspace from 'material-ui-icons/KeyboardBackspace'
 
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
@@ -22,7 +24,7 @@ class Sketch extends Component {
 
   renderer = null
 
-  shouldComponentUpdate(nextProps, state) {
+  shouldComponentUpdate (nextProps, state) {
     return !isEqual(state, this.state)
   }
 
@@ -34,7 +36,7 @@ class Sketch extends Component {
 
   handleMarkerFound = () => this.setState({ markerFound: true })
 
-  render() {
+  render () {
     const {
       markerFound,
       coord: { x: coordX, z: coordZ },
@@ -53,7 +55,7 @@ class Sketch extends Component {
           onMarkerFound={this.handleMarkerFound}
           pattern={hiro}
         />
-        {markerFound && (
+        {markerFound &&
           <MoveControl
             coordX={coordX}
             coordZ={coordZ}
@@ -64,10 +66,30 @@ class Sketch extends Component {
             onTranslateChange={this.handleTranslateChange}
             onZoomChange={this.handleZoomChange}
             onRotationChange={this.handleRotationChange}
-          />
-        )}
+          />}
+        <Button
+          variant='fab'
+          aria-label='back'
+          color='secondary'
+          style={styles.back}
+          onClick={() => (window.location.href = '/home')}
+        >
+          <KeyboardBackspace />
+        </Button>
       </div>
     )
+  }
+}
+
+const styles = {
+  navigation: {
+    top: 56
+  },
+  back: {
+    zIndex: 1000,
+    position: 'absolute',
+    left: '1em',
+    top: '1em'
   }
 }
 
