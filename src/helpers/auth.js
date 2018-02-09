@@ -4,7 +4,7 @@ import {
   facebookProvider
 } from '../config/constants'
 
-export const loginWithGoole = () => {
+export const loginWithGoogle = () => {
   return firebaseAuth().signInWithPopup(googleProvider)
 }
 
