@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Sketch from './components/Sketch'
+import MarkerGenerator from './components/MarkerGenerator'
 
 const styles = {
   container: {
@@ -17,6 +18,9 @@ class App extends Component {
     return (
       <div style={styles.container}>
         <Sketch />
+        
+        {/* <MarkerGenerator /> */}
+        
       </div>
     )
   }

@@ -56,9 +56,9 @@ export function initializeArToolkit (renderer, camera, onRenderFcts) {
  * @returns {Object} An ArMarkerControls instance
  */
 
-export function getMarker (arToolkitContext, markerRoot) {
+export function getMarker (arToolkitContext, markerRoot, pattern) {
   return new ArMarkerControls(arToolkitContext, markerRoot, {
     type: 'pattern',
-    patternUrl: hiro
+    patternUrl: pattern
   })
 }
