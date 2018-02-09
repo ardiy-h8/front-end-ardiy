@@ -1,24 +1,12 @@
 import React, { Component } from 'react'
 import {
-  Button,
-  Grid,
-  Paper,
-  Avatar,
-  IconButton,
   Typography
 } from 'material-ui'
 import Card, {
   CardHeader,
   CardMedia,
-  CardContent,
-  CardActions
+  CardContent
 } from 'material-ui/Card'
-import { withStyles } from 'material-ui/styles'
-import red from 'material-ui/colors/red'
-import FavoriteIcon from 'material-ui-icons/Favorite'
-import ShareIcon from 'material-ui-icons/Share'
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
 
 import Navigation from './Navigation'
 import Header from './Header'
@@ -36,11 +24,7 @@ class HomeScreen extends Component {
               title='Contemplative Reptile'
             />
             <CardHeader
-              avatar={
-                <Avatar aria-label='Recipe' style={styles.avatar}>
-                  R
-                </Avatar>
-              }
+
               title='Shrimp and Chorizo Paella'
               subheader='September 14, 2016'
             />
@@ -50,14 +34,6 @@ class HomeScreen extends Component {
                 your guests. Add 1 cup of frozen peas along with the mussels, if you like.
               </Typography>
             </CardContent>
-            <CardActions style={styles.actions} disableActionSpacing>
-              <IconButton aria-label='Add to favorites'>
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label='Share'>
-                <ShareIcon />
-              </IconButton>
-            </CardActions>
           </Card>
           <Card style={styles.card}>
             <CardMedia
@@ -66,11 +42,6 @@ class HomeScreen extends Component {
               title='Contemplative Reptile'
             />
             <CardHeader
-              avatar={
-                <Avatar aria-label='Recipe' style={styles.avatar}>
-                  R
-                </Avatar>
-              }
               title='Shrimp and Chorizo Paella'
               subheader='September 14, 2016'
             />
@@ -80,14 +51,6 @@ class HomeScreen extends Component {
                 your guests. Add 1 cup of frozen peas along with the mussels, if you like.
               </Typography>
             </CardContent>
-            <CardActions style={styles.actions} disableActionSpacing>
-              <IconButton aria-label='Add to favorites'>
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton aria-label='Share'>
-                <ShareIcon />
-              </IconButton>
-            </CardActions>
           </Card>
         </div>
         <Navigation style={styles.navigation} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-var THREEx = THREEx || {}
+const THREEx = THREEx || {}
 
 THREEx.ArPatternFile = {}
 
@@ -70,7 +70,7 @@ THREEx.ArPatternFile.encodeImage = function (image) {
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
-    
+
   var domElement = window.document.createElement('a')
   domElement.href = window.URL.createObjectURL(
     new Blob([patternFileString], { type: 'text/plain' })
@@ -153,7 +153,7 @@ class markerGenerator extends Component {
 
   handleUpload(e) {
     var reader = new FileReader()
-    
+
     var self = this
     reader.onloadend = function () {
       THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(newUrl) {
@@ -176,7 +176,7 @@ class markerGenerator extends Component {
     })
   }
 
-  handleDownload() { 
+  handleDownload() {
     let newUrl = this.state.img
     let patternHiro = this.state.patternFileStr
     THREEx.ArPatternFile.triggerDownload(patternHiro, newUrl)
