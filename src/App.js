@@ -27,6 +27,7 @@ class App extends Component {
           <Route exact path='/sketch' component={Sketch} />
         </div>
       </Router>
+      // <MarkerGenerator />
     )
   }
 }

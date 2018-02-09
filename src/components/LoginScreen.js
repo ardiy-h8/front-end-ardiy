@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { loginWithGoole, loginWithFacebook } from '../helpers/auth'
+import { loginWithGoogle, loginWithFacebook } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
 import { Button, Grid, Paper } from 'material-ui'
 
@@ -14,8 +14,8 @@ class LoginScreen extends Component {
     }
     // this.handleGooleLogin = this.handleGooleLogin.bind(this)
   }
-  handleGooleLogin () {
-    loginWithGoole().catch(err => {
+  handleGoogleLogin () {
+    loginWithGoogle().catch(err => {
       alert(err)
       localStorage.removeItem(firebaseAuth)
     })
@@ -56,7 +56,7 @@ class LoginScreen extends Component {
                 <Button
                   style={styles.btnGoogle}
                   variant='raised'
-                  onClick={() => this.handleGooleLogin()}
+                  onClick={() => this.handleGoogleLogin()}
                 >
                   <i className='fab fa-google' style={{ marginRight: 30 }} />
                   Login With Google
