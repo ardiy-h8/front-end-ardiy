@@ -7,6 +7,7 @@ import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
 import HomeScreen from './components/HomeScreen'
 import UserScreen from './components/UserScreen'
+import MarkerGenerator from './components/MarkerGenerator'
 
 const styles = {
   container: {
