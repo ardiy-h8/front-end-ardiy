@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
+import MarkerGenerator from './components/MarkerGenerator'
 
 const styles = {
   container: {
