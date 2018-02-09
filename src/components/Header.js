@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withStyles } from 'material-ui/styles'
 import { AppBar, Toolbar, Typography } from 'material-ui/'
 
 class Header extends Component {
@@ -9,7 +8,7 @@ class Header extends Component {
         <AppBar position='static'>
           <Toolbar>
             <Typography variant='title' color='inherit'>
-              <img src='./header-logo.png' height='40px' width='40px' />
+              <img src='./header-logo.png' alt='logo' height='40px' width='40px' />
             </Typography>
           </Toolbar>
         </AppBar>

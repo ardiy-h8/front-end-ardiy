@@ -50,7 +50,7 @@ class LoginScreen extends Component {
             <div style={styles.bg}></div>
             <Paper style={styles.paper}>
               <div>
-                <img src="./assets/logo.png" style={styles.logo}/>
+                <img src="./assets/logo.png" alt='logo' style={styles.logo}/>
               </div>
               <div>
                 <Button
@@ -116,7 +116,6 @@ const styles = {
     color: 'white'
   },
   logo: {
-    width: 180,
     width: 180,
     position: 'relative'
   }
