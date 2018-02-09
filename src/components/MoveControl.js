@@ -14,23 +14,24 @@ const styles = {
   }
 }
 
-export const moveControlFactory = Hammer => class MoveControl
-  extends Component {
+export const moveControlFactory = Hammer =>
+  class MoveControl extends Component {
     state = {
       pan: {
-        startX: 1,
-        startZ: 2
+        startX: 0,
+        startZ: 0
       },
       rotation: {
         start: 0
       },
       scale: {
-        startX: 2,
-        startY: 2
+        startX: 1,
+        startY: 1,
+        startZ: 1
       }
     }
 
-    componentDidMount () {
+    componentDidMount() {
       this.hammer = new Hammer(this.div)
 
       this.hammer.get('pinch').set({ enable: true })
@@ -68,20 +69,22 @@ export const moveControlFactory = Hammer => class MoveControl
     }
 
     handlePinch = ev => {
-      const { scaleX, scaleY, onZoomChange } = this.props
+      const { scaleX, scaleY, scaleZ, onZoomChange } = this.props
       if (ev.type === 'pinchstart') {
         this.setState({
           ...this.state,
           scale: {
             ...this.state.scale,
             startX: scaleX,
-            startY: scaleY
+            startY: scaleY,
+            startZ: scaleZ
           }
         })
       }
       onZoomChange({
         x: this.state.scale.startX * ev.scale,
-        y: this.state.scale.startY * ev.scale
+        y: this.state.scale.startY * ev.scale,
+        z: this.state.scale.startZ * ev.scale
       })
     }
 
@@ -103,9 +106,9 @@ export const moveControlFactory = Hammer => class MoveControl
       this.div = node
     }
 
-    render () {
+    render() {
       return <div style={styles.container} ref={this.storeRef} />
     }
-}
+  }
 
 export default moveControlFactory(Hammer)
