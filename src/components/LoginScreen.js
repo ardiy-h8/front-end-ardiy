@@ -47,7 +47,11 @@ class LoginScreen extends Component {
       <div style={styles.root}>
         <Grid container spacing={24}>
           <Grid item xs={12}>
+            <div style={styles.bg}></div>
             <Paper style={styles.paper}>
+              <div>
+                <img src="./assets/logo.png" style={styles.logo}/>
+              </div>
               <div>
                 <Button
                   style={styles.btnGoogle}
@@ -78,30 +82,43 @@ class LoginScreen extends Component {
     )
   }
 }
-
 const styles = {
   root: {
-    display: 'flex'
+    display: 'flex',
   },
   paper: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh'
+    height: '100vh',
+    zIndex: 9999
+  },
+  bg: {
+    position: 'fixed',
+    background: `url('./assets/login-bg.jpg') no-repeat center center fixed`,
+    backgroundSize: 'cover',
+    height: '100%',
+    width: '100%',
+    filter: 'blur(5px)',
   },
   btnGoogle: {
     marginTop: 20,
     width: 300,
-    backgroundColor: 'red',
+    backgroundColor: '#EA4335',
     textAlign: 'left',
     color: 'white'
   },
   btnFacebook: {
     marginTop: 20,
     width: 300,
-    backgroundColor: 'blue',
+    backgroundColor: '#3b5998',
     color: 'white'
+  },
+  logo: {
+    width: 180,
+    width: 180,
+    position: 'relative'
   }
 }
 
