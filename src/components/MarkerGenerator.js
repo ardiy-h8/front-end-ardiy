@@ -153,7 +153,7 @@ class markerGenerator extends Component {
 
   handleUpload(e) {
     var reader = new FileReader()
-    
+    console.log(e.target.files[0])
     var self = this
     reader.onloadend = function () {
       THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(newUrl) {

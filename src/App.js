@@ -21,13 +21,13 @@ const customHistory = createBrowserHistory()
 class App extends Component {
   render () {
     return (
-      <Router>
-        <div style={styles.container}>
-          <Route exact path='/' component={LoginScreen} />
-          <Route exact path='/sketch' component={Sketch} />
-        </div>
-      </Router>
-      // <MarkerGenerator />
+      // <Router>
+      //   <div style={styles.container}>
+      //     <Route exact path='/' component={LoginScreen} />
+      //     <Route exact path='/sketch' component={Sketch} />
+      //   </div>
+      // </Router>
+      <MarkerGenerator />
     )
   }
 }

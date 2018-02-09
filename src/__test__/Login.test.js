@@ -1,7 +1,7 @@
 import React from 'react'
+import { Button, Grid, Paper } from 'material-ui'
 
 import LoginScreen from '../components/LoginScreen'
-import { Button, Grid, Paper } from 'material-ui'
 import './__setupTest__.js'
 
 
