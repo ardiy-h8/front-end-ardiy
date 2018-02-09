@@ -30,7 +30,7 @@ class LoginScreen extends Component {
   }
   componentWillMount () {
     if (localStorage.getItem(appTokenKey)) {
-      this.props.history.push('/headline')
+      this.props.history.push('/home')
       return
     }
     firebaseAuth().onAuthStateChanged(user => {
@@ -38,7 +38,7 @@ class LoginScreen extends Component {
         console.log('User signed in: ', JSON.stringify(user))
         localStorage.removeItem(firebaseAuthKey)
         localStorage.setItem(appTokenKey, user.uid)
-        this.props.history.push('/headline')
+        this.props.history.push('/home')
       }
     })
   }
@@ -50,7 +50,7 @@ class LoginScreen extends Component {
             <div style={styles.bg}></div>
             <Paper style={styles.paper}>
               <div>
-                <img src="./assets/logo.png" style={styles.logo}/>
+                <img src="./assets/logo.png" alt='logo' style={styles.logo}/>
               </div>
               <div>
                 <Button
@@ -116,7 +116,6 @@ const styles = {
     color: 'white'
   },
   logo: {
-    width: 180,
     width: 180,
     position: 'relative'
   }

@@ -1,4 +1,9 @@
 import React, { Component } from 'react'
+import { TextField, Button } from 'material-ui'
+
+import Navigation from './Navigation'
+import Header from './Header'
+
 const THREEx = THREEx || {}
 
 THREEx.ArPatternFile = {}
@@ -14,14 +19,10 @@ THREEx.ArPatternFile.encodeImageUrl = (imageURL, onComplete) => {
 }
 
 THREEx.ArPatternFile.encodeImage = function (image) {
-  // copy image on canvas
   var canvas = document.createElement('canvas')
   var context = canvas.getContext('2d')
   canvas.width = 16
   canvas.height = 16
-
-  // document.body.appendChild(canvas)
-  // canvas.style.width = '200px'
 
   var patternFileString = ''
   for (
@@ -29,7 +30,6 @@ THREEx.ArPatternFile.encodeImage = function (image) {
     orientation > -2 * Math.PI;
     orientation -= Math.PI / 2
   ) {
-    // draw on canvas - honor orientation
     context.save()
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.translate(canvas.width / 2, canvas.height / 2)
@@ -43,11 +43,8 @@ THREEx.ArPatternFile.encodeImage = function (image) {
     )
     context.restore()
 
-    // get imageData
     var imageData = context.getImageData(0, 0, canvas.width, canvas.height)
-    // generate the patternFileString for this orientation
     if (orientation !== 0) patternFileString += '\n'
-    // NOTE bgr order and not rgb!!! so from 2 to 0
     for (var channelOffset = 2; channelOffset >= 0; channelOffset--) {
       for (var y = 0; y < imageData.height; y++) {
         for (var x = 0; x < imageData.width; x++) {
@@ -64,10 +61,6 @@ THREEx.ArPatternFile.encodeImage = function (image) {
   }
   return patternFileString
 }
-
-//////////////////////////////////////////////////////////////////////////////
-//    trigger download
-//////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
 
@@ -101,7 +94,6 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
   context.fillStyle = 'white'
   context.fillRect(0, 0, canvas.width, canvas.height)
 
-  //   // copy image on canvas
   context.fillStyle = 'black'
   context.fillRect(
     whiteMargin * canvas.width,
@@ -110,7 +102,6 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
     canvas.height * (1 - 2 * whiteMargin)
   )
 
-  //   // clear the area for innerImage (in case of transparent image)
   context.fillStyle = 'white'
   context.fillRect(
     innerMargin * canvas.width,
@@ -119,11 +110,9 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
     canvas.height * (1 - 2 * innerMargin)
   )
 
-  //   // display innerImage in the middle
   var innerImage = new Image()
   innerImage.src = innerImageURL
   innerImage.onload = async function (e) {
-    // draw innerImage
     await context.drawImage(
       innerImage,
       innerMargin * canvas.width,
@@ -131,20 +120,19 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
       canvas.width * (1 - 2 * innerMargin),
       canvas.height * (1 - 2 * innerMargin)
     )
-    // context.drawImage(innerImage, 10, 10)
     var imageUrl = canvas.toDataURL()
     onComplete(imageUrl)
   }
   innerImage.onload()
 }
 
-class markerGenerator extends Component {
+class UserScreen extends Component {
   constructor() {
     super()
     this.state = {
-      readerResult: '',
-      patternFileStr: '',
-      img: ''
+      imageResult: '', //Image base64 without border for patt file
+      patternFileStr: '', //Pattern string for patt file
+      patternImage: '' //Image with border to download
     }
     this.handleUpload = this.handleUpload.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
@@ -153,22 +141,23 @@ class markerGenerator extends Component {
 
   handleUpload(e) {
     var reader = new FileReader()
+
     var self = this
     reader.onloadend = function () {
-      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(newUrl) {
+      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(patternResult) {
         self.setState({
-          readerResult: reader.result,
-          img: newUrl
+          imageResult: reader.result,
+          patternImage: patternResult
         }, self.encode)
       })
     }
     reader.readAsDataURL(e.target.files[0])
   }
-
   encode () {
-    let newUrl = this.state.readerResult
+
+    let imageResult = this.state.imageResult
     var self = this
-    THREEx.ArPatternFile.encodeImageUrl(newUrl, function onComplete(patternFileString) {
+    THREEx.ArPatternFile.encodeImageUrl(imageResult, function onComplete(patternFileString) {
       self.setState({
         patternFileStr: patternFileString
       })
@@ -176,19 +165,90 @@ class markerGenerator extends Component {
   }
 
   handleDownload() {
-    let newUrl = this.state.img
-    let patternHiro = this.state.patternFileStr
-    THREEx.ArPatternFile.triggerDownload(patternHiro, newUrl)
+    let patternImage = this.state.patternImage
+    let patternFileStr = this.state.patternFileStr
+    THREEx.ArPatternFile.triggerDownload(patternFileStr, patternImage)
   }
 
-  render() {
+  render () {
     return (
       <div>
-        <input type="file" name="upload" onChange={this.handleUpload} />
-        <button onClick={this.handleDownload}>download</button>
+        <Header />
+        <div style={styles.container}>
+          <TextField
+            id='title'
+            label='Title'
+            helperText='ex: Your Title'
+            fullWidth
+            margin='normal'
+          />
+          <TextField
+            id='detail'
+            label='Detail'
+            helperText='ex: Description Detail'
+            fullWidth
+            margin='normal'
+          />
+          <input
+            accept='image/*'
+            type='file'
+            id='marker'
+            name='marker'
+            style={{ display: 'none' }}
+            onChange={this.handleUpload}
+          />
+          <label htmlFor='marker'>
+            <Button
+            variant='raised'
+            component='span'
+            syle={styles.button}>
+              Marker Upload
+            </Button>
+          </label>
+          <input
+            type='file'
+            id='object'
+            placeholder='object'
+            style={{ display: 'none' }}
+          />
+          <label htmlFor='object'>
+            <br />
+            <Button variant='raised' component='span' syle={styles.button}>
+              Object Upload
+            </Button>
+          </label>
+          <div>
+            <br />
+            <Button
+              variant='raised'
+              component='span'
+              color='primary'
+              syle={styles.button}
+            >
+              Save
+            </Button>
+            {(this.state.patternImage && this.state.patternFileStr) && <Button variant='raised'
+            component='span'
+            color='secondary' onClick={this.handleDownload}>download</Button>}
+          </div>
+        </div>
+        <Navigation />
       </div>
     )
   }
 }
 
-export default markerGenerator
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    marginTop: 56,
+    padding: '2em'
+  },
+  button: {
+    padding: '0.75em'
+  }
+}
+
+export default UserScreen

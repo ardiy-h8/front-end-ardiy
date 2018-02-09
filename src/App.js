@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import createBrowserHistory from 'history/createBrowserHistory'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
-import MarkerGenerator from './components/MarkerGenerator'
+import HomeScreen from './components/HomeScreen'
+import UserScreen from './components/UserScreen'
 
 const styles = {
   container: {
@@ -17,17 +16,18 @@ const styles = {
     fontFamily: "'Roboto', sans-serif"
   }
 }
-const customHistory = createBrowserHistory()
+
 class App extends Component {
   render () {
     return (
-      // <Router>
-      //   <div style={styles.container}>
-      //     <Route exact path='/' component={LoginScreen} />
-      //     <Route exact path='/sketch' component={Sketch} />
-      //   </div>
-      // </Router>
-      <MarkerGenerator />
+      <Router>
+        <div style={styles.container}>
+          <Route exact path='/' component={LoginScreen} />
+          <Route exact path='/sketch' component={Sketch} />
+          <Route exact path='/home' component={HomeScreen} />
+          <Route exact path='/content-input' component={UserScreen} />
+        </div>
+      </Router>
     )
   }
 }
