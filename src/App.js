@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
 import HomeScreen from './components/HomeScreen'
+import UserScreen from './components/UserScreen'
 
 const styles = {
   container: {
@@ -26,6 +27,7 @@ class App extends Component {
           <Route exact path='/' component={LoginScreen} />
           <Route exact path='/sketch' component={Sketch} />
           <Route exact path='/home' component={HomeScreen} />
+          <Route exact path='/content-input' component={UserScreen} />
         </div>
       </Router>
     )

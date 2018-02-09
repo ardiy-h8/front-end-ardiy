@@ -6,17 +6,19 @@ import BottomNavigation, {
 import HomeIcon from 'material-ui-icons/Home'
 import AssignmentIcon from 'material-ui-icons/Assignment'
 import CameraIcon from 'material-ui-icons/CameraAlt'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class Navigation extends Component {
   state = {
-    value: 0
+    value: 0,
+    camera: 0,
+    home: 0,
+    input: 0
   }
 
   handleChange = (event, value) => {
     this.setState({ value })
   }
-
   render () {
     const { value } = this.state
     return (
@@ -24,16 +26,22 @@ class Navigation extends Component {
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
           <BottomNavigationAction
             label='Home'
-            icon={<Link to='/home'><HomeIcon /></Link>}
+            icon={<HomeIcon />}
+            onClick={() => this.setState({ home: 1 })}
           />
+          {this.state.home && <Redirect to='/home' />}
           <BottomNavigationAction
             label='Input'
-            icon={<Link to='/content-input'><AssignmentIcon /></Link>}
+            icon={<AssignmentIcon />}
+            onClick={() => this.setState({ input: 1 })}
           />
+          {this.state.input && <Redirect to='/content-input' />}
           <BottomNavigationAction
             label='Camera'
-            icon={<Link to='/sketch'><CameraIcon /></Link>}
+            icon={<CameraIcon />}
+            onClick={() => this.setState({ camera: 1 })}
           />
+          {this.state.camera && <Redirect to='/sketch' />}
         </BottomNavigation>
       </div>
     )

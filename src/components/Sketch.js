@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import isEqual from 'lodash.isequal'
+import { Button, Icon } from 'material-ui'
+import KeyboardBackspace from 'material-ui-icons/KeyboardBackspace'
 
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
@@ -63,6 +65,15 @@ class Sketch extends Component {
             onZoomChange={this.handleZoomChange}
             onRotationChange={this.handleRotationChange}
           />}
+        <Button
+          variant='fab'
+          aria-label='back'
+          color='secondary'
+          style={styles.back}
+          onClick={() => (window.location.href = '/home')}
+        >
+          <KeyboardBackspace />
+        </Button>
       </div>
     )
   }
@@ -71,6 +82,12 @@ class Sketch extends Component {
 const styles = {
   navigation: {
     top: 56
+  },
+  back: {
+    zIndex: 1000,
+    position: 'absolute',
+    left: '1em',
+    top: '1em'
   }
 }
 
