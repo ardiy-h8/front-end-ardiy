@@ -6,6 +6,7 @@ import BottomNavigation, {
 import HomeIcon from 'material-ui-icons/Home'
 import AssignmentIcon from 'material-ui-icons/Assignment'
 import CameraIcon from 'material-ui-icons/CameraAlt'
+import { Link } from 'react-router-dom'
 
 class Navigation extends Component {
   state = {
@@ -21,9 +22,18 @@ class Navigation extends Component {
     return (
       <div style={styles.root}>
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
-          <BottomNavigationAction label='Home' icon={<HomeIcon />} />
-          <BottomNavigationAction label='Input' icon={<AssignmentIcon />} />
-          <BottomNavigationAction label='Camera' icon={<CameraIcon />} />
+          <BottomNavigationAction
+            label='Home'
+            icon={<Link to='/home'><HomeIcon /></Link>}
+          />
+          <BottomNavigationAction
+            label='Input'
+            icon={<Link to='/content-input'><AssignmentIcon /></Link>}
+          />
+          <BottomNavigationAction
+            label='Camera'
+            icon={<Link to='/sketch'><CameraIcon /></Link>}
+          />
         </BottomNavigation>
       </div>
     )

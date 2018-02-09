@@ -21,7 +21,7 @@ class Sketch extends Component {
 
   renderer = null
 
-  shouldComponentUpdate(nextProps, state) {
+  shouldComponentUpdate (nextProps, state) {
     return !isEqual(state, this.state)
   }
 
@@ -33,7 +33,7 @@ class Sketch extends Component {
 
   handleMarkerFound = () => this.setState({ markerFound: true })
 
-  render() {
+  render () {
     const {
       markerFound,
       coord: { x: coordX, z: coordZ },
@@ -51,7 +51,7 @@ class Sketch extends Component {
           rotation={rotation}
           onMarkerFound={this.handleMarkerFound}
         />
-        {markerFound && (
+        {markerFound &&
           <MoveControl
             coordX={coordX}
             coordZ={coordZ}
@@ -62,10 +62,15 @@ class Sketch extends Component {
             onTranslateChange={this.handleTranslateChange}
             onZoomChange={this.handleZoomChange}
             onRotationChange={this.handleRotationChange}
-          />
-        )}
+          />}
       </div>
     )
+  }
+}
+
+const styles = {
+  navigation: {
+    top: 56
   }
 }
 
