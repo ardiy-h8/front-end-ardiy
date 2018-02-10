@@ -34,11 +34,11 @@ describe('marker generator', () => {
   })
 
 
-  it('Download btn should call mock function when button is clicked', () => {
-    const mockFn = markerGenerator.handleDownload
-    const tree = shallow(
-      <button onClick={mockFn}>download</button>
-    )
-    tree.simulate('click')
-  })
+  // it('Download btn should call mock function when button is clicked', () => {
+  //   const mockFn = markerGenerator.handleDownload
+  //   const tree = shallow(
+  //     <button onClick={mockFn}>download</button>
+  //   )
+  //   tree.simulate('click')
+  // })
 })

@@ -38,7 +38,11 @@ self.addEventListener('install', function (event) {
               // We could also cache any static assets like CSS or images
               const urlsToCache = [
                 "/",
-                assets["main.js"]
+                assets["main.js"],
+                "/sketch",
+                "ar.min.js",
+                'https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js'
               ]
               cache.addAll(urlsToCache)
               console.log('cached');

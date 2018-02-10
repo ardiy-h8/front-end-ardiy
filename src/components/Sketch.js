@@ -75,7 +75,7 @@ class Sketch extends Component {
           aria-label='back'
           color='secondary'
           style={styles.back}
-          onClick={() => (window.location.href = '/home')}
+          onClick={() => (window.location.href = '/')}
         >
           <KeyboardBackspace />
         </Button>
