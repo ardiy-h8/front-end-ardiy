@@ -5,6 +5,7 @@ import { initializeArToolkit, getMarker } from '../utils/arToolkit'
 import detectEdge from '../utils/detectEdge'
 import ColladaLoader from 'three-collada-loader-2'
 
+
 export const sketchRendererFactory = ({
   THREE,
   initializeArToolkit,
@@ -24,7 +25,8 @@ export const sketchRendererFactory = ({
         scaleY,
         scaleZ,
         rotation,
-        onMarkerFound
+        onMarkerFound,
+        pattern
       } = this.props
 
       const renderer = (this.renderer = initializeRenderer(this.canvas))
@@ -41,7 +43,7 @@ export const sketchRendererFactory = ({
         camera,
         onRenderFcts
       )
-      const marker = getMarker(arToolkitContext, markerRoot)
+      const marker = getMarker(arToolkitContext, markerRoot, pattern)
 
       marker.addEventListener('markerFound', onMarkerFound)
 
@@ -54,7 +56,6 @@ export const sketchRendererFactory = ({
         function(collada) {
           that.avatar = collada.scene
           that.avatar.needsUpdate = true
-          console.log(collada)
           scene.add(that.avatar)
           markerRoot.add(that.avatar)
         }
