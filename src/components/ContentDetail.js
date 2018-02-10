@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
+import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card'
 import {
   Button,
   Grid,
@@ -12,6 +12,7 @@ import {
 } from 'material-ui'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
+import { Link } from 'react-router-dom'
 
 import Navigation from './Navigation'
 import Header from './Header'
@@ -35,6 +36,10 @@ class ContentDetail extends Component {
                 />
                 <CardContent>
                   <List component='nav'>
+                  <Link
+                    to='/sketch'
+                    style={{ textDecoration: 'none' }}
+                  >
                     <ListItem button onClick={() => console.log('Lorem ipsum')}>
                       <ListItemIcon>
                         <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
@@ -56,6 +61,7 @@ class ContentDetail extends Component {
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
+                    </Link>
                     <Divider />
                     <ListItem button onClick={() => console.log('Lorem ipsum')}>
                       <ListItemIcon>
@@ -146,6 +152,18 @@ class ContentDetail extends Component {
                     </ListItem>
                   </List>
                 </CardContent>
+                <CardActions >
+                <div style={styles.button}>
+                <Link
+                  to='/add-object'
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Button variant="raised" color="primary">
+                    Add New Marker
+                  </Button>
+                  </Link>
+                  </div>
+                </CardActions>
               </Card>
             </Grid>
           </Grid>
@@ -174,6 +192,11 @@ const styles = {
   },
   media: {
     height: 300
+  },
+  button: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '0 auto'
   }
 }
 
