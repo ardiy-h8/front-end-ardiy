@@ -38,7 +38,7 @@ class Sketch extends Component {
     window.location.reload()
     this.props.history.push('/home')
   }
-  
+
 
   handleTranslateChange ({ x, z }) {
     this.setState({ coord: { x, z } })
@@ -97,7 +97,7 @@ class Sketch extends Component {
           aria-label='back'
           color='secondary'
           style={styles.back}
-          onClick={() => this.goBack()}
+          onClick={() => (window.location.href = '/')}
         >
           <KeyboardBackspace />
         </Button>

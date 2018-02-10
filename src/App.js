@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import LoginScreen from './components/LoginScreen'
-import Sketch from './components/Sketch'
 import HomeScreen from './components/HomeScreen'
-import AddObjectScreen from './components/AddObjectScreen'
-import AddDetailScreen from './components/AddDetailScreen'
-import UserProfile from './components/UserProfile'
-import ContentDetail from './components/ContentDetail'
 
 const styles = {
   container: {
@@ -20,22 +14,75 @@ const styles = {
   }
 }
 
-class App extends Component {
-  render () {
-    return (
-      <Router>
-        <div style={styles.container}>
-          <Route exact path='/' component={LoginScreen} />
-          <Route exact path='/sketch' component={Sketch} />
-          <Route exact path='/home' component={HomeScreen} />
-          <Route exact path='/user-profile' component={UserProfile} />
-          <Route exact path='/add-object' component={AddObjectScreen} />
-          <Route exact path='/add-detail' component={AddDetailScreen} />
-          <Route exact path='/content/:name' component={ContentDetail} />
-        </div>
-      </Router>
-    )
+function asyncComponent(getComponent) {
+  return class AsyncComponent extends React.Component {
+    static Component = null;
+    state = { Component: AsyncComponent.Component };
+
+    componentWillMount() {
+      if (!this.state.Component) {
+        getComponent().then(Component => {
+          AsyncComponent.Component = Component
+          this.setState({ Component })
+        })
+      }
+    }
+    render() {
+      const { Component } = this.state
+      if (Component) {
+        return <Component {...this.props} />
+      }
+      return null
+    }
   }
 }
+
+  const LoginScreen = asyncComponent(() =>
+    import('./components/LoginScreen')
+      .then(module => module.default)
+  )
+
+  const Sketch = asyncComponent(() =>
+    import('./components/Sketch')
+      .then(module => module.default)
+  )
+
+  const UserProfile = asyncComponent(() =>
+    import('./components/UserProfile')
+      .then(module => module.default)
+  )
+
+  const AddDetailScreen = asyncComponent(() =>
+    import('./components/AddDetailScreen')
+      .then(module => module.default)
+  )
+
+  const AddObjectScreen = asyncComponent(() =>
+    import('./components/AddObjectScreen')
+      .then(module => module.default)
+  )
+
+  const ContentDetail = asyncComponent(() =>
+    import('./components/ContentDetail')
+      .then(module => module.default)
+  )
+
+const App = () =>
+
+    <Router>
+      <div style={styles.container}>
+        <Route exact path='/login'
+        getComponent={LoginScreen} />
+        <Route exact path='/' component={HomeScreen} />
+        <Route exact path='/sketch' component={Sketch} />
+        <Route exact path='/user-profile' component={UserProfile} />
+        <Route exact path='/add-object' component={AddObjectScreen} />
+        <Route exact path='/add-detail' component={AddDetailScreen} />
+        <Route exact path='/content/:name' component={ContentDetail} />
+      </div>
+    </Router>
+
+
+
 
 export default App

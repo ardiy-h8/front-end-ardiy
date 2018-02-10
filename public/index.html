@@ -3,14 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#999999" />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" async>
     <link href="https://fonts.googleapis.com/css?family=Poppins:700" rel="stylesheet">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -22,26 +21,33 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>ARDY</title>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script src="%PUBLIC_URL%/ar.min.js"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.includes"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"  async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"  async></script>
+    <script src="%PUBLIC_URL%/ar.min.js"  async></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,Array.prototype.includes"  async></script>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, function (err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+          }).catch(function (err) {
+            console.log(err)
+          });
+        });
+      } else {
+        console.log('service worker is not supported');
+      }
+    </script>
   </body>
 </html>
