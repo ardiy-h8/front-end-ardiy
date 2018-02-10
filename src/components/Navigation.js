@@ -3,19 +3,26 @@ import BottomNavigation, {
   BottomNavigationAction
 } from 'material-ui/BottomNavigation'
 import HomeIcon from 'material-ui-icons/Home'
-import AssignmentIcon from 'material-ui-icons/Assignment'
+import AccountCircleIcon from 'material-ui-icons/AccountCircle'
 import CameraIcon from 'material-ui-icons/CameraAlt'
+import AddIcon from 'material-ui-icons/AddCircle'
 import { Redirect } from 'react-router-dom'
 
 class Navigation extends Component {
-  state = {
-    value: 0,
-    camera: 0,
-    home: 0,
-    input: 0
+  constructor(){
+    super()
+    state = {
+      value: 0,
+      camera: 0,
+      home: 0,
+      user: 0,
+      add: 0
+    }
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChange = (event, value) => {
+
+  handleChange (event, value) {
     this.setState({ value })
   }
   render () {
@@ -30,17 +37,17 @@ class Navigation extends Component {
           />
           {this.state.home && <Redirect to='/home' />}
           <BottomNavigationAction
-            label='Input'
-            icon={<AssignmentIcon />}
-            onClick={() => this.setState({ input: 1 })}
+            label='User'
+            icon={<AccountCircleIcon />}
+            onClick={() => this.setState({ user: 1 })}
           />
-          {this.state.input && <Redirect to='/content-input' />}
+          {this.state.user && <Redirect to='/user-profile' />}
           <BottomNavigationAction
-            label='Camera'
-            icon={<CameraIcon />}
-            onClick={() => this.setState({ camera: 1 })}
+            label='Add'
+            icon={<AddIcon />}
+            onClick={() => this.setState({ add: 1 })}
           />
-          {this.state.camera && <Redirect to='/sketch' />}
+          {this.state.add && <Redirect to='/add-detail' />}
         </BottomNavigation>
       </div>
     )
