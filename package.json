@@ -16,6 +16,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0",
     "react-test-renderer": "^16.2.0",
+    "require-ensure": "^1.0.2",
     "three": "^0.89.0",
     "three-collada-loader-2": "^1.0.1"
   },
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "enzyme-adapter-react-15": "^1.0.5",
-    "enzyme-adapter-react-16": "^1.1.1"
+    "enzyme-adapter-react-16": "^1.1.1",
+    "webpack": "^3.10.0"
   }
 }
