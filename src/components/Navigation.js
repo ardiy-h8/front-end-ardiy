@@ -8,14 +8,19 @@ import CameraIcon from 'material-ui-icons/CameraAlt'
 import { Redirect } from 'react-router-dom'
 
 class Navigation extends Component {
-  state = {
-    value: 0,
-    camera: 0,
-    home: 0,
-    input: 0
-  }
+  constructor() {
+    super()
+    this.state = {
+      value: 0,
+      camera: 0,
+      home: 0,
+      input: 0
+    }
 
-  handleChange = (event, value) => {
+    this.handleChange = this.handleChange.bind(this)
+  }
+  
+  handleChange (event, value) {
     this.setState({ value })
   }
   render () {

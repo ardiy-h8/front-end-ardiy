@@ -164,6 +164,10 @@ class UserScreen extends Component {
     })
   }
 
+  componentWillMount() {
+    
+  }
+
   handleDownload() {
     let patternImage = this.state.patternImage
     let patternFileStr = this.state.patternFileStr
@@ -171,6 +175,8 @@ class UserScreen extends Component {
   }
 
   render () {
+    var el = document.querySelector("app");
+    console.log(el)
     return (
       <div>
         <Header />

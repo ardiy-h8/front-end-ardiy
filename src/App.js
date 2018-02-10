@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
@@ -22,10 +22,12 @@ class App extends Component {
     return (
       <Router>
         <div style={styles.container}>
-          <Route exact path='/' component={LoginScreen} />
-          <Route exact path='/sketch' component={Sketch} />
-          <Route exact path='/home' component={HomeScreen} />
-          <Route exact path='/content-input' component={UserScreen} />
+          <Switch>
+            <Route exact path='/' component={LoginScreen} />
+            <Route exact path='/sketch' component={Sketch} />
+            <Route exact path='/home' component={HomeScreen} />
+            <Route exact path='/content-input' component={UserScreen} />
+          </Switch>
         </div>
       </Router>
     )
