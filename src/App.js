@@ -4,7 +4,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
 import HomeScreen from './components/HomeScreen'
-import UserScreen from './components/UserScreen'
+import AddObjectScreen from './components/AddObjectScreen'
+import AddDetailScreen from './components/AddDetailScreen'
+import UserProfile from './components/UserProfile'
+import ContentDetail from './components/ContentDetail'
 
 const styles = {
   container: {
@@ -25,7 +28,10 @@ class App extends Component {
           <Route exact path='/' component={LoginScreen} />
           <Route exact path='/sketch' component={Sketch} />
           <Route exact path='/home' component={HomeScreen} />
-          <Route exact path='/content-input' component={UserScreen} />
+          <Route exact path='/user-profile' component={UserProfile} />
+          <Route exact path='/add-object' component={AddObjectScreen} />
+          <Route exact path='/add-detail' component={AddDetailScreen} />
+          <Route exact path='/content/:name' component={ContentDetail} />
         </div>
       </Router>
     )
