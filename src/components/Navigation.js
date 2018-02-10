@@ -28,7 +28,7 @@ class Navigation extends Component {
             icon={<HomeIcon />}
             onClick={() => this.setState({ home: 1 })}
           />
-          {this.state.home && <Redirect to='/home' />}
+          {this.state.home && <Redirect to='/' />}
           <BottomNavigationAction
             label='Input'
             icon={<AssignmentIcon />}
