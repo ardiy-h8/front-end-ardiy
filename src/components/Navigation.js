@@ -18,9 +18,7 @@ class Navigation extends Component {
       user: 0,
       add: 0
     }
-    this.handleChange = this.handleChange.bind(this)
-  }
-
+    this.handleChange = this.handleChange.bind(this)  }
 
   handleChange (event, value) {
     this.setState({ value })

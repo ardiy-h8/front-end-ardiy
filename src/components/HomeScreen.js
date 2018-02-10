@@ -1,57 +1,133 @@
 import React, { Component } from 'react'
-import {
-  Typography
-} from 'material-ui'
-import Card, {
-  CardHeader,
-  CardMedia,
-  CardContent
-} from 'material-ui/Card'
+import { Typography } from 'material-ui'
+import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
+import { Button, Grid, Paper, ButtonBase } from 'material-ui'
+import { Link } from 'react-router-dom'
 
 import Navigation from './Navigation'
 import Header from './Header'
 
 class HomeScreen extends Component {
   render () {
+    const image =
+      'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
     return (
       <div style={styles.root}>
-        <div style={styles.content}>
-          <Header />
-          <Card style={styles.card}>
-            <CardMedia
-              style={styles.media}
-              image='https://drscdn.500px.org/photo/231851609/m%3D900_s%3D1_k%3D1_a%3D1/v2?webp=true&v=0&sig=5089ce70bfbb0b4221557ee38b29ba337c417a172e3f73701182cc8046f24d00'
-              title='Contemplative Reptile'
-            />
-            <CardHeader
 
-              title='Shrimp and Chorizo Paella'
-              subheader='September 14, 2016'
-            />
-            <CardContent>
-              <Typography component='p'>
-                This impressive paella is a perfect party dish and a fun meal to cook together with
-                your guests. Add 1 cup of frozen peas along with the mussels, if you like.
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card style={styles.card}>
-            <CardMedia
-              style={styles.media}
-              image='https://drscdn.500px.org/photo/231851609/m%3D900_s%3D1_k%3D1_a%3D1/v2?webp=true&v=0&sig=5089ce70bfbb0b4221557ee38b29ba337c417a172e3f73701182cc8046f24d00'
-              title='Contemplative Reptile'
-            />
-            <CardHeader
-              title='Shrimp and Chorizo Paella'
-              subheader='September 14, 2016'
-            />
-            <CardContent>
-              <Typography component='p'>
-                This impressive paella is a perfect party dish and a fun meal to cook together with
-                your guests. Add 1 cup of frozen peas along with the mussels, if you like.
-              </Typography>
-            </CardContent>
-          </Card>
+        <Header location={this.props.location.pathname} />
+        <div style={styles.content}>
+          <Grid container spacing={24}>
+            <Grid item xs={6} sm={4}>
+              <div style={styles.card}>
+                <Link
+                  to='/content/lorem ipsum'
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Card>
+                    <Button
+                      variant='flat'
+                      style={{
+                        width: '100%',
+                        padding: 0
+                      }}
+                    >
+                      <img src={image} width='100%' />
+                    </Button>
+                    <CardContent>
+                      <Typography component='p' style={{ fontSize: 20 }}>
+                        Lorem impsum dolor sit ammet
+                      </Typography>
+
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
+            </Grid>
+            <Grid item xs={6} sm={4}>
+              <div style={styles.card}>
+                <Card>
+                  <Button
+                    variant='flat'
+                    style={{
+                      width: '100%',
+                      padding: 0
+                    }}
+                  >
+                    <img src={image} width='100%' />
+                  </Button>
+                  <CardContent>
+                    <Typography component='p' style={{ fontSize: 20 }}>
+                      Lorem impsum dolor sit ammet
+                    </Typography>
+
+                  </CardContent>
+                </Card>
+              </div>
+            </Grid>
+            <Grid item xs={6} sm={4}>
+              <div style={styles.card}>
+                <Card>
+                  <Button
+                    variant='flat'
+                    style={{
+                      width: '100%',
+                      padding: 0
+                    }}
+                  >
+                    <img src={image} width='100%' />
+                  </Button>
+                  <CardContent>
+                    <Typography component='p' style={{ fontSize: 20 }}>
+                      Lorem impsum dolor sit ammet
+                    </Typography>
+
+                  </CardContent>
+                </Card>
+              </div>
+            </Grid>
+            <Grid item xs={6} sm={4}>
+              <div style={styles.card}>
+                <Card>
+                  <Button
+                    variant='flat'
+                    style={{
+                      width: '100%',
+                      padding: 0
+                    }}
+                  >
+                    <img src={image} width='100%' />
+                  </Button>
+                  <CardContent>
+                    <Typography component='p' style={{ fontSize: 20 }}>
+                      Lorem impsum dolor sit ammet
+                    </Typography>
+
+                  </CardContent>
+                </Card>
+              </div>
+            </Grid>
+            <Grid item xs={6} sm={4}>
+              <div style={styles.card}>
+                <Card>
+                  <Button
+                    variant='flat'
+                    style={{
+                      width: '100%',
+                      padding: 0
+                    }}
+                  >
+                    <img src={image} width='100%' />
+                  </Button>
+                  <CardContent>
+                    <Typography component='p' style={{ fontSize: 20 }}>
+                      Lorem impsum dolor sit ammet
+                    </Typography>
+
+                  </CardContent>
+                </Card>
+              </div>
+            </Grid>
+          </Grid>
         </div>
         <Navigation style={styles.navigation} />
       </div>
@@ -61,34 +137,22 @@ class HomeScreen extends Component {
 
 const styles = {
   root: {
-    position: 'relative',
-    overflowY: 'auto',
-    maxHeight: '100vh',
+    position: 'fixed',
+    overflowY: 'Auto',
+    overflowX: 'hidden',
+    height: '100vh',
     top: 56,
+    width: '100%',
     backgroundColor: '#eee'
   },
   content: {
-    paddingBottom: 120
-  },
-  card: {
-    maxWidth: '100%',
-    marginBottom: '2em'
+    paddingBottom: 120,
+    paddingTop: '1em',
+    paddingLeft: '0.42em',
+    paddingRight: '0.42em'
   },
   media: {
     height: 300
-  },
-  actions: {
-    display: 'flex'
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto'
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)'
-  },
-  avatar: {
-    backgroundColor: 'red[500]'
   },
   navigation: {
     top: 56
