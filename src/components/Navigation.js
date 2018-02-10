@@ -3,7 +3,7 @@ import BottomNavigation, {
   BottomNavigationAction
 } from 'material-ui/BottomNavigation'
 import HomeIcon from 'material-ui-icons/Home'
-import AssignmentIcon from 'material-ui-icons/Assignment'
+import AccountCircleIcon from 'material-ui-icons/AccountCircle'
 import CameraIcon from 'material-ui-icons/CameraAlt'
 import { Redirect } from 'react-router-dom'
 
@@ -12,7 +12,7 @@ class Navigation extends Component {
     value: 0,
     camera: 0,
     home: 0,
-    input: 0
+    user: 0
   }
 
   handleChange = (event, value) => {
@@ -30,17 +30,11 @@ class Navigation extends Component {
           />
           {this.state.home && <Redirect to='/home' />}
           <BottomNavigationAction
-            label='Input'
-            icon={<AssignmentIcon />}
-            onClick={() => this.setState({ input: 1 })}
+            label='User'
+            icon={<AccountCircleIcon />}
+            onClick={() => this.setState({ user: 1 })}
           />
-          {this.state.input && <Redirect to='/content-input' />}
-          <BottomNavigationAction
-            label='Camera'
-            icon={<CameraIcon />}
-            onClick={() => this.setState({ camera: 1 })}
-          />
-          {this.state.camera && <Redirect to='/sketch' />}
+          {this.state.user && <Redirect to='/user-profile' />}
         </BottomNavigation>
       </div>
     )

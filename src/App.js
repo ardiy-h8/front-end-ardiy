@@ -5,6 +5,8 @@ import LoginScreen from './components/LoginScreen'
 import Sketch from './components/Sketch'
 import HomeScreen from './components/HomeScreen'
 import UserScreen from './components/UserScreen'
+import UserProfile from './components/UserProfile'
+import ContentDetail from './components/ContentDetail'
 
 const styles = {
   container: {
@@ -25,7 +27,9 @@ class App extends Component {
           <Route exact path='/' component={LoginScreen} />
           <Route exact path='/sketch' component={Sketch} />
           <Route exact path='/home' component={HomeScreen} />
+          <Route exact path='/user-profile' component={UserProfile} />
           <Route exact path='/content-input' component={UserScreen} />
+          <Route exact path='/content/:name' component={ContentDetail} />
         </div>
       </Router>
     )
