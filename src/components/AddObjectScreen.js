@@ -125,7 +125,7 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
   innerImage.onload()
 }
 
-class UserScreen extends Component {
+class AddObjectScreen extends Component {
   constructor () {
     super()
     this.state = {
@@ -260,4 +260,4 @@ const styles = {
   }
 }
 
-export default UserScreen
+export default AddObjectScreen

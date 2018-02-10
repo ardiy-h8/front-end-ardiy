@@ -5,6 +5,7 @@ import BottomNavigation, {
 import HomeIcon from 'material-ui-icons/Home'
 import AccountCircleIcon from 'material-ui-icons/AccountCircle'
 import CameraIcon from 'material-ui-icons/CameraAlt'
+import AddIcon from 'material-ui-icons/AddCircle'
 import { Redirect } from 'react-router-dom'
 
 class Navigation extends Component {
@@ -12,7 +13,8 @@ class Navigation extends Component {
     value: 0,
     camera: 0,
     home: 0,
-    user: 0
+    user: 0,
+    add: 0
   }
 
   handleChange = (event, value) => {
@@ -35,6 +37,12 @@ class Navigation extends Component {
             onClick={() => this.setState({ user: 1 })}
           />
           {this.state.user && <Redirect to='/user-profile' />}
+          <BottomNavigationAction
+            label='Add'
+            icon={<AddIcon />}
+            onClick={() => this.setState({ add: 1 })}
+          />
+          {this.state.add && <Redirect to='/add-detail' />}
         </BottomNavigation>
       </div>
     )

@@ -17,6 +17,7 @@ class UserPofile extends Component {
   render () {
     const image =
       'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
+    const image2 = ''
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -178,8 +179,8 @@ const styles = {
   },
   avatar: {
     margin: 10,
-    width: 100,
-    height: 100
+    width: 150,
+    height: 150
   }
 }
 
