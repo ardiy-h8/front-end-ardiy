@@ -3,130 +3,52 @@ import { Typography } from 'material-ui'
 import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import Navigation from './Navigation'
 import Header from './Header'
 
 class HomeScreen extends Component {
   render () {
-    const image =
-      'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
+    console.log('home', this.props.fetchCover)
+
+    const fetchCover = this.props.fetchCover
+
     return (
       <div style={styles.root}>
-
         <Header location={this.props.location.pathname} />
         <div style={styles.content}>
           <Grid container spacing={24}>
-            <Grid item xs={6} sm={4}>
-              <div style={styles.card}>
-                <Link
-                  to='/content/lorem ipsum'
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Card>
-                    <Button
-                      variant='flat'
-                      style={{
-                        width: '100%',
-                        padding: 0
-                      }}
+            {fetchCover.map((cover, index) => {
+              return (
+                <Grid item xs={6} sm={2}>
+                  <div style={styles.card}>
+                    <Link
+                      to='/content/lorem ipsum'
+                      style={{ textDecoration: 'none' }}
                     >
-                      <img src={image} width='100%' />
-                    </Button>
-                    <CardContent>
-                      <Typography component='p' style={{ fontSize: 20 }}>
-                        Lorem impsum dolor sit ammet
-                      </Typography>
+                      <Card>
+                        <Button
+                          variant='flat'
+                          style={{
+                            width: '100%',
+                            padding: 0
+                          }}
+                        >
+                          <img src={cover.image} width='100%' />
+                        </Button>
+                        <CardContent>
+                          <Typography component='p' style={{ fontSize: 15 }}>
+                            {cover.title}
+                          </Typography>
 
-                    </CardContent>
-                  </Card>
-                </Link>
-              </div>
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <div style={styles.card}>
-                <Card>
-                  <Button
-                    variant='flat'
-                    style={{
-                      width: '100%',
-                      padding: 0
-                    }}
-                  >
-                    <img src={image} width='100%' />
-                  </Button>
-                  <CardContent>
-                    <Typography component='p' style={{ fontSize: 20 }}>
-                      Lorem impsum dolor sit ammet
-                    </Typography>
-
-                  </CardContent>
-                </Card>
-              </div>
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <div style={styles.card}>
-                <Card>
-                  <Button
-                    variant='flat'
-                    style={{
-                      width: '100%',
-                      padding: 0
-                    }}
-                  >
-                    <img src={image} width='100%' />
-                  </Button>
-                  <CardContent>
-                    <Typography component='p' style={{ fontSize: 20 }}>
-                      Lorem impsum dolor sit ammet
-                    </Typography>
-
-                  </CardContent>
-                </Card>
-              </div>
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <div style={styles.card}>
-                <Card>
-                  <Button
-                    variant='flat'
-                    style={{
-                      width: '100%',
-                      padding: 0
-                    }}
-                  >
-                    <img src={image} width='100%' />
-                  </Button>
-                  <CardContent>
-                    <Typography component='p' style={{ fontSize: 20 }}>
-                      Lorem impsum dolor sit ammet
-                    </Typography>
-
-                  </CardContent>
-                </Card>
-              </div>
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <div style={styles.card}>
-                <Card>
-                  <Button
-                    variant='flat'
-                    style={{
-                      width: '100%',
-                      padding: 0
-                    }}
-                  >
-                    <img src={image} width='100%' />
-                  </Button>
-                  <CardContent>
-                    <Typography component='p' style={{ fontSize: 20 }}>
-                      Lorem impsum dolor sit ammet
-                    </Typography>
-
-                  </CardContent>
-                </Card>
-              </div>
-            </Grid>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </div>
+                </Grid>
+              )
+            })}
           </Grid>
         </div>
         <Navigation style={styles.navigation} />
@@ -159,4 +81,10 @@ const styles = {
   }
 }
 
-export default HomeScreen
+const mapStateToProps = state => {
+  return {
+    fetchCover: state.detailCoverReducers.cover
+  }
+}
+
+export default connect(mapStateToProps)(HomeScreen)
