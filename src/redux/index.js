@@ -4,11 +4,12 @@ import thunk from 'redux-thunk'
 import logger from 'redux-logger'
 
 import detailCoverReducers from './reducers/detailCoverReducers'
-
+import objectReducers from './reducers/objectReducers'
 const composeEnchancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const reducers = combineReducers({
-  detailCoverReducers
+  detailCoverReducers,
+  objectReducers
 })
 
 const middleware = applyMiddleware(thunk, logger)

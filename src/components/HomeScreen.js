@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
-import { Typography } from 'material-ui'
+import { Typography, Divider } from 'material-ui'
 import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import SetTime from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+import TimeAgo from 'react-time-ago'
 
 import Navigation from './Navigation'
 import Header from './Header'
+
+SetTime.locale(en)
 
 class HomeScreen extends Component {
   render () {
@@ -24,10 +29,10 @@ class HomeScreen extends Component {
                 <Grid item xs={6} sm={2}>
                   <div style={styles.card}>
                     <Link
-                      to='/content/lorem ipsum'
+                      to={`/content/${cover.title}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Card>
+                      <Card key={index}>
                         <Button
                           variant='flat'
                           style={{
@@ -37,12 +42,24 @@ class HomeScreen extends Component {
                         >
                           <img src={cover.image} width='100%' />
                         </Button>
+                        <TimeAgo
+                          style={{
+                            color: 'gray',
+                            fontSize: '5',
+                            paddingLeft: '1em',
+                            paddingTop: '0.5em',
+                            paddingBottom: '0.5em'
+                          }}
+                        >
+                          {cover.createdAt}
+                        </TimeAgo>
+                        <Divider />
                         <CardContent>
                           <Typography component='p' style={{ fontSize: 15 }}>
                             {cover.title}
                           </Typography>
-
                         </CardContent>
+
                       </Card>
                     </Link>
                   </div>

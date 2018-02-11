@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import Card, { CardHeader, CardMedia, CardContent, CardActions } from 'material-ui/Card'
+import Card, {
+  CardHeader,
+  CardMedia,
+  CardContent,
+  CardActions
+} from 'material-ui/Card'
 import {
   Button,
   Grid,
@@ -13,13 +18,23 @@ import {
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import Navigation from './Navigation'
 import Header from './Header'
 
 class ContentDetail extends Component {
   render () {
-    console.log(this.props.location.pathname)
+    console.log('detail', this.props.match.params.name.toLocaleLowerCase())
+    const data = this.props.fetchCover
+
+    let filterCover = data.filter(newData => {
+      return (
+        newData.title.toLocaleLowerCase() ==
+        this.props.match.params.name.toLocaleLowerCase()
+      )
+    })
+
     const image =
       'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
     return (
@@ -31,36 +46,36 @@ class ContentDetail extends Component {
               <Card>
                 <CardMedia
                   style={styles.media}
-                  image={image}
-                  title='Contemplative Reptile'
+                  image={filterCover[0].image}
+                  title={filterCover[0].title}
                 />
                 <CardContent>
                   <List component='nav'>
-                  <Link
-                    to='/sketch'
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <ListItem button onClick={() => console.log('Lorem ipsum')}>
-                      <ListItemIcon>
-                        <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
-                      </ListItemIcon>
-                      <ListItemText
-                        inset
-                        primary='Article Title'
-                        secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          aria-label='Delete'
-                          onClick={() =>
-                            console.log(
-                              'aku adalah anak gembala lala lala lala'
-                            )}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                    <Link to='/sketch' style={{ textDecoration: 'none' }}>
+                      <ListItem
+                        button
+                        onClick={() => console.log('Lorem ipsum')}
+                      >
+                        <ListItemIcon>
+                          <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
+                        </ListItemIcon>
+                        <ListItemText
+                          inset
+                          primary='Article Title'
+                          secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            aria-label='Delete'
+                            onClick={() =>
+                              console.log(
+                                'aku adalah anak gembala lala lala lala'
+                              )}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
                     </Link>
                     <Divider />
                     <ListItem button onClick={() => console.log('Lorem ipsum')}>
@@ -152,16 +167,13 @@ class ContentDetail extends Component {
                     </ListItem>
                   </List>
                 </CardContent>
-                <CardActions >
-                <div style={styles.button}>
-                <Link
-                  to='/add-object'
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Button variant="raised" color="primary">
-                    Add New Marker
-                  </Button>
-                  </Link>
+                <CardActions>
+                  <div style={styles.button}>
+                    <Link to='/add-object' style={{ textDecoration: 'none' }}>
+                      <Button variant='raised' color='primary'>
+                        Add New Marker
+                      </Button>
+                    </Link>
                   </div>
                 </CardActions>
               </Card>
@@ -199,5 +211,10 @@ const styles = {
     margin: '0 auto'
   }
 }
+const mapStateToProps = state => {
+  return {
+    fetchCover: state.detailCoverReducers.cover
+  }
+}
 
-export default ContentDetail
+export default connect(mapStateToProps)(ContentDetail)

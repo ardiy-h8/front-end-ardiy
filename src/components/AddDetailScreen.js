@@ -2,16 +2,22 @@ import React, { Component } from 'react'
 import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase, TextField } from 'material-ui'
 import { Link } from 'react-router-dom'
-
+import { connect } from 'react-redux'
 import Navigation from './Navigation'
 import Header from './Header'
+
+import {
+  input_data_detail_cover as addCover
+} from '../redux/actions/detailCoverActions.js'
+
 class AddDetailScreen extends Component {
   constructor () {
     super()
     this.state = {
       title: '',
       file: '',
-      imagePreviewUrl: './assets/preview.png'
+      imagePreviewUrl: './assets/preview.png',
+      createdAt: new Date()
     }
     this.handleImageChange = this.handleImageChange.bind(this)
   }
@@ -29,6 +35,9 @@ class AddDetailScreen extends Component {
     }
 
     reader.readAsDataURL(file)
+  }
+  handleClickSubmit () {
+    this.props.addDetailCover(this.state)
   }
   render () {
     return (
@@ -85,8 +94,9 @@ class AddDetailScreen extends Component {
                     <div style={{ marginRight: 20 }}>
                       <Button variant='raised' component='span' color='primary'>
                         <i
-                          class='fa fa-check-square-o'
+                          className='fa fa-check-square-o'
                           style={{ marginRight: 10 }}
+                          onClick={() => this.handleClickSubmit()}
                         />
                         Save
                       </Button>
@@ -103,7 +113,7 @@ class AddDetailScreen extends Component {
                           })}
                       >
                         <i
-                          class='fa fa-window-close-o'
+                          className='fa fa-window-close-o'
                           style={{ marginRight: 10 }}
                         />
 
@@ -143,4 +153,10 @@ const styles = {
   }
 }
 
-export default AddDetailScreen
+const mapDispatchToProps = dispatch => {
+  return {
+    addDetailCover: payload => dispatch(addCover(payload))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(AddDetailScreen)
