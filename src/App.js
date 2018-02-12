@@ -14,6 +14,7 @@ const decodeBase64Image = image => {
 
 class App extends Component {
   state = {
+    mid: '5a7ea50e13f6b31867ec6201',
     title: '',
     description: '',
     pages: 1,
@@ -40,12 +41,11 @@ class App extends Component {
   }
 
   handleUpload() {
-    const { title, description, pages, marker, imgMarker, object3d } = this.state
-    console.log(this.state)
+    const { mid, title, description, pages, marker, imgMarker, object3d } = this.state
 
     this.props
       .mutate({
-        variables: { title, description, pages, marker, imgMarker, object3d }
+        variables: { mid, title, description, pages, marker, imgMarker, object3d }
       })
       .then(({ data }) => console.log('got data', data))
       .catch(err => console.log('got error', err))
@@ -88,6 +88,7 @@ class App extends Component {
 
 const query = gql`
   mutation createObject3D(
+    $mid: String!,
     $title: String!,
     $description: String!,
     $pages: Int!,
@@ -96,6 +97,7 @@ const query = gql`
     $object3d: String!
   ) {
     createObject3D (
+      mid: $mid,
       title: $title,
       description: $description,
       pages: $pages,
