@@ -25,20 +25,14 @@ import Header from './Header'
 
 class ContentDetail extends Component {
   render () {
-    console.log('detail', this.props.match.params.name.toLocaleLowerCase())
     const data = this.props.fetchCover
-
-    let filterCover = data.filter(newData => {
-      return (
-        newData.title.toLocaleLowerCase() ==
-        this.props.match.params.name.toLocaleLowerCase()
-      )
-    })
-    console.log('inni', this.props.fetchDetail)
+    let filterCover = data.filter(newData =>
+      newData.title.toLocaleLowerCase() ==
+      this.props.match.params.name.toLocaleLowerCase()
+    )
     let listObject = this.props.fetchDetail
+    const image = 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
 
-    const image =
-      'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -48,29 +42,26 @@ class ContentDetail extends Component {
               <Card>
                 <CardMedia
                   style={styles.media}
-                  image={filterCover[0].image}
+                  image={filterCover[0].imagePreviewUrl}
                   title={filterCover[0].title}
                 />
                 <CardContent>
                   <List component='nav'>
-                    {listObject.map((object, index) => {
+                    {filterCover[0].object3d.map((object, index) => {
                       return (
                         <div key={index}>
-                          <Link to='/sketch' style={{ textDecoration: 'none' }}>
+                          <Link to={`/sketch/${object.id}`} style={{ textDecoration: 'none' }}>
                             <ListItem
                               button
                               onClick={() => console.log('Lorem ipsum')}
                             >
                               <ListItemIcon>
-                                <Avatar
-                                  alt='Eric Hoffman'
-                                  src='./assets/logo.png'
-                                />
+                                <Avatar alt='Eric Hoffman' src={object.img_marker} />
                               </ListItemIcon>
                               <ListItemText
                                 inset
                                 primary={object.title}
-                                secondary={object.detail}
+                                secondary={object.description}
                               />
                               <ListItemSecondaryAction>
                                 <IconButton
@@ -93,7 +84,7 @@ class ContentDetail extends Component {
                 </CardContent>
                 <CardActions>
                   <div style={styles.button}>
-                    <Link to='/add-object' style={{ textDecoration: 'none' }}>
+                    <Link to={`/add-object/${filterCover[0].id}`} style={{ textDecoration: 'none' }}>
                       <Button variant='raised' color='primary'>
                         Add New Marker
                       </Button>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 class Header extends Component {
   render () {
     let location = this.props.location.split('/')
-    console.log('aku adalah anak gembala', location)
+
     return (
       <div style={styles.root}>
         <AppBar position='static' style={styles.background}>
@@ -29,7 +29,7 @@ class Header extends Component {
                 fontWeight: 700
               }}
             >
-              {location[2] ? location[2].toUpperCase() : 'ARDY'}
+              {(location[2]) ? ((location[1] === 'add-object' || location[1] === 'add-detail')? location[1].split('-').join(' ').toUpperCase():location[2].substr(0, 15).toUpperCase()+'...') : (location[1]?location[1].split('-').join(' ').toUpperCase():'ARDY')}
             </Typography>
           </Toolbar>
         </AppBar>

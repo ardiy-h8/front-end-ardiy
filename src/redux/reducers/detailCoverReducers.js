@@ -1,22 +1,16 @@
 const initialState = {
-  cover: [
-    {
-      title: 'Monster Ink',
-      imagePreviewUrl: 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png',
-      createdAt: new Date()
-    },
-    {
-      title: 'Modern Architecture',
-      imagePreviewUrl: 'https://marketplace.canva.com/MACSXEOzaeQ/1/0/thumbnail_large/canva-orange-and-dark-purple-triangular-modern-architecture-book-cover-MACSXEOzaeQ.jpg',
-      createdAt: new Date()
-    }
-  ]
+  user: {},
+  cover: []
 }
 
-const detailCoverReducers = (state = initialState, action) => {
-  switch (action.type) {
+const detailCoverReducers = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case 'GET_USER':
+      return { ...state, user: payload.user }
+    case 'FETCH_MAGAZINES':
+      return { ...state, cover: payload.magazines }
     case 'ADD_DETAIL_COVER':
-      return { ...state, cover: state.cover.concat(action.payload.cover) }
+      return { ...state, cover: state.cover.concat(payload.cover) }
     default:
       return state
   }

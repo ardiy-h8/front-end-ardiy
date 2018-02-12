@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import isEqual from 'lodash.isequal'
 import { Button } from 'material-ui'
 import KeyboardBackspace from 'material-ui-icons/KeyboardBackspace'
+import { connect } from 'react-redux'
 
 import canvas from '../utils/initializeRenderer'
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
 import MarkerSearch from './MarkerSearch'
 import ObjectTips from './ObjectTips'
-import hiro from '../assets/patt.dota'
 
 var cancelAnimationFrame =
   navigator.cancelAnimationFrame || navigator.mozCancelAnimationFrame
@@ -17,6 +17,8 @@ class Sketch extends Component {
   constructor () {
     super()
     this.state = {
+      pattern: '',
+      dae: '',
       showTips: true,
       markerFound: false,
       coord: {
@@ -31,8 +33,19 @@ class Sketch extends Component {
       }
     }
   }
+
   shouldComponentUpdate (nextProps, state) {
     return !isEqual(state, this.state)
+  }
+
+  componentDidMount() {
+    this.props.getMarker.filter(marker => {
+      marker.id === this.props.match.params.id &&
+        this.setState({
+          pattern: marker.marker,
+          dae: marker.object3d
+        })
+    })
   }
 
   goBack () {
@@ -61,6 +74,8 @@ class Sketch extends Component {
 
   render () {
     const {
+      pattern,
+      dae,
       markerFound,
       coord: { x: coordX, z: coordZ },
       scale: { x: scaleX, y: scaleY, z: scaleZ },
@@ -76,7 +91,8 @@ class Sketch extends Component {
           scaleZ={scaleZ}
           rotation={rotation}
           onMarkerFound={this.handleMarkerFound}
-          pattern={hiro}
+          pattern={{}}
+          dae={dae}
         />
         {!markerFound && <MarkerSearch style={styles.MarkerSearch} />}
         {markerFound &&
@@ -128,4 +144,8 @@ const styles = {
   }
 }
 
-export default Sketch
+const mapStateToProps = state => ({
+  getMarker: state.detailCoverReducers.cover
+})
+
+export default connect(mapStateToProps)(Sketch)

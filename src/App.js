@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { ApolloProvider } from 'react-apollo'
+import { ApolloClient } from 'apollo-client-preset'
+import { HttpLink } from 'apollo-client-preset';
+import { InMemoryCache } from 'apollo-client-preset';
 
 import store from './redux'
 import HomeScreen from './components/HomeScreen'
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: 'http://localhost:3001/graphql'
+  }),
+  cache: new InMemoryCache(),
+});
 
 const styles = {
   container: {
@@ -65,17 +76,19 @@ const ContentDetail = asyncComponent(() =>
 
 const App = () => (
   <Provider store={store}>
-    <Router>
-      <div style={styles.container}>
-        <Route exact path='/login' getComponent={LoginScreen} />
-        <Route exact path='/' component={HomeScreen} />
-        <Route exact path='/sketch' component={Sketch} />
-        <Route exact path='/user-profile' component={UserProfile} />
-        <Route exact path='/add-object' component={AddObjectScreen} />
-        <Route exact path='/add-detail' component={AddDetailScreen} />
-        <Route exact path='/content/:name' component={ContentDetail} />
-      </div>
-    </Router>
+    <ApolloProvider client={client}>
+      <Router>
+        <div style={styles.container}>
+          <Route exact path='/login' component={LoginScreen} />
+          <Route exact path='/' component={HomeScreen} />
+          <Route exact path='/sketch/:id' component={Sketch} />
+          <Route exact path='/user-profile' component={UserProfile} />
+          <Route exact path='/add-object/:mid' component={AddObjectScreen} />
+          <Route exact path='/add-detail' component={AddDetailScreen} />
+          <Route exact path='/content/:name' component={ContentDetail} />
+        </div>
+      </Router>
+    </ApolloProvider>
   </Provider>
 )
 

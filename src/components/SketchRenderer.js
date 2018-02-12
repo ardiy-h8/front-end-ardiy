@@ -51,8 +51,7 @@ export const sketchRendererFactory = ({
       this.loader = new ColladaLoader()
       this.loader.options.convertUpAxis = true
       let that = this
-      this.loader.load(
-        'http://ar-coba.s3-website-ap-southeast-1.amazonaws.com/elf.dae',
+      this.loader.load(this.props.dae,
         function(collada) {
           that.avatar = collada.scene
           that.avatar.needsUpdate = true

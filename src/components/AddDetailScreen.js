@@ -3,24 +3,25 @@ import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase, TextField } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 import Navigation from './Navigation'
 import Header from './Header'
-
 import {
   input_data_detail_cover as addCover
 } from '../redux/actions/detailCoverActions.js'
 
 class AddDetailScreen extends Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
       title: '',
-      file: '',
-      imagePreviewUrl: './assets/preview.png',
-      createdAt: new Date()
+      imagePreviewUrl: './assets/preview.png'
     }
     this.handleImageChange = this.handleImageChange.bind(this)
   }
+
   handleImageChange (e) {
     e.preventDefault()
 
@@ -29,16 +30,31 @@ class AddDetailScreen extends Component {
 
     reader.onloadend = () => {
       this.setState({
-        file: file,
         imagePreviewUrl: reader.result
       })
     }
 
     reader.readAsDataURL(file)
   }
+
   handleClickSubmit () {
-    this.props.addDetailCover(this.state)
+    const { title, imagePreviewUrl } = this.state
+    const { email } = this.props.user
+
+    console.log('email', email)
+
+    this.props.mutate({
+      variables: { email, title, imagePreviewUrl }
+    }).then(({ data: { createMagazine }}) => {
+      return this.props.addDetailCover({
+        email: createMagazine.email,
+        title: createMagazine.title,
+        imagePreviewUrl: createMagazine.imagePreviewUrl,
+        mid: createMagazine.id
+      })
+    }).catch(err => console.error(err))
   }
+
   render () {
     return (
       <div style={styles.root}>
@@ -92,11 +108,10 @@ class AddDetailScreen extends Component {
                     }}
                   >
                     <div style={{ marginRight: 20 }}>
-                      <Button variant='raised' component='span' color='primary'>
+                      <Button variant='raised' component='span' color='primary' onClick={() => this.handleClickSubmit()}>
                         <i
                           className='fa fa-check-square-o'
                           style={{ marginRight: 10 }}
-                          onClick={() => this.handleClickSubmit()}
                         />
                         Save
                       </Button>
@@ -153,10 +168,21 @@ const styles = {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addDetailCover: payload => dispatch(addCover(payload))
-  }
-}
+const mapStateToProps = state => ({
+  user: state.detailCoverReducers.user
+})
 
-export default connect(null, mapDispatchToProps)(AddDetailScreen)
+const mapDispatchToProps = dispatch => ({
+  addDetailCover: payload => dispatch(addCover(payload))
+})
+
+const query = gql`
+  mutation createMagazine ($email: String!, $title: String!, $imagePreviewUrl: String!) {
+    createMagazine (email: $email, title: $title, imagePreviewUrl: $imagePreviewUrl) {
+      id email title imagePreviewUrl object3d
+    }
+  }
+`
+const graphqlQuery = graphql(query)(AddDetailScreen)
+
+export default connect(mapStateToProps, mapDispatchToProps)(graphqlQuery)

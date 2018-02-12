@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Button, Grid, Paper, ButtonBase, TextField } from 'material-ui'
 import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import {
   input_data_object as addObject
@@ -67,20 +69,11 @@ THREEx.ArPatternFile.encodeImage = function (image) {
   return patternFileString
 }
 
-THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
-  var domElement = window.document.createElement('a')
-  domElement.href = window.URL.createObjectURL(
-    new Blob([patternFileString], { type: 'text/plain' })
-  )
-  domElement.download = 'pattern-marker.patt'
-  document.body.appendChild(domElement)
-  domElement.click()
-  document.body.removeChild(domElement)
-  console.log('donlot')
+THREEx.ArPatternFile.triggerDownload = (image) => {
   var e = document.createElement('a')
-  var href = newUrl
+  var href = image
   e.setAttribute('href', href)
-  e.setAttribute('download', 'image.png')
+  e.setAttribute('download', 'marker.png')
   document.body.appendChild(e)
   e.click()
   document.body.removeChild(e)
@@ -135,17 +128,20 @@ class AddObjectScreen extends Component {
     super()
     this.state = {
       title: '',
-      detail: '',
+      description: '',
       imageResult: '', // Image base64 without border for patt file
       patternFileStr: '', // Pattern string for patt file
-      patternImage: '' // Image with border to download
+      patternImage: '', // Image with border to download
+      object3d: '',
+      pages: ''
     }
-    this.handleUpload = this.handleUpload.bind(this)
+    this.handleUploadMarker = this.handleUploadMarker.bind(this)
+    this.handleUploadObject = this.handleUploadObject.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
     this.encode = this.encode.bind(this)
   }
 
-  handleUpload (e) {
+  handleUploadMarker (e) {
     var reader = new FileReader()
 
     var self = this
@@ -164,6 +160,16 @@ class AddObjectScreen extends Component {
     }
     reader.readAsDataURL(e.target.files[0])
   }
+
+  handleUploadObject(e) {
+    var reader = new FileReader()
+
+      reader.onloadend = () => {
+        this.setState({object3d: reader.result})
+      }
+      reader.readAsDataURL(e.target.files[0])
+  }
+
   encode () {
     let imageResult = this.state.imageResult
     var self = this
@@ -178,15 +184,29 @@ class AddObjectScreen extends Component {
 
   handleDownload () {
     let patternImage = this.state.patternImage
-    let patternFileStr = this.state.patternFileStr
-    THREEx.ArPatternFile.triggerDownload(patternFileStr, patternImage)
+    THREEx.ArPatternFile.triggerDownload(patternImage)
   }
+
   handleClickSubmit () {
-    this.props.addDetailObject(this.state)
+    const {title, description, patternFileStr, patternImage, object3d, pages} = this.state
+    const mid = this.props.match.params.mid
+
+    this.props.mutate({
+      variables: {
+        mid,
+        title,
+        description,
+        pages,
+        marker: patternFileStr,
+        img_marker: patternImage,
+        object3d
+      }
+    }).then(({ data }) => console.log(data) )
+    .catch(err => console.error('gagal', err))
   }
+
   render () {
     var el = document.querySelector('app')
-    console.log(this.state)
     return (
       <div style={styles.root}>
 
@@ -212,9 +232,19 @@ class AddObjectScreen extends Component {
                     helperText='ex: Description Detail'
                     fullWidth
                     margin='normal'
-                    value={this.state.detail}
+                    value={this.state.description}
                     onChange={event =>
-                      this.setState({ detail: event.target.value })}
+                      this.setState({ description: event.target.value })}
+                  />
+                  <TextField
+                    id='pages'
+                    label='Page'
+                    helperText='ex: Page Number'
+                    fullWidth
+                    margin='normal'
+                    value={this.state.pages}
+                    onChange={event =>
+                      this.setState({ pages: Number(event.target.value) })}
                   />
                   <div
                     style={{
@@ -231,7 +261,7 @@ class AddObjectScreen extends Component {
                         id='marker'
                         name='marker'
                         style={{ display: 'none' }}
-                        onChange={this.handleUpload}
+                        onChange={this.handleUploadMarker}
                       />
                       <label htmlFor='marker'>
                         <Button
@@ -249,6 +279,7 @@ class AddObjectScreen extends Component {
                         id='object'
                         placeholder='object'
                         style={{ display: 'none' }}
+                        onChange={this.handleUploadObject}
                       />
                       <label htmlFor='object'>
                         <br />
@@ -270,11 +301,11 @@ class AddObjectScreen extends Component {
                     }}
                   >
                     <div style={{ marginRight: 20 }}>
-                      <Button variant='raised' component='span' color='primary'>
+                      <Button variant='raised' component='span' color='primary'
+                      onClick={() => this.handleClickSubmit()}>
                         <i
                           className='fa fa-check-square-o'
                           style={{ marginRight: 10 }}
-                          onClick={() => this.handleClickSubmit()}
                         />
                         Save
                       </Button>
@@ -302,6 +333,20 @@ class AddObjectScreen extends Component {
                       </Button>
                     </div>
                   </div>
+                  {this.state.patternFileStr && (<div style={{display:'flex', justifyContent:'center', paddingTop: '1.2em'}}>
+                      <Button
+                        variant='raised'
+                        component='span'
+                        color='secondary'
+                        onClick={this.handleDownload}
+                      >
+                        <i
+                          className='fa fa-cloud-download'
+                          style={{ marginRight: 10 }}
+                        />
+                        Download
+                      </Button>
+                    </div>)}
                 </CardContent>
               </Card>
             </Grid>
@@ -340,4 +385,30 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(AddObjectScreen)
+const query = gql`
+  mutation createObject3D (
+    $mid: String!,
+    $title: String!,
+    $description: String!,
+    $pages: Int!,
+    $marker: String!,
+    $img_marker: String!,
+    $object3d: String!
+  ) {
+    createObject3D (
+      mid: $mid,
+      title: $title,
+      description: $description,
+      pages: $pages,
+      marker: $marker,
+      img_marker: $img_marker,
+      object3d: $object3d
+    ) {
+      id mid title description pages marker img_marker object3d
+    }
+  }
+`
+
+const graphqlQuery = graphql(query)(AddObjectScreen)
+
+export default connect(null, mapDispatchToProps)(graphqlQuery)

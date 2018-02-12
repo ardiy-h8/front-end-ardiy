@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import { Button, Grid, Paper } from 'material-ui'
+import { connect } from 'react-redux'
+
+import { getUser } from '../redux/actions/detailCoverActions'
 import { loginWithGoogle, loginWithFacebook } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
-import { Button, Grid, Paper } from 'material-ui'
 
 const firebaseAuthKey = 'firebaseAuthInProgress'
 const appTokenKey = 'appToken'
@@ -14,6 +17,7 @@ class LoginScreen extends Component {
     }
     // this.handleGooleLogin = this.handleGooleLogin.bind(this)
   }
+
   handleGoogleLogin () {
     loginWithGoogle().catch(err => {
       alert(err)
@@ -21,6 +25,7 @@ class LoginScreen extends Component {
     })
     localStorage.setItem(firebaseAuthKey, '1')
   }
+
   handleFacebookLogin () {
     loginWithFacebook().catch(err => {
       alert(err)
@@ -28,20 +33,26 @@ class LoginScreen extends Component {
       localStorage.setItem(firebaseAuthKey, '1')
     })
   }
+
   componentWillMount () {
     if (localStorage.getItem(appTokenKey)) {
-      this.props.history.push('/home')
-      return
+      return this.props.history.push('/')
     }
-    firebaseAuth().onAuthStateChanged(user => {
-      if (user) {
-        console.log('User signed in: ', JSON.stringify(user))
-        localStorage.removeItem(firebaseAuthKey)
-        localStorage.setItem(appTokenKey, user.uid)
-        this.props.history.push('/home')
-      }
-    })
+
+    firebaseAuth()
+      .onAuthStateChanged(user => {
+        if (user) {
+          localStorage.removeItem(firebaseAuthKey)
+          localStorage.setItem(appTokenKey, user.uid)
+          this.props.history.push('/')
+          this.props.getUser({
+            email: user.email,
+            avatar: user.photoURL
+          })
+        }
+      })
   }
+
   render () {
     return (
       <div style={styles.root}>
@@ -82,6 +93,7 @@ class LoginScreen extends Component {
     )
   }
 }
+
 const styles = {
   root: {
     display: 'flex',
@@ -121,4 +133,8 @@ const styles = {
   }
 }
 
-export default LoginScreen
+const mapDispatchToProps = dispatch => ({
+  getUser: user => dispatch(getUser(user))
+})
+
+export default connect(null, mapDispatchToProps)(LoginScreen)
