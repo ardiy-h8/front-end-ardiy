@@ -32,6 +32,13 @@ class Sketch extends Component {
         z: 1
       }
     }
+    this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this)
+    this.goBack = this.goBack.bind(this)
+    this.handleTranslateChange = this.handleTranslateChange.bind(this)
+    this.handleZoomChange = this.handleZoomChange.bind(this)
+    this.handleRotationChange = this.handleRotationChange.bind(this)
+    this.handleHideTips = this.handleHideTips.bind(this)
+    this.handleMarkerFound = this.handleMarkerFound.bind(this)
   }
 
   shouldComponentUpdate (nextProps, state) {
@@ -39,18 +46,23 @@ class Sketch extends Component {
   }
 
   componentDidMount() {
-    this.props.getMarker.filter(marker => {
-      marker.id === this.props.match.params.id &&
+    // console.log('Masuk sini lala')
+    this.props.getMarker.map(marker => {
+      console.log(marker)
+      marker.object3d.map(object3d => {
+        object3d.id == this.props.match.params.id ?
+
         this.setState({
-          pattern: marker.marker,
-          dae: marker.object3d
-        })
+          pattern: object3d.marker,
+          dae: object3d.object3d
+        }, ()=>console.log('sama')):console.log('tidak sama')
+      })
     })
   }
 
   goBack () {
     window.location.reload()
-    this.props.history.push('/home')
+    this.props.history.push('/')
   }
 
   handleTranslateChange ({ x, z }) {
@@ -91,7 +103,7 @@ class Sketch extends Component {
           scaleZ={scaleZ}
           rotation={rotation}
           onMarkerFound={this.handleMarkerFound}
-          pattern={{}}
+          pattern={"https://ardy-test.s3.ap-southeast-1.amazonaws.com/1518445682972.patt"}
           dae={dae}
         />
         {!markerFound && <MarkerSearch style={styles.MarkerSearch} />}

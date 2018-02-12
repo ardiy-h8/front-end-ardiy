@@ -8,6 +8,7 @@ import { InMemoryCache } from 'apollo-client-preset';
 
 import store from './redux'
 import HomeScreen from './components/HomeScreen'
+import Sketch from './components/Sketch'
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -54,9 +55,9 @@ const LoginScreen = asyncComponent(() =>
   import('./components/LoginScreen').then(module => module.default)
 )
 
-const Sketch = asyncComponent(() =>
+/* const Sketch = asyncComponent(() =>
   import('./components/Sketch').then(module => module.default)
-)
+) */
 
 const UserProfile = asyncComponent(() =>
   import('./components/UserProfile').then(module => module.default)

@@ -29,19 +29,14 @@ class AddDetailScreen extends Component {
     let file = e.target.files[0]
 
     reader.onloadend = () => {
-      this.setState({
-        imagePreviewUrl: reader.result
-      })
+      this.setState({ imagePreviewUrl: reader.result })
     }
-
     reader.readAsDataURL(file)
   }
 
   handleClickSubmit () {
     const { title, imagePreviewUrl } = this.state
     const { email } = this.props.user
-
-    console.log('email', email)
 
     this.props.mutate({
       variables: { email, title, imagePreviewUrl }
@@ -50,7 +45,7 @@ class AddDetailScreen extends Component {
         email: createMagazine.email,
         title: createMagazine.title,
         imagePreviewUrl: createMagazine.imagePreviewUrl,
-        mid: createMagazine.id
+        id: createMagazine.id
       })
     }).catch(err => console.error(err))
   }
@@ -127,11 +122,7 @@ class AddDetailScreen extends Component {
                             imagePreviewUrl: './assets/preview.png'
                           })}
                       >
-                        <i
-                          className='fa fa-window-close-o'
-                          style={{ marginRight: 10 }}
-                        />
-
+                        <i className='fa fa-window-close-o' style={{ marginRight: 10 }}/>
                         Clear
                       </Button>
                     </div>
@@ -179,7 +170,9 @@ const mapDispatchToProps = dispatch => ({
 const query = gql`
   mutation createMagazine ($email: String!, $title: String!, $imagePreviewUrl: String!) {
     createMagazine (email: $email, title: $title, imagePreviewUrl: $imagePreviewUrl) {
-      id email title imagePreviewUrl object3d
+      id email title imagePreviewUrl object3d {
+        id mid title description pages marker img_marker object3d
+      }
     }
   }
 `

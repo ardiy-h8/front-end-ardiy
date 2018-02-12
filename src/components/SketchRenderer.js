@@ -17,7 +17,7 @@ export const sketchRendererFactory = ({
   const { Camera, Group, Scene } = THREE
 
   return class SketchRenderer extends Component {
-    componentDidMount() {
+    componentWillMount() {
       const {
         coordX,
         coordZ,
@@ -26,7 +26,8 @@ export const sketchRendererFactory = ({
         scaleZ,
         rotation,
         onMarkerFound,
-        pattern
+        pattern,
+        dae
       } = this.props
 
       const renderer = (this.renderer = initializeRenderer(this.canvas))
@@ -51,12 +52,21 @@ export const sketchRendererFactory = ({
       this.loader = new ColladaLoader()
       this.loader.options.convertUpAxis = true
       let that = this
-      this.loader.load(this.props.dae,
-        function(collada) {
-          that.avatar = collada.scene
-          that.avatar.needsUpdate = true
-          scene.add(that.avatar)
-          markerRoot.add(that.avatar)
+      console.log(dae)
+      this.loader.load("https://ardy-test.s3.ap-southeast-1.amazonaws.com/1518442830292.dae",
+        (collada) => {
+          this.avatar = collada.scene
+          this.avatar.needsUpdate = true
+          this.avatar.position.x = coordX
+          this.avatar.position.z = coordZ
+          this.avatar.scale.x = scaleX
+          this.avatar.scale.y = scaleY
+          this.avatar.scale.z = scaleZ
+          this.avatar.rotation.z = rotation
+          this.avatar.needsUpdate = true
+          console.log(this.avatar, 'avatar', '1')
+          scene.add(this.avatar)
+          markerRoot.add(this.avatar)
         }
       )
       var ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
@@ -99,13 +109,15 @@ export const sketchRendererFactory = ({
 
     componentDidUpdate() {
       const { coordX, coordZ, scaleX, scaleY, scaleZ, rotation } = this.props
-      this.avatar.position.x = coordX
-      this.avatar.position.z = coordZ
-      this.avatar.scale.x = scaleX
-      this.avatar.scale.y = scaleY
-      this.avatar.scale.z = scaleZ
-      this.avatar.rotation.z = rotation
-      this.avatar.needsUpdate = true
+      const { avatar } = this
+      console.log(avatar)
+      // this.avatar.position.x = coordX
+      // this.avatar.position.z = coordZ
+      // this.avatar.scale.x = scaleX
+      // this.avatar.scale.y = scaleY
+      // this.avatar.scale.z = scaleZ
+      // this.avatar.rotation.z = rotation
+      // this.avatar.needsUpdate = true
     }
 
     render() {

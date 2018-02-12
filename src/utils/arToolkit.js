@@ -30,8 +30,8 @@ export function initializeArToolkit (renderer, camera, onRenderFcts) {
     cameraParametersUrl: cameraData,
     detectionMode: 'mono',
     maxDetectionRate: 30,
-    canvasWidth: 800,
-    canvasHeight: 600
+    canvasWidth: window.innerWidth,
+    canvasHeight: window.innerHeight
   })
 
   arToolkitContext.init(() => {
