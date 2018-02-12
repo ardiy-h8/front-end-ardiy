@@ -26,13 +26,13 @@ class HomeScreen extends Component {
           <Grid container spacing={24}>
             {fetchCover.map((cover, index) => {
               return (
-                <Grid item xs={6} sm={2}>
+                <Grid item xs={6} sm={2} key={index}>
                   <div style={styles.card}>
                     <Link
                       to={`/content/${cover.title}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Card key={index}>
+                      <Card>
                         <Button
                           variant='flat'
                           style={{
