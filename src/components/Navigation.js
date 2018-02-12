@@ -11,7 +11,7 @@ import { Redirect } from 'react-router-dom'
 class Navigation extends Component {
   constructor(){
     super()
-    state = {
+    this.state = {
       value: 0,
       camera: 0,
       home: 0,

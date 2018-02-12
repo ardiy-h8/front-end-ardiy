@@ -2,32 +2,42 @@ import React, { Component } from 'react'
 import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase, TextField } from 'material-ui'
 import { Link } from 'react-router-dom'
-
+import { connect } from 'react-redux'
 import Navigation from './Navigation'
 import Header from './Header'
+
+import {
+  input_data_detail_cover as addCover
+} from '../redux/actions/detailCoverActions.js'
+
 class AddDetailScreen extends Component {
-  constructor(){
+  constructor () {
     super()
     this.state = {
+      title: '',
       file: '',
-      imagePreviewUrl : './assets/uploaddefault-bg.jpg'
+      imagePreviewUrl: './assets/preview.png',
+      createdAt: new Date()
     }
     this.handleImageChange = this.handleImageChange.bind(this)
   }
-  handleImageChange(e) {
-    e.preventDefault();
+  handleImageChange (e) {
+    e.preventDefault()
 
-    let reader = new FileReader();
-    let file = e.target.files[0];
+    let reader = new FileReader()
+    let file = e.target.files[0]
 
     reader.onloadend = () => {
       this.setState({
         file: file,
         imagePreviewUrl: reader.result
-      });
+      })
     }
 
     reader.readAsDataURL(file)
+  }
+  handleClickSubmit () {
+    this.props.addDetailCover(this.state)
   }
   render () {
     return (
@@ -38,40 +48,80 @@ class AddDetailScreen extends Component {
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Card>
-              <CardContent>
-              <img src={this.state.imagePreviewUrl} alt="uploaded" width="100%"/>
-              <TextField
-                id='title'
-                label='Title'
-                helperText='Magazine, brochure title'
-                fullWidth
-                margin='normal'
-              />
-              <input
-                accept='image/*'
-                type='file'
-                id='marker'
-                name='marker'
-                style={{ display: 'none' }}
-                onChange={this.handleImageChange}
-              />
-              <label htmlFor='marker'>
-                <Button variant='raised' component='span' syle={styles.button}>
-                  Marker Upload
-                </Button>
-              </label>
-              <div>
-                <br />
-                <Button
-                  variant='raised'
-                  component='span'
-                  color='primary'
-                  syle={styles.button}
-                >
-                  Save
-                </Button>
-                </div>
-              </CardContent>
+                <CardContent>
+
+                  <TextField
+                    id='title'
+                    label='Title'
+                    helperText='Magazine, brochure title'
+                    fullWidth
+                    margin='normal'
+                    value={this.state.title}
+                    onChange={event =>
+                      this.setState({ title: event.target.value })}
+                  />
+                  <input
+                    accept='image/*'
+                    type='file'
+                    id='marker'
+                    name='marker'
+                    style={{ display: 'none' }}
+                    onChange={this.handleImageChange}
+                  />
+                  <label htmlFor='marker'>
+                    <Button
+                      variant='raised'
+                      component='span'
+                      syle={styles.button}
+                    >
+                      Click to Upload Cover
+                    </Button>
+                  </label>
+                  <img
+                    src={this.state.imagePreviewUrl}
+                    alt='uploaded'
+                    width='100%'
+                    height='50%'
+                    style={{ paddingTop: '1em' }}
+                  />
+                  <div
+                    style={{
+                      paddingTop: '1em',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <div style={{ marginRight: 20 }}>
+                      <Button variant='raised' component='span' color='primary'>
+                        <i
+                          className='fa fa-check-square-o'
+                          style={{ marginRight: 10 }}
+                          onClick={() => this.handleClickSubmit()}
+                        />
+                        Save
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        variant='raised'
+                        component='span'
+                        color='secondary'
+                        onClick={() =>
+                          this.setState({
+                            title: '',
+                            imagePreviewUrl: './assets/preview.png'
+                          })}
+                      >
+                        <i
+                          className='fa fa-window-close-o'
+                          style={{ marginRight: 10 }}
+                        />
+
+                        Clear
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             </Grid>
           </Grid>
@@ -94,7 +144,19 @@ const styles = {
   },
   navigation: {
     top: 56
+  },
+  content: {
+    paddingBottom: 120
+  },
+  button: {
+    paddingRight: '20px'
   }
 }
 
-export default AddDetailScreen
+const mapDispatchToProps = dispatch => {
+  return {
+    addDetailCover: payload => dispatch(addCover(payload))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(AddDetailScreen)

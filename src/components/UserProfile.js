@@ -21,18 +21,20 @@ class UserPofile extends Component {
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
-        <div style={styles.profile}>
+        <div>
           <Grid container spacing={24}>
             <Grid item xs={12}>
-              <Card>
+              <Card style={styles.profile}>
                 <CardContent style={styles.row}>
                   <Avatar
                     alt='Remy Sharp'
-                    src='../assets/avatar.jpg'
+                    src='https://www.bigmouthvoices.com/profile_picture/large/default-profile_picture.jpg'
                     style={styles.avatar}
                   />
 
-                  <p style={{ fontSize: 20 }}>Joko Sampurno Widodo</p>
+                  <p style={{ fontSize: 20, color: 'white' }}>
+                    Joko Sampurno Widodo
+                  </p>
                 </CardContent>
               </Card>
             </Grid>
@@ -40,7 +42,7 @@ class UserPofile extends Component {
         </div>
         <div style={styles.content}>
           <Grid container spacing={24}>
-            <Grid item xs={6} sm={4}>
+            <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
                   to='/content/lorem ipsum'
@@ -66,7 +68,7 @@ class UserPofile extends Component {
                 </Link>
               </div>
             </Grid>
-            <Grid item xs={6} sm={4}>
+            <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
                   to='/content/lorem ipsum'
@@ -92,7 +94,7 @@ class UserPofile extends Component {
                 </Link>
               </div>
             </Grid>
-            <Grid item xs={6} sm={4}>
+            <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
                   to='/content/lorem ipsum'
@@ -118,7 +120,7 @@ class UserPofile extends Component {
                 </Link>
               </div>
             </Grid>
-            <Grid item xs={6} sm={4}>
+            <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
                   to='/content/lorem ipsum'
@@ -162,7 +164,11 @@ const styles = {
     width: '100%',
     backgroundColor: '#eee'
   },
-  profile: {},
+  profile: {
+    background: '#1488CC' /* fallback for old browsers */,
+    background: '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
+    background: 'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  },
   content: {
     paddingBottom: 120,
     paddingLeft: '0.42em',
