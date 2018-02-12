@@ -182,7 +182,7 @@ class AddObjectScreen extends Component {
     THREEx.ArPatternFile.triggerDownload(patternFileStr, patternImage)
   }
   handleClickSubmit () {
-    this.props.addObject(this.state)
+    this.props.addDetailObject(this.state)
   }
   render () {
     var el = document.querySelector('app')
@@ -194,7 +194,7 @@ class AddObjectScreen extends Component {
         <div style={styles.content}>
           <Grid container spacing={24}>
             <Grid item xs={12}>
-              <Card flat>
+              <Card>
                 <CardContent>
                   <TextField
                     id='title'

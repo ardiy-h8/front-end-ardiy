@@ -40,7 +40,7 @@ class HomeScreen extends Component {
                             padding: 0
                           }}
                         >
-                          <img src={cover.image} width='100%' />
+                          <img src={cover.imagePreviewUrl} width='100%' />
                         </Button>
                         <TimeAgo
                           style={{

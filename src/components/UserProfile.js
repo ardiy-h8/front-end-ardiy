@@ -28,7 +28,7 @@ class UserPofile extends Component {
                 <CardContent style={styles.row}>
                   <Avatar
                     alt='Remy Sharp'
-                    src='../assets/avatar.jpg'
+                    src='https://www.bigmouthvoices.com/profile_picture/large/default-profile_picture.jpg'
                     style={styles.avatar}
                   />
 

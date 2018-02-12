@@ -34,6 +34,8 @@ class ContentDetail extends Component {
         this.props.match.params.name.toLocaleLowerCase()
       )
     })
+    console.log('inni', this.props.fetchDetail)
+    let listObject = this.props.fetchDetail
 
     const image =
       'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
@@ -51,120 +53,42 @@ class ContentDetail extends Component {
                 />
                 <CardContent>
                   <List component='nav'>
-                    <Link to='/sketch' style={{ textDecoration: 'none' }}>
-                      <ListItem
-                        button
-                        onClick={() => console.log('Lorem ipsum')}
-                      >
-                        <ListItemIcon>
-                          <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
-                        </ListItemIcon>
-                        <ListItemText
-                          inset
-                          primary='Article Title'
-                          secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
-                        />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            aria-label='Delete'
-                            onClick={() =>
-                              console.log(
-                                'aku adalah anak gembala lala lala lala'
-                              )}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </Link>
-                    <Divider />
-                    <ListItem button onClick={() => console.log('Lorem ipsum')}>
-                      <ListItemIcon>
-                        <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
-                      </ListItemIcon>
-                      <ListItemText
-                        inset
-                        primary='Article Title'
-                        secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          aria-label='Delete'
-                          onClick={() =>
-                            console.log(
-                              'aku adalah anak gembala lala lala lala'
-                            )}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider />
-                    <ListItem button onClick={() => console.log('Lorem ipsum')}>
-                      <ListItemIcon>
-                        <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
-                      </ListItemIcon>
-                      <ListItemText
-                        inset
-                        primary='Article Title'
-                        secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          aria-label='Delete'
-                          onClick={() =>
-                            console.log(
-                              'aku adalah anak gembala lala lala lala'
-                            )}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider />
-                    <ListItem button onClick={() => console.log('Lorem ipsum')}>
-                      <ListItemIcon>
-                        <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
-                      </ListItemIcon>
-                      <ListItemText
-                        inset
-                        primary='Article Title'
-                        secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          aria-label='Delete'
-                          onClick={() =>
-                            console.log(
-                              'aku adalah anak gembala lala lala lala'
-                            )}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider />
-                    <ListItem button onClick={() => console.log('Lorem ipsum')}>
-                      <ListItemIcon>
-                        <Avatar alt='Eric Hoffman' src='./assets/logo.png' />
-                      </ListItemIcon>
-                      <ListItemText
-                        inset
-                        primary='Article Title'
-                        secondary='saya adalah anak gembala, selalu riang serta gembira.. la.. la.. la..'
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          aria-label='Delete'
-                          onClick={() =>
-                            console.log(
-                              'aku adalah anak gembala lala lala lala'
-                            )}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                    {listObject.map((object, index) => {
+                      return (
+                        <div key={index}>
+                          <Link to='/sketch' style={{ textDecoration: 'none' }}>
+                            <ListItem
+                              button
+                              onClick={() => console.log('Lorem ipsum')}
+                            >
+                              <ListItemIcon>
+                                <Avatar
+                                  alt='Eric Hoffman'
+                                  src='./assets/logo.png'
+                                />
+                              </ListItemIcon>
+                              <ListItemText
+                                inset
+                                primary={object.title}
+                                secondary={object.detail}
+                              />
+                              <ListItemSecondaryAction>
+                                <IconButton
+                                  aria-label='Delete'
+                                  onClick={() =>
+                                    console.log(
+                                      'aku adalah anak gembala lala lala lala'
+                                    )}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </ListItemSecondaryAction>
+                            </ListItem>
+                          </Link>
+                          <Divider />
+                        </div>
+                      )
+                    })}
                   </List>
                 </CardContent>
                 <CardActions>
@@ -213,7 +137,8 @@ const styles = {
 }
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover
+    fetchCover: state.detailCoverReducers.cover,
+    fetchDetail: state.objectReducers.object
   }
 }
 
