@@ -10,7 +10,7 @@ class Header extends Component {
         <AppBar position='static' style={styles.background}>
           <Toolbar>
             <Typography variant='title' color='inherit'>
-              <Link to='/home'>
+              <Link to='/'>
                 <img
                   src='../header-logo.png'
                   alt='logo'

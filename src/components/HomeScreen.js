@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
-import { Typography, Divider } from 'material-ui'
+import { Typography, Divider, IconButton } from 'material-ui'
 import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import SetTime from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-import TimeAgo from 'react-time-ago'
+import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
+import Subheader from 'material-ui/List/ListSubheader'
+import InfoIcon from 'material-ui-icons/Info'
 
 import Navigation from './Navigation'
 import Header from './Header'
-
-SetTime.locale(en)
 
 class HomeScreen extends Component {
   render () {
@@ -23,50 +21,29 @@ class HomeScreen extends Component {
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
         <div style={styles.content}>
-          <Grid container spacing={24}>
+          <GridList cellHeight={260} style={styles.gridList}>
             {fetchCover.map((cover, index) => {
               return (
-                <Grid item xs={6} sm={2} key={index}>
-                  <div style={styles.card}>
-                    <Link
-                      to={`/content/${cover.title}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Card>
-                        <Button
-                          variant='flat'
-                          style={{
-                            width: '100%',
-                            padding: 0
-                          }}
-                        >
-                          <img src={cover.imagePreviewUrl} width='100%' />
-                        </Button>
-                        <TimeAgo
-                          style={{
-                            color: 'gray',
-                            fontSize: '5',
-                            paddingLeft: '1em',
-                            paddingTop: '0.5em',
-                            paddingBottom: '0.5em'
-                          }}
-                        >
-                          {cover.createdAt}
-                        </TimeAgo>
-                        <Divider />
-                        <CardContent>
-                          <Typography component='p' style={{ fontSize: 15 }}>
-                            {cover.title}
-                          </Typography>
-                        </CardContent>
-
-                      </Card>
-                    </Link>
-                  </div>
-                </Grid>
+                <GridListTile key={index}>
+                  <Link
+                    to={`/content/${cover.title}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <img
+                      src={cover.imagePreviewUrl}
+                      width={'100%'}
+                      height={'100%'}
+                      alt={cover.title}
+                    />
+                    <GridListTileBar
+                      style={{ paddingLeft: 10 }}
+                      title={cover.title}
+                    />
+                  </Link>
+                </GridListTile>
               )
             })}
-          </Grid>
+          </GridList>
         </div>
         <Navigation style={styles.navigation} />
       </div>
@@ -76,19 +53,27 @@ class HomeScreen extends Component {
 
 const styles = {
   root: {
-    position: 'fixed',
-    overflowY: 'Auto',
-    overflowX: 'hidden',
-    height: '100vh',
-    top: 56,
-    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
     backgroundColor: '#eee'
   },
+  gridList: {
+    padding: '0 2em',
+    width: 400,
+    height: 510
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)'
+  },
   content: {
+    magin: '0 auto',
+    top: 56,
     paddingBottom: 120,
-    paddingTop: '1em',
-    paddingLeft: '0.42em',
-    paddingRight: '0.42em'
+    paddingTop: 63,
+    marginLeft: '2em',
+    marginRight: '2em',
+    width: 960
   },
   media: {
     height: 300

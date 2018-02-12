@@ -48,7 +48,7 @@ class ContentDetail extends Component {
               <Card>
                 <CardMedia
                   style={styles.media}
-                  image={filterCover[0].image}
+                  image={filterCover[0].imagePreviewUrl}
                   title={filterCover[0].title}
                 />
                 <CardContent>
@@ -91,6 +91,7 @@ class ContentDetail extends Component {
                     })}
                   </List>
                 </CardContent>
+                <Divider />
                 <CardActions>
                   <div style={styles.button}>
                     <Link to='/add-object' style={{ textDecoration: 'none' }}>

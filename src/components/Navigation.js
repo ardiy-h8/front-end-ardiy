@@ -9,7 +9,7 @@ import AddIcon from 'material-ui-icons/AddCircle'
 import { Redirect } from 'react-router-dom'
 
 class Navigation extends Component {
-  constructor(){
+  constructor () {
     super()
     this.state = {
       value: 0,
@@ -18,7 +18,8 @@ class Navigation extends Component {
       user: 0,
       add: 0
     }
-    this.handleChange = this.handleChange.bind(this)  }
+    this.handleChange = this.handleChange.bind(this)
+  }
 
   handleChange (event, value) {
     this.setState({ value })
@@ -35,7 +36,7 @@ class Navigation extends Component {
           />
           {this.state.home && <Redirect to='/' />}
           <BottomNavigationAction
-            label='User'
+            label='My Profile'
             icon={<AccountCircleIcon />}
             onClick={() => this.setState({ user: 1 })}
           />

@@ -6,8 +6,18 @@ const initialState = {
       createdAt: new Date()
     },
     {
-      title: 'Modern Architecture',
+      title: 'Modern Architecture Aosdfjlskdjf',
       imagePreviewUrl: 'https://marketplace.canva.com/MACSXEOzaeQ/1/0/thumbnail_large/canva-orange-and-dark-purple-triangular-modern-architecture-book-cover-MACSXEOzaeQ.jpg',
+      createdAt: new Date()
+    },
+    {
+      title: 'Modern Architecture',
+      imagePreviewUrl: 'https://i.pinimg.com/736x/2e/07/19/2e07195c27fbc430eba5e3d6fb021cf6--classic-literature-virgil.jpg',
+      createdAt: new Date()
+    },
+    {
+      title: 'Dota 2',
+      imagePreviewUrl: 'https://pbs.twimg.com/profile_images/492086361101328384/QXvZaEnp.png',
       createdAt: new Date()
     }
   ]
