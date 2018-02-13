@@ -4,15 +4,11 @@ import { Button } from 'material-ui'
 import KeyboardBackspace from 'material-ui-icons/KeyboardBackspace'
 import { connect } from 'react-redux'
 
-import canvas from '../utils/initializeRenderer'
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
 import MarkerSearch from './MarkerSearch'
 import ObjectTips from './ObjectTips'
 import { input_data_object as addObject } from '../redux/actions/detailCoverActions'
-
-var cancelAnimationFrame =
-  navigator.cancelAnimationFrame || navigator.mozCancelAnimationFrame
 
 class Sketch extends Component {
   constructor() {

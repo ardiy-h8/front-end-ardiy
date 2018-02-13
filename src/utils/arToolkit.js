@@ -1,5 +1,6 @@
 /* globals THREEx */
 import cameraData from '../assets/camera_para.dat'
+import hiro from '../assets/patt.hiro'
 
 const { ArMarkerControls, ArToolkitContext, ArToolkitSource } = THREEx
 
@@ -12,7 +13,7 @@ const { ArMarkerControls, ArToolkitContext, ArToolkitSource } = THREEx
  * @returns {Object} An ArToolkitContext instance
  */
 export function initializeArToolkit(renderer, camera, onRenderFcts) {
-  ArToolkitContext.baseURL = '../'
+  ArToolkitContext.baseURL = '../components'
 
   const arToolkitSource = new ArToolkitSource({ sourceType: 'webcam' })
 
