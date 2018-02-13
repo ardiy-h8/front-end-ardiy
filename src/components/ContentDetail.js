@@ -32,7 +32,7 @@ import Header from './Header'
 import { modifyCover } from '../redux/actions/detailCoverActions'
 
 class ContentDetail extends Component {
-  handleDelete(id) {
+  handleDelete (id) {
     this.props
       .mutate({
         variables: { id }
@@ -49,7 +49,7 @@ class ContentDetail extends Component {
       .catch(err => console.error(err))
   }
 
-  render() {
+  render () {
     const data = this.props.fetchCover
     let filterCover = data.filter(
       newData =>
@@ -72,6 +72,7 @@ class ContentDetail extends Component {
                   title={filterCover[0].title}
                 />
                 <CardContent>
+<<<<<<< 8521055007a49b1d9a2fcbc9c67e2fdef7c6b7da
                   <List component="nav">
                     {filterCover[0].length
                       ? filterCover[0].object3d.map((object, index) => {
@@ -88,11 +89,32 @@ class ContentDetail extends Component {
                               to={`/sketch/${object.id}`}
                               style={{ textDecoration: 'none' }}
                             >
+=======
+                  <List component='nav'>
+                    {filterCover[0].object3d.map((object, index) => {
+                      return (
+                        <div key={index}>
+                          <Link
+                            to={`/sketch/${object.id}`}
+                            style={{ textDecoration: 'none' }}
+                          >
+                            <ListItem
+                              button
+                              onClick={() => console.log('Lorem ipsum')}
+                            >
+                              <ListItemIcon>
+                                <Avatar
+                                  alt='Eric Hoffman'
+                                  src={object.img_marker}
+                                />
+                              </ListItemIcon>
+>>>>>>> fixing conflict
                               <ListItemText
                                 inset
                                 primary={object.title}
                                 secondary={object.description}
                               />
+<<<<<<< 8521055007a49b1d9a2fcbc9c67e2fdef7c6b7da
 
                             </Link>
                             <ListItemSecondaryAction>
@@ -109,21 +131,46 @@ class ContentDetail extends Component {
                           )
                         })
                       : 'No objects yet'}
+=======
+                            </ListItem>
+                          </Link>
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              aria-label='Delete'
+                              onClick={() => this.handleDelete(object.id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                          <Divider />
+                        </div>
+                      )
+                    })}
+>>>>>>> fixing conflict
                   </List>
                 </CardContent>
-                {filterCover[0].email === this.props.userProfile.email && (
-                  <CardActions>
-                    <div style={styles.button}>
-                      <Link
-                        to={`/add-object/${filterCover[0].id}`}
-                        style={{ textDecoration: 'none' }}>
-                        <Button variant="raised" color="primary">
-                          Add Marker
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardActions>
-                )}
+                <CardActions>
+                  <div style={styles.button}>
+                    <Link
+                      to={`/add-object/${filterCover[0].id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Button variant='raised' color='primary'>
+                        Add Marker
+                      </Button>
+                    </Link>
+                  </div>
+                  <div style={styles.button}>
+                    <Link
+                      to={`/add-object/${filterCover[0].id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Button variant='raised' color='primary'>
+                        Delete
+                      </Button>
+                    </Link>
+                  </div>
+                </CardActions>
               </Card>
             </Grid>
           </Grid>
