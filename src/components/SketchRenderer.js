@@ -58,8 +58,8 @@ export const sketchRendererFactory = ({
         objectReducers.dae,
         collada => {
           this.avatar = collada.scene
-          /*this.avatar.needsUpdate = true
-          this.avatar.position.x = coordX
+          this.avatar.needsUpdate = true
+          /*this.avatar.position.x = coordX
           this.avatar.position.z = coordZ
           this.avatar.scale.x = scaleX
           this.avatar.scale.y = scaleY

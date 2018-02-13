@@ -54,7 +54,6 @@ class Sketch extends Component {
           : ''
       })
     })
-    console.log('>>>>>>>>>>>>>>>>', 1)
   }
 
   handleTranslateChange({ x, z }) {
@@ -83,7 +82,6 @@ class Sketch extends Component {
       scale: { x: scaleX, y: scaleY, z: scaleZ },
       rotation
     } = this.state
-    console.log('>>>>>>>>>>>>>>>>', 2)
     return (
       <div>
         <SketchRenderer

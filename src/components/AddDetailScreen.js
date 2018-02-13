@@ -47,12 +47,13 @@ class AddDetailScreen extends Component {
         variables: { email, title, imagePreviewUrl }
       })
       .then(({ data: { createMagazine } }) => {
-        return this.props.addDetailCover({
+        this.props.addDetailCover({
           email: createMagazine.email,
           title: createMagazine.title,
           imagePreviewUrl: createMagazine.imagePreviewUrl,
           id: createMagazine.id
         })
+        this.props.history.push('/')
       })
       .catch(err => console.error(err))
   }

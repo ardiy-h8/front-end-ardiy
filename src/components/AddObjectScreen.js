@@ -214,7 +214,7 @@ class AddObjectScreen extends Component {
           object3d
         }
       })
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => this.props.history.push('/'))
       .catch(err => console.error('gagal', err))
   }
 
