@@ -28,7 +28,7 @@ export const fetchAllMagazines = () => async (dispatch, getState) => {
       query: `
       query {
         allMagazines {
-          id title imagePreviewUrl object3d {
+          id email title imagePreviewUrl object3d {
             id mid title description pages marker img_marker object3d
           }
         }
@@ -60,6 +60,11 @@ export const input_data_detail_cover = cover => {
 export const modifyCover = cover => ({
   type: 'MODIFY_COVER',
   payload: { cover }
+})
+
+export const changeNumber = page => ({
+  type: 'CHANGE_PAGE',
+  payload: { page }
 })
 
 export const input_data_object = object => {

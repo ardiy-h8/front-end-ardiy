@@ -27,8 +27,8 @@ class HomeScreen extends Component {
       this.props.getUser(objUserData)
     }
   }
-
-  handleDelete (id) {
+  
+  handleDelete(id) {
     this.props
       .mutate({
         variables: { id }

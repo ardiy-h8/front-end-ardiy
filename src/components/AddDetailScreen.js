@@ -8,7 +8,10 @@ import gql from 'graphql-tag'
 
 import Navigation from './Navigation'
 import Header from './Header'
-import { input_data_detail_cover as addCover } from '../redux/actions/detailCoverActions.js'
+import {
+  input_data_detail_cover as addCover,
+  changeNumber
+} from '../redux/actions/detailCoverActions.js'
 
 class AddDetailScreen extends Component {
   constructor() {
@@ -48,11 +51,12 @@ class AddDetailScreen extends Component {
       })
       .then(({ data: { createMagazine } }) => {
         this.props.addDetailCover({
-          email: createMagazine.email,
+          email: email,
           title: createMagazine.title,
           imagePreviewUrl: createMagazine.imagePreviewUrl,
           id: createMagazine.id
         })
+        this.props.changeNumber(0)
         this.props.history.push('/')
       })
       .catch(err => console.error(err))
@@ -144,7 +148,7 @@ class AddDetailScreen extends Component {
             </Grid>
           </Grid>
         </div>
-        <Navigation />
+        <Navigation history={this.props.history} />
       </div>
     )
   }
@@ -176,7 +180,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  addDetailCover: payload => dispatch(addCover(payload))
+  addDetailCover: payload => dispatch(addCover(payload)),
+  changeNumber: page => dispatch(changeNumber(page))
 })
 
 const query = gql`

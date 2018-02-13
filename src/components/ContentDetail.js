@@ -32,7 +32,7 @@ import Header from './Header'
 import { modifyCover } from '../redux/actions/detailCoverActions'
 
 class ContentDetail extends Component {
-  handleDelete (id) {
+  handleDelete(id) {
     this.props
       .mutate({
         variables: { id }
@@ -49,7 +49,7 @@ class ContentDetail extends Component {
       .catch(err => console.error(err))
   }
 
-  render () {
+  render() {
     const data = this.props.fetchCover
     let filterCover = data.filter(
       newData =>
@@ -72,10 +72,11 @@ class ContentDetail extends Component {
                   title={filterCover[0].title}
                 />
                 <CardContent>
-                  <List component='nav'>
-                    {filterCover[0].object3d.map((object, index) => {
-                      return (
-                        <div key={index}>
+                  <List component="nav">
+                    {filterCover[0].length
+                      ? filterCover[0].object3d.map((object, index) => {
+                          return (
+                            <div key={index}>
 
                           <ListItem>
 
@@ -105,26 +106,28 @@ class ContentDetail extends Component {
                           </ListItem>
                           <Divider />
                         </div>
-                      )
-                    })}
+                          )
+                        })
+                      : 'No objects yet'}
                   </List>
                 </CardContent>
-                <CardActions>
-                  <div style={styles.button}>
-                    <Link
-                      to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Button variant='raised' color='primary'>
-                        Add Marker
-                      </Button>
-                    </Link>
-                  </div>
-                </CardActions>
+                {filterCover[0].email === this.props.userProfile.email && (
+                  <CardActions>
+                    <div style={styles.button}>
+                      <Link
+                        to={`/add-object/${filterCover[0].id}`}
+                        style={{ textDecoration: 'none' }}>
+                        <Button variant="raised" color="primary">
+                          Add Marker
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardActions>
+                )}
               </Card>
             </Grid>
           </Grid>
-          <Navigation style={styles.navigation} />
+          <Navigation style={styles.navigation} history={this.props.history} />
         </div>
       </div>
     )
@@ -159,7 +162,8 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover
+    fetchCover: state.detailCoverReducers.cover,
+    userProfile: state.detailCoverReducers.user
   }
 }
 
