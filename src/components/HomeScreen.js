@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
+import Subheader from 'material-ui/List/ListSubheader'
+import InfoIcon from 'material-ui-icons/Info'
 
 import {
   fetchAllMagazines,
@@ -46,7 +49,30 @@ class HomeScreen extends Component {
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
         <div style={styles.content}>
-          <Grid container spacing={24}>
+          <GridList cellHeight={260} style={styles.gridList}>
+              {fetchCover.map((cover, index) => {
+                return (
+                  <GridListTile key={index}>
+                    <Link
+                      to={`/content/${cover.title}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <img
+                        src={cover.imagePreviewUrl}
+                        width={'100%'}
+                        height={'100%'}
+                        alt={cover.title}
+                      />
+                      <GridListTileBar
+                        style={{ paddingLeft: 10 }}
+                        title={cover.title}
+                      />
+                    </Link>
+                  </GridListTile>
+                )
+              })}
+            </GridList>
+          {/* <Grid container spacing={24}>
             {fetchCover.map((cover, index) => {
               return (
                 <Grid item xs={6} sm={2} key={index}>
@@ -78,7 +104,7 @@ class HomeScreen extends Component {
                 </Grid>
               )
             })}
-          </Grid>
+          </Grid> */}
         </div>
         <Navigation style={styles.navigation} />
       </div>
@@ -88,17 +114,19 @@ class HomeScreen extends Component {
 
 const styles = {
   root: {
-    position: 'fixed',
-    overflowY: 'Auto',
-    overflowX: 'hidden',
-    height: '100vh',
-    top: 56,
-    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
     backgroundColor: '#eee'
+  },
+  gridList: {
+    padding: '0 2em',
+    width: 400,
+    height: 510
   },
   content: {
     paddingBottom: 120,
-    paddingTop: '1em',
+    paddingTop: 63,
     paddingLeft: '0.42em',
     paddingRight: '0.42em'
   },
