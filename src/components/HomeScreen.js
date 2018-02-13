@@ -5,16 +5,21 @@ import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { fetchAllMagazines } from '../redux/actions/detailCoverActions'
+import { fetchAllMagazines, getUser } from '../redux/actions/detailCoverActions'
 import Navigation from './Navigation'
 import Header from './Header'
 
 class HomeScreen extends Component {
   componentWillMount() {
     this.props.fetchAllMagazines()
+    let objUserData = localStorage.userData
+    if (objUserData) {
+      objUserData = JSON.parse(objUserData)
+      this.props.getUser(objUserData)
+    }
   }
 
-  render () {
+  render() {
     const fetchCover = this.props.fetchCover
 
     return (
@@ -28,25 +33,22 @@ class HomeScreen extends Component {
                   <div style={styles.card}>
                     <Link
                       to={`/content/${cover.title}`}
-                      style={{ textDecoration: 'none' }}
-                    >
+                      style={{ textDecoration: 'none' }}>
                       <Card>
                         <Button
-                          variant='flat'
+                          variant="flat"
                           style={{
                             width: '100%',
                             padding: 0
-                          }}
-                        >
-                          <img src={cover.imagePreviewUrl} width='100%' />
+                          }}>
+                          <img src={cover.imagePreviewUrl} width="100%" />
                         </Button>
                         <Divider />
                         <CardContent>
-                          <Typography component='p' style={{ fontSize: 15 }}>
+                          <Typography component="p" style={{ fontSize: 15 }}>
                             {cover.title}
                           </Typography>
                         </CardContent>
-
                       </Card>
                     </Link>
                   </div>
@@ -90,7 +92,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchAllMagazines: () => dispatch(fetchAllMagazines())
+  fetchAllMagazines: () => dispatch(fetchAllMagazines()),
+  getUser: user => dispatch(getUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)

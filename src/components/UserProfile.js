@@ -14,7 +14,13 @@ import Navigation from './Navigation'
 import Header from './Header'
 
 class UserPofile extends Component {
-  render () {
+  componentWillMount() {
+    if (!localStorage.userData) {
+      return this.props.history.push('/login')
+    }
+  }
+
+  render() {
     const image =
       'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
     const image2 = ''
@@ -27,8 +33,8 @@ class UserPofile extends Component {
               <Card style={styles.profile}>
                 <CardContent style={styles.row}>
                   <Avatar
-                    alt='Remy Sharp'
-                    src='https://www.bigmouthvoices.com/profile_picture/large/default-profile_picture.jpg'
+                    alt="Remy Sharp"
+                    src="https://www.bigmouthvoices.com/profile_picture/large/default-profile_picture.jpg"
                     style={styles.avatar}
                   />
 
@@ -45,24 +51,21 @@ class UserPofile extends Component {
             <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
-                  to='/content/lorem ipsum'
-                  style={{ textDecoration: 'none' }}
-                >
+                  to="/content/lorem ipsum"
+                  style={{ textDecoration: 'none' }}>
                   <Card>
                     <Button
-                      variant='flat'
+                      variant="flat"
                       style={{
                         width: '100%',
                         padding: 0
-                      }}
-                    >
-                      <img src={image} width='100%' />
+                      }}>
+                      <img src={image} width="100%" />
                     </Button>
                     <CardContent>
-                      <Typography component='p' style={{ fontSize: 20 }}>
+                      <Typography component="p" style={{ fontSize: 20 }}>
                         Lorem impsum dolor sit ammet
                       </Typography>
-
                     </CardContent>
                   </Card>
                 </Link>
@@ -71,24 +74,21 @@ class UserPofile extends Component {
             <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
-                  to='/content/lorem ipsum'
-                  style={{ textDecoration: 'none' }}
-                >
+                  to="/content/lorem ipsum"
+                  style={{ textDecoration: 'none' }}>
                   <Card>
                     <Button
-                      variant='flat'
+                      variant="flat"
                       style={{
                         width: '100%',
                         padding: 0
-                      }}
-                    >
-                      <img src={image} width='100%' />
+                      }}>
+                      <img src={image} width="100%" />
                     </Button>
                     <CardContent>
-                      <Typography component='p' style={{ fontSize: 20 }}>
+                      <Typography component="p" style={{ fontSize: 20 }}>
                         Lorem impsum dolor sit ammet
                       </Typography>
-
                     </CardContent>
                   </Card>
                 </Link>
@@ -97,24 +97,21 @@ class UserPofile extends Component {
             <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
-                  to='/content/lorem ipsum'
-                  style={{ textDecoration: 'none' }}
-                >
+                  to="/content/lorem ipsum"
+                  style={{ textDecoration: 'none' }}>
                   <Card>
                     <Button
-                      variant='flat'
+                      variant="flat"
                       style={{
                         width: '100%',
                         padding: 0
-                      }}
-                    >
-                      <img src={image} width='100%' />
+                      }}>
+                      <img src={image} width="100%" />
                     </Button>
                     <CardContent>
-                      <Typography component='p' style={{ fontSize: 20 }}>
+                      <Typography component="p" style={{ fontSize: 20 }}>
                         Lorem impsum dolor sit ammet
                       </Typography>
-
                     </CardContent>
                   </Card>
                 </Link>
@@ -123,24 +120,21 @@ class UserPofile extends Component {
             <Grid item xs={6} sm={2}>
               <div style={styles.card}>
                 <Link
-                  to='/content/lorem ipsum'
-                  style={{ textDecoration: 'none' }}
-                >
+                  to="/content/lorem ipsum"
+                  style={{ textDecoration: 'none' }}>
                   <Card>
                     <Button
-                      variant='flat'
+                      variant="flat"
                       style={{
                         width: '100%',
                         padding: 0
-                      }}
-                    >
-                      <img src={image} width='100%' />
+                      }}>
+                      <img src={image} width="100%" />
                     </Button>
                     <CardContent>
-                      <Typography component='p' style={{ fontSize: 20 }}>
+                      <Typography component="p" style={{ fontSize: 20 }}>
                         Lorem impsum dolor sit ammet
                       </Typography>
-
                     </CardContent>
                   </Card>
                 </Link>
@@ -166,8 +160,10 @@ const styles = {
   },
   profile: {
     background: '#1488CC' /* fallback for old browsers */,
-    background: '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
-    background: 'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background:
+      '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
+    background:
+      'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   },
   content: {
     paddingBottom: 120,

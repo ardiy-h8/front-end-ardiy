@@ -8,9 +8,7 @@ import gql from 'graphql-tag'
 
 import Navigation from './Navigation'
 import Header from './Header'
-import {
-  input_data_detail_cover as addCover
-} from '../redux/actions/detailCoverActions.js'
+import { input_data_detail_cover as addCover } from '../redux/actions/detailCoverActions.js'
 
 class AddDetailScreen extends Component {
   constructor() {
@@ -22,7 +20,13 @@ class AddDetailScreen extends Component {
     this.handleImageChange = this.handleImageChange.bind(this)
   }
 
-  handleImageChange (e) {
+  componentWillMount() {
+    if (!localStorage.userData) {
+      return this.props.history.push('/login')
+    }
+  }
+
+  handleImageChange(e) {
     e.preventDefault()
 
     let reader = new FileReader()
@@ -34,65 +38,67 @@ class AddDetailScreen extends Component {
     reader.readAsDataURL(file)
   }
 
-  handleClickSubmit () {
+  handleClickSubmit() {
     const { title, imagePreviewUrl } = this.state
     const { email } = this.props.user
 
-    this.props.mutate({
-      variables: { email, title, imagePreviewUrl }
-    }).then(({ data: { createMagazine }}) => {
-      return this.props.addDetailCover({
-        email: createMagazine.email,
-        title: createMagazine.title,
-        imagePreviewUrl: createMagazine.imagePreviewUrl,
-        id: createMagazine.id
+    this.props
+      .mutate({
+        variables: { email, title, imagePreviewUrl }
       })
-    }).catch(err => console.error(err))
+      .then(({ data: { createMagazine } }) => {
+        this.props.addDetailCover({
+          email: createMagazine.email,
+          title: createMagazine.title,
+          imagePreviewUrl: createMagazine.imagePreviewUrl,
+          id: createMagazine.id
+        })
+        this.props.history.push('/')
+      })
+      .catch(err => console.error(err))
   }
 
-  render () {
+  render() {
     return (
       <div style={styles.root}>
-
         <Header location={this.props.location.pathname} />
         <div style={styles.content}>
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Card>
                 <CardContent>
-
                   <TextField
-                    id='title'
-                    label='Title'
-                    helperText='Magazine, brochure title'
+                    id="title"
+                    label="Title"
+                    helperText="Magazine, brochure title"
                     fullWidth
-                    margin='normal'
+                    margin="normal"
                     value={this.state.title}
                     onChange={event =>
-                      this.setState({ title: event.target.value })}
+                      this.setState({ title: event.target.value })
+                    }
                   />
                   <input
-                    accept='image/*'
-                    type='file'
-                    id='marker'
-                    name='marker'
+                    accept="image/*"
+                    type="file"
+                    id="marker"
+                    name="marker"
                     style={{ display: 'none' }}
                     onChange={this.handleImageChange}
                   />
-                  <label htmlFor='marker'>
+                  <label htmlFor="marker">
                     <Button
-                      variant='raised'
-                      component='span'
-                      syle={styles.button}
-                    >
+                      variant="raised"
+                      component="span"
+                      syle={styles.button}>
                       Click to Upload Cover
                     </Button>
                   </label>
                   <img
                     src={this.state.imagePreviewUrl}
-                    alt='uploaded'
-                    width='100%'
-                    height='50%'
+                    alt="uploaded"
+                    width="100%"
+                    height="50%"
                     style={{ paddingTop: '1em' }}
                   />
                   <div
@@ -100,12 +106,15 @@ class AddDetailScreen extends Component {
                       paddingTop: '1em',
                       display: 'flex',
                       justifyContent: 'center'
-                    }}
-                  >
+                    }}>
                     <div style={{ marginRight: 20 }}>
-                      <Button variant='raised' component='span' color='primary' onClick={() => this.handleClickSubmit()}>
+                      <Button
+                        variant="raised"
+                        component="span"
+                        color="primary"
+                        onClick={() => this.handleClickSubmit()}>
                         <i
-                          className='fa fa-check-square-o'
+                          className="fa fa-check-square-o"
                           style={{ marginRight: 10 }}
                         />
                         Save
@@ -113,16 +122,19 @@ class AddDetailScreen extends Component {
                     </div>
                     <div>
                       <Button
-                        variant='raised'
-                        component='span'
-                        color='secondary'
+                        variant="raised"
+                        component="span"
+                        color="secondary"
                         onClick={() =>
                           this.setState({
                             title: '',
                             imagePreviewUrl: './assets/preview.png'
-                          })}
-                      >
-                        <i className='fa fa-window-close-o' style={{ marginRight: 10 }}/>
+                          })
+                        }>
+                        <i
+                          className="fa fa-window-close-o"
+                          style={{ marginRight: 10 }}
+                        />
                         Clear
                       </Button>
                     </div>
@@ -168,10 +180,29 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const query = gql`
-  mutation createMagazine ($email: String!, $title: String!, $imagePreviewUrl: String!) {
-    createMagazine (email: $email, title: $title, imagePreviewUrl: $imagePreviewUrl) {
-      id email title imagePreviewUrl object3d {
-        id mid title description pages marker img_marker object3d
+  mutation createMagazine(
+    $email: String!
+    $title: String!
+    $imagePreviewUrl: String!
+  ) {
+    createMagazine(
+      email: $email
+      title: $title
+      imagePreviewUrl: $imagePreviewUrl
+    ) {
+      id
+      email
+      title
+      imagePreviewUrl
+      object3d {
+        id
+        mid
+        title
+        description
+        pages
+        marker
+        img_marker
+        object3d
       }
     }
   }

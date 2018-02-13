@@ -9,7 +9,7 @@ import AddIcon from 'material-ui-icons/AddCircle'
 import { Redirect } from 'react-router-dom'
 
 class Navigation extends Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {
       value: 0,
@@ -18,34 +18,35 @@ class Navigation extends Component {
       user: 0,
       add: 0
     }
-    this.handleChange = this.handleChange.bind(this)  }
+    this.handleChange = this.handleChange.bind(this)
+  }
 
-  handleChange (event, value) {
+  handleChange(event, value) {
     this.setState({ value })
   }
-  render () {
+  render() {
     const { value } = this.state
     return (
       <div style={styles.root}>
         <BottomNavigation value={value} onChange={this.handleChange} showLabels>
           <BottomNavigationAction
-            label='Home'
+            label="Home"
             icon={<HomeIcon />}
             onClick={() => this.setState({ home: 1 })}
           />
-          {this.state.home && <Redirect to='/' />}
+          {this.state.home && <Redirect to="/" />}
           <BottomNavigationAction
-            label='User'
+            label="User"
             icon={<AccountCircleIcon />}
             onClick={() => this.setState({ user: 1 })}
           />
-          {this.state.user && <Redirect to='/user-profile' />}
+          {this.state.user && <Redirect to="/user-profile" />}
           <BottomNavigationAction
-            label='Add'
+            label="Add"
             icon={<AddIcon />}
             onClick={() => this.setState({ add: 1 })}
           />
-          {this.state.add && <Redirect to='/add-detail' />}
+          {this.state.add && <Redirect to="/add-magazine" />}
         </BottomNavigation>
       </div>
     )
