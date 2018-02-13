@@ -223,7 +223,10 @@ class AddObjectScreen extends Component {
           object3d
         }
       })
-      .then(({ data }) => this.props.history.push('/'))
+      .then(({ data }) => {
+        this.handleDownload()
+        this.props.history.push('/')
+      })
       .catch(err => console.error('gagal', err))
   }
 
@@ -363,28 +366,6 @@ class AddObjectScreen extends Component {
                       </Button>
                     </div>
                   </div>
-                  {this.state.patternFileStr &&
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        paddingTop: '1.2em'
-                      }}
-                    >
-                      <Button
-                        variant='raised'
-                        component='span'
-                        color='default'
-                        disabled={this.state.disabled}
-                        onClick={this.handleDownload}
-                      >
-                        <i
-                          className='fa fa-cloud-download'
-                          style={{ marginRight: 10 }}
-                        />
-                        Download
-                      </Button>
-                    </div>}
                   <div style={styles.loading}>
                     {loading}
                   </div>
