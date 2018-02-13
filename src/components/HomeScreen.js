@@ -19,7 +19,7 @@ import Navigation from './Navigation'
 import Header from './Header'
 
 class HomeScreen extends Component {
-  componentWillMount() {
+  componentWillMount () {
     this.props.fetchAllMagazines()
     let objUserData = localStorage.userData
     if (objUserData) {
@@ -28,7 +28,7 @@ class HomeScreen extends Component {
     }
   }
 
-  handleDelete(id) {
+  handleDelete (id) {
     this.props
       .mutate({
         variables: { id }
@@ -42,7 +42,7 @@ class HomeScreen extends Component {
       .catch(err => console.error(err))
   }
 
-  render() {
+  render () {
     const fetchCover = this.props.fetchCover
 
     return (
@@ -50,28 +50,28 @@ class HomeScreen extends Component {
         <Header location={this.props.location.pathname} />
         <div style={styles.content}>
           <GridList cellHeight={260} style={styles.gridList}>
-              {fetchCover.map((cover, index) => {
-                return (
-                  <GridListTile key={index}>
-                    <Link
-                      to={`/content/${cover.title}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <img
-                        src={cover.imagePreviewUrl}
-                        width={'100%'}
-                        height={'100%'}
-                        alt={cover.title}
-                      />
-                      <GridListTileBar
-                        style={{ paddingLeft: 10 }}
-                        title={cover.title}
-                      />
-                    </Link>
-                  </GridListTile>
-                )
-              })}
-            </GridList>
+            {fetchCover.map((cover, index) => {
+              return (
+                <GridListTile key={index}>
+                  <Link
+                    to={`/content/${cover.title}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <img
+                      src={cover.imagePreviewUrl}
+                      width={'100%'}
+                      height={'100%'}
+                      alt={cover.title}
+                    />
+                    <GridListTileBar
+                      style={{ paddingLeft: 10 }}
+                      title={cover.title}
+                    />
+                  </Link>
+                </GridListTile>
+              )
+            })}
+          </GridList>
           {/* <Grid container spacing={24}>
             {fetchCover.map((cover, index) => {
               return (
