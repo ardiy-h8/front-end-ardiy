@@ -10,7 +10,11 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
 import Subheader from 'material-ui/List/ListSubheader'
 import InfoIcon from 'material-ui-icons/Info'
 
-import { fetchAllMagazines, getUser } from '../redux/actions/detailCoverActions'
+import {
+  fetchAllMagazines,
+  getUser,
+  modifyCover
+} from '../redux/actions/detailCoverActions'
 import Navigation from './Navigation'
 import Header from './Header'
 
@@ -25,10 +29,17 @@ class HomeScreen extends Component {
   }
 
   handleDelete(id) {
-    this.props.mutate({
-      variables: { id }
-    }).then(res => console.log(res))
-    .catch(err => console.error(err))
+    this.props
+      .mutate({
+        variables: { id }
+      })
+      .then(res => {
+        let newCover = this.props.fetchCover.filter(
+          newData => newData.id !== id
+        )
+        this.props.modifyCover(newCover)
+      })
+      .catch(err => console.error(err))
   }
 
   render() {
@@ -83,10 +94,12 @@ class HomeScreen extends Component {
                           <Typography component="p" style={{ fontSize: 15 }}>
                             {cover.title}
                           </Typography>
-                          <Button onClick={() => this.handleDelete(cover.id)}>Delete</Button>
                         </CardContent>
                       </Card>
                     </Link>
+                    <Button onClick={() => this.handleDelete(cover.id)}>
+                      Delete
+                    </Button>
                   </div>
                 </Grid>
               )
@@ -131,12 +144,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchAllMagazines: () => dispatch(fetchAllMagazines()),
-  getUser: user => dispatch(getUser(user))
+  getUser: user => dispatch(getUser(user)),
+  modifyCover: cover => dispatch(modifyCover(cover))
 })
 
 const query = gql`
-  mutation deleteMagazine ($id: String!) {
-    deleteMagazine (id: $id) {
+  mutation deleteMagazine($id: String!) {
+    deleteMagazine(id: $id) {
       id
     }
   }

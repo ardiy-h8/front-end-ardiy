@@ -24,23 +24,35 @@ import gql from 'graphql-tag'
 
 import Navigation from './Navigation'
 import Header from './Header'
+import { modifyCover } from '../redux/actions/detailCoverActions'
 
 class ContentDetail extends Component {
   handleDelete(id) {
-    this.props.mutate({
-      variables: { id }
-    }).then(res => console.log(res))
-    .catch(err => console.error(err))
+    this.props
+      .mutate({
+        variables: { id }
+      })
+      .then(res => {
+        let newCover = this.props.fetchCover.map(cover => {
+          return {
+            ...cover,
+            object3d: cover.object3d.filter(newData => newData.id !== id)
+          }
+        })
+        this.props.modifyCover(newCover)
+      })
+      .catch(err => console.error(err))
   }
 
-  render () {
+  render() {
     const data = this.props.fetchCover
-    let filterCover = data.filter(newData =>
-      newData.title.toLocaleLowerCase() ==
-      this.props.match.params.name.toLocaleLowerCase()
+    let filterCover = data.filter(
+      newData =>
+        newData.title.toLocaleLowerCase() ==
+        this.props.match.params.name.toLocaleLowerCase()
     )
-    let listObject = this.props.fetchDetail
-    const image = 'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
+    const image =
+      'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
 
     return (
       <div style={styles.root}>
@@ -55,32 +67,36 @@ class ContentDetail extends Component {
                   title={filterCover[0].title}
                 />
                 <CardContent>
-                  <List component='nav'>
+                  <List component="nav">
                     {filterCover[0].object3d.map((object, index) => {
                       return (
                         <div key={index}>
-                          <Link to={`/sketch/${object.id}`} style={{ textDecoration: 'none' }}>
+                          <Link
+                            to={`/sketch/${object.id}`}
+                            style={{ textDecoration: 'none' }}>
                             <ListItem
                               button
-                              onClick={() => console.log('Lorem ipsum')}
-                            >
+                              onClick={() => console.log('Lorem ipsum')}>
                               <ListItemIcon>
-                                <Avatar alt='Eric Hoffman' src={object.img_marker} />
+                                <Avatar
+                                  alt="Eric Hoffman"
+                                  src={object.img_marker}
+                                />
                               </ListItemIcon>
                               <ListItemText
                                 inset
                                 primary={object.title}
                                 secondary={object.description}
                               />
-
                             </ListItem>
-
                           </Link>
                           <ListItemSecondaryAction>
-                                <IconButton aria-label='Delete' onClick={() => this.handleDelete(object.id)}>
-                                  <DeleteIcon />
-                                </IconButton>
-                              </ListItemSecondaryAction>
+                            <IconButton
+                              aria-label="Delete"
+                              onClick={() => this.handleDelete(object.id)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
                           <Divider />
                         </div>
                       )
@@ -89,15 +105,19 @@ class ContentDetail extends Component {
                 </CardContent>
                 <CardActions>
                   <div style={styles.button}>
-                    <Link to={`/add-object/${filterCover[0].id}`} style={{ textDecoration: 'none' }}>
-                      <Button variant='raised' color='primary'>
+                    <Link
+                      to={`/add-object/${filterCover[0].id}`}
+                      style={{ textDecoration: 'none' }}>
+                      <Button variant="raised" color="primary">
                         Add Marker
                       </Button>
                     </Link>
                   </div>
                   <div style={styles.button}>
-                    <Link to={`/add-object/${filterCover[0].id}`} style={{ textDecoration: 'none' }}>
-                      <Button variant='raised' color='primary'>
+                    <Link
+                      to={`/add-object/${filterCover[0].id}`}
+                      style={{ textDecoration: 'none' }}>
+                      <Button variant="raised" color="primary">
                         Delete
                       </Button>
                     </Link>
@@ -138,16 +158,22 @@ const styles = {
     margin: '0 auto'
   }
 }
+
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover,
-    fetchDetail: state.objectReducers.object
+    fetchCover: state.detailCoverReducers.cover
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    modifyCover: cover => dispatch(modifyCover(cover))
   }
 }
 
 const query = gql`
-  mutation deleteObject3D ($id: String!) {
-    deleteObject3D (id: $id) {
+  mutation deleteObject3D($id: String!) {
+    deleteObject3D(id: $id) {
       id
     }
   }
@@ -155,4 +181,4 @@ const query = gql`
 
 const graphqlQuery = graphql(query)(ContentDetail)
 
-export default connect(mapStateToProps)(graphqlQuery)
+export default connect(mapStateToProps, mapDispatchToProps)(graphqlQuery)
