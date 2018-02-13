@@ -72,7 +72,6 @@ class ContentDetail extends Component {
                   title={filterCover[0].title}
                 />
                 <CardContent>
-<<<<<<< 8521055007a49b1d9a2fcbc9c67e2fdef7c6b7da
                   <List component="nav">
                     {filterCover[0].length
                       ? filterCover[0].object3d.map((object, index) => {
@@ -89,32 +88,11 @@ class ContentDetail extends Component {
                               to={`/sketch/${object.id}`}
                               style={{ textDecoration: 'none' }}
                             >
-=======
-                  <List component='nav'>
-                    {filterCover[0].object3d.map((object, index) => {
-                      return (
-                        <div key={index}>
-                          <Link
-                            to={`/sketch/${object.id}`}
-                            style={{ textDecoration: 'none' }}
-                          >
-                            <ListItem
-                              button
-                              onClick={() => console.log('Lorem ipsum')}
-                            >
-                              <ListItemIcon>
-                                <Avatar
-                                  alt='Eric Hoffman'
-                                  src={object.img_marker}
-                                />
-                              </ListItemIcon>
->>>>>>> fixing conflict
                               <ListItemText
                                 inset
                                 primary={object.title}
                                 secondary={object.description}
                               />
-<<<<<<< 8521055007a49b1d9a2fcbc9c67e2fdef7c6b7da
 
                             </Link>
                             <ListItemSecondaryAction>
@@ -131,22 +109,6 @@ class ContentDetail extends Component {
                           )
                         })
                       : 'No objects yet'}
-=======
-                            </ListItem>
-                          </Link>
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              aria-label='Delete'
-                              onClick={() => this.handleDelete(object.id)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                          <Divider />
-                        </div>
-                      )
-                    })}
->>>>>>> fixing conflict
                   </List>
                 </CardContent>
                 <CardActions>
