@@ -4,6 +4,8 @@ import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
 import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import { fetchAllMagazines, getUser } from '../redux/actions/detailCoverActions'
 import Navigation from './Navigation'
@@ -17,6 +19,13 @@ class HomeScreen extends Component {
       objUserData = JSON.parse(objUserData)
       this.props.getUser(objUserData)
     }
+  }
+
+  handleDelete(id) {
+    this.props.mutate({
+      variables: { id }
+    }).then(res => console.log(res))
+    .catch(err => console.error(err))
   }
 
   render() {
@@ -48,6 +57,7 @@ class HomeScreen extends Component {
                           <Typography component="p" style={{ fontSize: 15 }}>
                             {cover.title}
                           </Typography>
+                          <Button onClick={() => this.handleDelete(cover.id)}>Delete</Button>
                         </CardContent>
                       </Card>
                     </Link>
@@ -96,4 +106,14 @@ const mapDispatchToProps = dispatch => ({
   getUser: user => dispatch(getUser(user))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
+const query = gql`
+  mutation deleteMagazine ($id: String!) {
+    deleteMagazine (id: $id) {
+      id
+    }
+  }
+`
+
+const graphqlQuery = graphql(query)(HomeScreen)
+
+export default connect(mapStateToProps, mapDispatchToProps)(graphqlQuery)

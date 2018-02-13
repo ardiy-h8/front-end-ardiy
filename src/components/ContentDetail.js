@@ -19,11 +19,20 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import Navigation from './Navigation'
 import Header from './Header'
 
 class ContentDetail extends Component {
+  handleDelete(id) {
+    this.props.mutate({
+      variables: { id }
+    }).then(res => console.log(res))
+    .catch(err => console.error(err))
+  }
+
   render () {
     const data = this.props.fetchCover
     let filterCover = data.filter(newData =>
@@ -63,19 +72,15 @@ class ContentDetail extends Component {
                                 primary={object.title}
                                 secondary={object.description}
                               />
-                              <ListItemSecondaryAction>
-                                <IconButton
-                                  aria-label='Delete'
-                                  onClick={() =>
-                                    console.log(
-                                      'aku adalah anak gembala lala lala lala'
-                                    )}
-                                >
+
+                            </ListItem>
+
+                          </Link>
+                          <ListItemSecondaryAction>
+                                <IconButton aria-label='Delete' onClick={() => this.handleDelete(object.id)}>
                                   <DeleteIcon />
                                 </IconButton>
                               </ListItemSecondaryAction>
-                            </ListItem>
-                          </Link>
                           <Divider />
                         </div>
                       )
@@ -86,7 +91,14 @@ class ContentDetail extends Component {
                   <div style={styles.button}>
                     <Link to={`/add-object/${filterCover[0].id}`} style={{ textDecoration: 'none' }}>
                       <Button variant='raised' color='primary'>
-                        Add New Marker
+                        Add Marker
+                      </Button>
+                    </Link>
+                  </div>
+                  <div style={styles.button}>
+                    <Link to={`/add-object/${filterCover[0].id}`} style={{ textDecoration: 'none' }}>
+                      <Button variant='raised' color='primary'>
+                        Delete
                       </Button>
                     </Link>
                   </div>
@@ -133,4 +145,14 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(ContentDetail)
+const query = gql`
+  mutation deleteObject3D ($id: String!) {
+    deleteObject3D (id: $id) {
+      id
+    }
+  }
+`
+
+const graphqlQuery = graphql(query)(ContentDetail)
+
+export default connect(mapStateToProps)(graphqlQuery)
