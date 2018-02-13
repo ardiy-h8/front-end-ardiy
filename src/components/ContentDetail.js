@@ -15,7 +15,12 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from 'material-ui'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemAvatar
+} from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -27,7 +32,7 @@ import Header from './Header'
 import { modifyCover } from '../redux/actions/detailCoverActions'
 
 class ContentDetail extends Component {
-  handleDelete(id) {
+  handleDelete (id) {
     this.props
       .mutate({
         variables: { id }
@@ -44,7 +49,7 @@ class ContentDetail extends Component {
       .catch(err => console.error(err))
   }
 
-  render() {
+  render () {
     const data = this.props.fetchCover
     let filterCover = data.filter(
       newData =>
@@ -67,36 +72,37 @@ class ContentDetail extends Component {
                   title={filterCover[0].title}
                 />
                 <CardContent>
-                  <List component="nav">
+                  <List component='nav'>
                     {filterCover[0].object3d.map((object, index) => {
                       return (
                         <div key={index}>
-                          <Link
-                            to={`/sketch/${object.id}`}
-                            style={{ textDecoration: 'none' }}>
-                            <ListItem
-                              button
-                              onClick={() => console.log('Lorem ipsum')}>
-                              <ListItemIcon>
-                                <Avatar
-                                  alt="Eric Hoffman"
-                                  src={object.img_marker}
-                                />
-                              </ListItemIcon>
+
+                          <ListItem>
+
+                            <Avatar
+                              alt='Eric Hoffman'
+                              src={object.img_marker}
+                            />
+                            <Link
+                              to={`/sketch/${object.id}`}
+                              style={{ textDecoration: 'none' }}
+                            >
                               <ListItemText
                                 inset
                                 primary={object.title}
                                 secondary={object.description}
                               />
-                            </ListItem>
-                          </Link>
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              aria-label="Delete"
-                              onClick={() => this.handleDelete(object.id)}>
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
+
+                            </Link>
+                            <ListItemSecondaryAction>
+                              <IconButton
+                                aria-label='Delete'
+                                onClick={() => this.handleDelete(object.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          </ListItem>
                           <Divider />
                         </div>
                       )
@@ -107,18 +113,10 @@ class ContentDetail extends Component {
                   <div style={styles.button}>
                     <Link
                       to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}>
-                      <Button variant="raised" color="primary">
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Button variant='raised' color='primary'>
                         Add Marker
-                      </Button>
-                    </Link>
-                  </div>
-                  <div style={styles.button}>
-                    <Link
-                      to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}>
-                      <Button variant="raised" color="primary">
-                        Delete
                       </Button>
                     </Link>
                   </div>
