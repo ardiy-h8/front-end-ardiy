@@ -134,6 +134,18 @@ class UserPofile extends Component {
                       }
                     />
                   </Link>
+                  <GridListTileBar
+                    style={{ paddingLeft: 10 }}
+                    title={cover.title}
+                    actionIcon={
+                      <IconButton
+                        style={styles.icon}
+                        onClick={() => this.handleClickDelete()}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  />
                 </GridListTile>
               )
             })}
@@ -164,7 +176,8 @@ const styles = {
     height: 510
   },
   icon: {
-    color: 'white'
+    color: 'white',
+    marginRight: 10
   },
   profile: {
     background: '#1488CC' /* fallback for old browsers */,

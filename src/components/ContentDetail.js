@@ -15,7 +15,12 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from 'material-ui'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemAvatar
+} from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -72,34 +77,35 @@ class ContentDetail extends Component {
                       ? filterCover[0].object3d.map((object, index) => {
                           return (
                             <div key={index}>
-                              <Link
-                                to={`/sketch/${object.id}`}
-                                style={{ textDecoration: 'none' }}>
-                                <ListItem
-                                  button
-                                  onClick={() => console.log('Lorem ipsum')}>
-                                  <ListItemIcon>
-                                    <Avatar
-                                      alt="Eric Hoffman"
-                                      src={object.img_marker}
-                                    />
-                                  </ListItemIcon>
-                                  <ListItemText
-                                    inset
-                                    primary={object.title}
-                                    secondary={object.description}
-                                  />
-                                </ListItem>
-                              </Link>
-                              <ListItemSecondaryAction>
-                                <IconButton
-                                  aria-label="Delete"
-                                  onClick={() => this.handleDelete(object.id)}>
-                                  <DeleteIcon />
-                                </IconButton>
-                              </ListItemSecondaryAction>
-                              <Divider />
-                            </div>
+
+                          <ListItem>
+
+                            <Avatar
+                              alt='Eric Hoffman'
+                              src={object.img_marker}
+                            />
+                            <Link
+                              to={`/sketch/${object.id}`}
+                              style={{ textDecoration: 'none' }}
+                            >
+                              <ListItemText
+                                inset
+                                primary={object.title}
+                                secondary={object.description}
+                              />
+
+                            </Link>
+                            <ListItemSecondaryAction>
+                              <IconButton
+                                aria-label='Delete'
+                                onClick={() => this.handleDelete(object.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          </ListItem>
+                          <Divider />
+                        </div>
                           )
                         })
                       : 'No objects yet'}
