@@ -2,8 +2,9 @@
 import React, { Component } from 'react'
 import initializeRenderer from '../utils/initializeRenderer'
 import { initializeArToolkit, getMarker } from '../utils/arToolkit'
-import ColladaLoader from 'three-collada-loader-2'
 import { connect } from 'react-redux'
+import detectEdge from '../utils/detectEdge'
+import ColladaLoader from 'three-collada-loader-2'
 
 export const sketchRendererFactory = ({
   THREE,
@@ -15,16 +16,15 @@ export const sketchRendererFactory = ({
   const { Camera, Group, Scene } = THREE
 
   return class SketchRenderer extends Component {
-    componentWillMount() {
+    componentDidMount() {
+      console.log('Props', this.props.objectReducers)
       const {
         coordX,
         coordZ,
         scaleX,
         scaleY,
-        scaleZ,
         rotation,
-        onMarkerFound,
-        objectReducers
+        onMarkerFound
       } = this.props
 
       const renderer = (this.renderer = initializeRenderer(this.canvas))
@@ -41,46 +41,36 @@ export const sketchRendererFactory = ({
         camera,
         onRenderFcts
       )
-      console.log('pattern:\n', objectReducers.pattern)
       const marker = getMarker(
         arToolkitContext,
         markerRoot,
-        objectReducers.pattern
+        this.props.objectReducers.pattern
       )
 
       marker.addEventListener('markerFound', onMarkerFound)
 
-      // ColladaLoader
-      console.log('dae:\n', objectReducers.dae)
-      let loader = new ColladaLoader()
-      loader.options.convertUpAxis = true
-      loader.load(
-        objectReducers.dae,
-        collada => {
-          this.avatar = collada.scene
-          this.avatar.needsUpdate = true
-          /*this.avatar.position.x = coordX
-          this.avatar.position.z = coordZ
-          this.avatar.scale.x = scaleX
-          this.avatar.scale.y = scaleY
-          this.avatar.scale.z = scaleZ
-          this.avatar.rotation.z = rotation*/
-          console.log(this.avatar, 'avatar', '1')
-          scene.add(this.avatar)
-          markerRoot.add(this.avatar)
-        },
-        function(xhr) {
-          console.log(xhr.loaded / xhr.total * 100 + '% loaded')
-        },
+      console.log('Marker root>>>>>', markerRoot)
 
-        // onError callback
-        function(err) {
-          console.error('An error happened', err)
-        }
-      )
+      // ColladaLoader(THREE)
+      this.loader = new ColladaLoader()
+      this.loader.options.convertUpAxis = true
+      let that = this
+      this.loader.load(this.props.objectReducers.dae, function(collada) {
+        console.log('MASUUUUK!', collada)
+
+        that.avatar = collada.scene
+        that.avatar.rotation.x = -Math.PI / 2 // -90°
+        that.avatar.rotation.z = rotation
+        that.avatar.position.x = coordX
+        that.avatar.position.z = coordZ
+        that.avatar.scale.x = scaleX
+        that.avatar.scale.y = scaleY
+        that.avatar.needsUpdate = true
+        scene.add(that.avatar)
+        markerRoot.add(that.avatar)
+      })
       var ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
       scene.add(ambientLight)
-
       var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
       directionalLight.position.set(1, 1, -1)
       scene.add(directionalLight)
@@ -117,14 +107,11 @@ export const sketchRendererFactory = ({
     }
 
     componentDidUpdate() {
-      const { coordX, coordZ, scaleX, scaleY, scaleZ, rotation } = this.props
-      const { avatar } = this
-      console.log('avatar', avatar)
+      const { coordX, coordZ, scaleX, scaleY, rotation } = this.props
       this.avatar.position.x = coordX
       this.avatar.position.z = coordZ
       this.avatar.scale.x = scaleX
       this.avatar.scale.y = scaleY
-      this.avatar.scale.z = scaleZ
       this.avatar.rotation.z = rotation
       this.avatar.needsUpdate = true
     }
