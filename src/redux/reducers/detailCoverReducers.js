@@ -11,6 +11,8 @@ const detailCoverReducers = (state = initialState, { type, payload }) => {
       return { ...state, cover: payload.magazines }
     case 'ADD_DETAIL_COVER':
       return { ...state, cover: state.cover.concat(payload.cover) }
+    case 'MODIFY_COVER':
+      return { ...state, cover: payload.cover }
     default:
       return state
   }

@@ -16,7 +16,7 @@ const queryAllMagazines = `
 const payloadAllMagazines = {
   method: 'POST',
   headers: {
-    'Accept': 'application/graphql',
+    Accept: 'application/graphql',
     'Content-Type': 'application/graphql'
   },
   body: queryAllMagazines
@@ -24,7 +24,8 @@ const payloadAllMagazines = {
 
 export const fetchAllMagazines = () => async (dispatch, getState) => {
   try {
-    const response = await axios.post(url, { query: `
+    const response = await axios.post(url, {
+      query: `
       query {
         allMagazines {
           id title imagePreviewUrl object3d {
@@ -32,9 +33,10 @@ export const fetchAllMagazines = () => async (dispatch, getState) => {
           }
         }
       }
-    `})
+    `
+    })
 
-    const { data: { data: { allMagazines }}} = response
+    const { data: { data: { allMagazines } } } = response
     dispatch(getAllMagazines(allMagazines))
   } catch (err) {
     console.error(err)
@@ -54,6 +56,11 @@ export const input_data_detail_cover = cover => {
     })
   }
 }
+
+export const modifyCover = cover => ({
+  type: 'MODIFY_COVER',
+  payload: { cover }
+})
 
 export const input_data_object = object => {
   return (dispatch, getState) => {
