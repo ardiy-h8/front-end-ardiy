@@ -1,6 +1,5 @@
 /* globals THREEx */
 import cameraData from '../assets/camera_para.dat'
-import pattern from '../assets/patt.hiro'
 
 const { ArMarkerControls, ArToolkitContext, ArToolkitSource } = THREEx
 
@@ -12,7 +11,7 @@ const { ArMarkerControls, ArToolkitContext, ArToolkitSource } = THREEx
  * @param {Array} onRenderFcts an array of functions which will be executed every frames
  * @returns {Object} An ArToolkitContext instance
  */
-export function initializeArToolkit (renderer, camera, onRenderFcts) {
+export function initializeArToolkit(renderer, camera, onRenderFcts) {
   ArToolkitContext.baseURL = '../'
 
   const arToolkitSource = new ArToolkitSource({ sourceType: 'webcam' })
@@ -30,8 +29,8 @@ export function initializeArToolkit (renderer, camera, onRenderFcts) {
     cameraParametersUrl: cameraData,
     detectionMode: 'mono',
     maxDetectionRate: 30,
-    canvasWidth: window.innerWidth,
-    canvasHeight: window.innerHeight
+    canvasWidth: 800,
+    canvasHeight: 600
   })
 
   arToolkitContext.init(() => {
@@ -56,7 +55,7 @@ export function initializeArToolkit (renderer, camera, onRenderFcts) {
  * @returns {Object} An ArMarkerControls instance
  */
 
-export function getMarker (arToolkitContext, markerRoot, pattern) {
+export function getMarker(arToolkitContext, markerRoot, pattern) {
   return new ArMarkerControls(arToolkitContext, markerRoot, {
     type: 'pattern',
     patternUrl: pattern

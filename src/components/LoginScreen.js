@@ -10,7 +10,7 @@ const firebaseAuthKey = 'firebaseAuthInProgress'
 const appTokenKey = 'appToken'
 
 class LoginScreen extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       splashScreen: false
@@ -18,7 +18,7 @@ class LoginScreen extends Component {
     // this.handleGooleLogin = this.handleGooleLogin.bind(this)
   }
 
-  handleGoogleLogin () {
+  handleGoogleLogin() {
     loginWithGoogle().catch(err => {
       alert(err)
       localStorage.removeItem(firebaseAuth)
@@ -26,7 +26,7 @@ class LoginScreen extends Component {
     localStorage.setItem(firebaseAuthKey, '1')
   }
 
-  handleFacebookLogin () {
+  handleFacebookLogin() {
     loginWithFacebook().catch(err => {
       alert(err)
       localStorage.removeItem(firebaseAuth)
@@ -34,53 +34,54 @@ class LoginScreen extends Component {
     })
   }
 
-  componentWillMount () {
-    if (localStorage.getItem(appTokenKey)) {
+  componentWillMount() {
+    if (localStorage.getItem('userData')) {
       return this.props.history.push('/')
     }
 
-    firebaseAuth()
-      .onAuthStateChanged(user => {
-        if (user) {
-          localStorage.removeItem(firebaseAuthKey)
-          localStorage.setItem(appTokenKey, user.uid)
-          this.props.history.push('/')
-          this.props.getUser({
-            email: user.email,
-            avatar: user.photoURL
-          })
+    firebaseAuth().onAuthStateChanged(user => {
+      if (user) {
+        let objUserData = {
+          email: user.email,
+          avatar: user.photoURL
         }
-      })
+        localStorage.removeItem(firebaseAuthKey)
+        localStorage.setItem('userData', JSON.stringify(objUserData))
+        this.props.history.push('/')
+        this.props.getUser({
+          email: user.email,
+          avatar: user.photoURL
+        })
+      }
+    })
   }
 
-  render () {
+  render() {
     return (
       <div style={styles.root}>
         <Grid container spacing={24}>
           <Grid item xs={12}>
-            <div style={styles.bg}></div>
+            <div style={styles.bg} />
             <Paper style={styles.paper}>
               <div>
-                <img src="./assets/logo.png" alt='logo' style={styles.logo}/>
+                <img src="./assets/logo.png" alt="logo" style={styles.logo} />
               </div>
               <div>
                 <Button
                   style={styles.btnGoogle}
-                  variant='raised'
-                  onClick={() => this.handleGoogleLogin()}
-                >
-                  <i className='fab fa-google' style={{ marginRight: 30 }} />
+                  variant="raised"
+                  onClick={() => this.handleGoogleLogin()}>
+                  <i className="fab fa-google" style={{ marginRight: 30 }} />
                   Login With Google
                 </Button>
               </div>
               <div>
                 <Button
                   style={styles.btnFacebook}
-                  variant='raised'
-                  onClick={() => this.handleFacebookLogin()}
-                >
+                  variant="raised"
+                  onClick={() => this.handleFacebookLogin()}>
                   <i
-                    className='fab fa-facebook-f'
+                    className="fab fa-facebook-f"
                     style={{ marginRight: 30 }}
                   />
                   Login With Facebook
@@ -96,7 +97,7 @@ class LoginScreen extends Component {
 
 const styles = {
   root: {
-    display: 'flex',
+    display: 'flex'
   },
   paper: {
     display: 'flex',
@@ -112,7 +113,7 @@ const styles = {
     backgroundSize: 'cover',
     height: '100%',
     width: '100%',
-    filter: 'blur(5px)',
+    filter: 'blur(5px)'
   },
   btnGoogle: {
     marginTop: 20,

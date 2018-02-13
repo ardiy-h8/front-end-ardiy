@@ -9,16 +9,15 @@ import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
 import MarkerSearch from './MarkerSearch'
 import ObjectTips from './ObjectTips'
+import { input_data_object as addObject } from '../redux/actions/detailCoverActions'
 
 var cancelAnimationFrame =
   navigator.cancelAnimationFrame || navigator.mozCancelAnimationFrame
 
 class Sketch extends Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
-      pattern: '',
-      dae: '',
       showTips: true,
       markerFound: false,
       coord: {
@@ -33,7 +32,6 @@ class Sketch extends Component {
       }
     }
     this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this)
-    this.goBack = this.goBack.bind(this)
     this.handleTranslateChange = this.handleTranslateChange.bind(this)
     this.handleZoomChange = this.handleZoomChange.bind(this)
     this.handleRotationChange = this.handleRotationChange.bind(this)
@@ -41,58 +39,51 @@ class Sketch extends Component {
     this.handleMarkerFound = this.handleMarkerFound.bind(this)
   }
 
-  shouldComponentUpdate (nextProps, state) {
+  shouldComponentUpdate(nextProps, state) {
     return !isEqual(state, this.state)
   }
 
-  componentDidMount() {
-    // console.log('Masuk sini lala')
+  componentWillMount() {
     this.props.getMarker.map(marker => {
-      console.log(marker)
       marker.object3d.map(object3d => {
-        object3d.id == this.props.match.params.id ?
-
-        this.setState({
-          pattern: object3d.marker,
-          dae: object3d.object3d
-        }, ()=>console.log('sama')):console.log('tidak sama')
+        object3d.id == this.props.match.params.id
+          ? this.props.addDetailObject({
+              pattern: object3d.marker,
+              dae: object3d.object3d
+            })
+          : ''
       })
     })
+    console.log('>>>>>>>>>>>>>>>>', 1)
   }
 
-  goBack () {
-    window.location.reload()
-    this.props.history.push('/')
-  }
-
-  handleTranslateChange ({ x, z }) {
+  handleTranslateChange({ x, z }) {
     this.setState({ coord: { x, z } })
   }
 
-  handleZoomChange ({ x, y, z }) {
+  handleZoomChange({ x, y, z }) {
     this.setState({ scale: { x, y, z } })
   }
-  handleRotationChange (rotation) {
+  handleRotationChange(rotation) {
     this.setState({ rotation })
   }
 
-  handleHideTips () {
+  handleHideTips() {
     this.setState({ showTips: false })
   }
 
-  handleMarkerFound () {
+  handleMarkerFound() {
     this.setState({ markerFound: true })
   }
 
-  render () {
+  render() {
     const {
-      pattern,
-      dae,
       markerFound,
       coord: { x: coordX, z: coordZ },
       scale: { x: scaleX, y: scaleY, z: scaleZ },
       rotation
     } = this.state
+    console.log('>>>>>>>>>>>>>>>>', 2)
     return (
       <div>
         <SketchRenderer
@@ -103,11 +94,9 @@ class Sketch extends Component {
           scaleZ={scaleZ}
           rotation={rotation}
           onMarkerFound={this.handleMarkerFound}
-          pattern={"https://ardy-test.s3.ap-southeast-1.amazonaws.com/1518445682972.patt"}
-          dae={dae}
         />
         {!markerFound && <MarkerSearch style={styles.MarkerSearch} />}
-        {markerFound &&
+        {markerFound && (
           <MoveControl
             coordX={coordX}
             coordZ={coordZ}
@@ -115,20 +104,21 @@ class Sketch extends Component {
             scaleY={scaleY}
             scaleZ={scaleZ}
             rotation={rotation}
-            onTranslateChange={() => this.handleTranslateChange()}
-            onZoomChange={() => this.handleZoomChange()}
-            onRotationChange={() => this.handleRotationChange()}
-          />}
+            onTranslateChange={this.handleTranslateChange}
+            onZoomChange={this.handleZoomChange}
+            onRotationChange={this.handleRotationChange}
+          />
+        )}
         {markerFound &&
-          this.state.showTips &&
-          <ObjectTips onHide={() => this.handleHideTips()} />}
+          this.state.showTips && (
+            <ObjectTips onHide={() => this.handleHideTips()} />
+          )}
         <Button
-          variant='fab'
-          aria-label='back'
-          color='secondary'
+          variant="fab"
+          aria-label="back"
+          color="secondary"
           style={styles.back}
-          onClick={() => (window.location.href = '/')}
-        >
+          onClick={() => (window.location.href = '/')}>
           <KeyboardBackspace />
         </Button>
       </div>
@@ -160,4 +150,10 @@ const mapStateToProps = state => ({
   getMarker: state.detailCoverReducers.cover
 })
 
-export default connect(mapStateToProps)(Sketch)
+const mapDispatchToProps = dispatch => {
+  return {
+    addDetailObject: payload => dispatch(addObject(payload))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sketch)

@@ -5,9 +5,7 @@ import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import {
-  input_data_object as addObject
-} from '../redux/actions/detailCoverActions'
+import { input_data_object as addObject } from '../redux/actions/detailCoverActions'
 import Navigation from './Navigation'
 import Header from './Header'
 
@@ -17,7 +15,7 @@ THREEx.ArPatternFile = {}
 
 THREEx.ArPatternFile.encodeImageUrl = (imageURL, onComplete) => {
   var image = new Image()
-  image.onload = function () {
+  image.onload = function() {
     var patternFileString = THREEx.ArPatternFile.encodeImage(image)
     onComplete(patternFileString)
   }
@@ -25,7 +23,7 @@ THREEx.ArPatternFile.encodeImageUrl = (imageURL, onComplete) => {
   image.onload()
 }
 
-THREEx.ArPatternFile.encodeImage = function (image) {
+THREEx.ArPatternFile.encodeImage = function(image) {
   var canvas = document.createElement('canvas')
   var context = canvas.getContext('2d')
   canvas.width = 16
@@ -69,7 +67,7 @@ THREEx.ArPatternFile.encodeImage = function (image) {
   return patternFileString
 }
 
-THREEx.ArPatternFile.triggerDownload = (image) => {
+THREEx.ArPatternFile.triggerDownload = image => {
   var e = document.createElement('a')
   var href = image
   e.setAttribute('href', href)
@@ -79,7 +77,7 @@ THREEx.ArPatternFile.triggerDownload = (image) => {
   document.body.removeChild(e)
 }
 
-THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
+THREEx.ArPatternFile.buildFullMarker = function(innerImageURL, onComplete) {
   var whiteMargin = 0.1
   var blackMargin = 0.2
   var innerMargin = whiteMargin + blackMargin
@@ -109,7 +107,7 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
 
   var innerImage = new Image()
   innerImage.src = innerImageURL
-  innerImage.onload = async function (e) {
+  innerImage.onload = async function(e) {
     await context.drawImage(
       innerImage,
       innerMargin * canvas.width,
@@ -124,7 +122,7 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
 }
 
 class AddObjectScreen extends Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
       title: '',
@@ -141,12 +139,18 @@ class AddObjectScreen extends Component {
     this.encode = this.encode.bind(this)
   }
 
-  handleUploadMarker (e) {
+  componentWillMount() {
+    if (!localStorage.userData) {
+      return this.props.history.push('/login')
+    }
+  }
+
+  handleUploadMarker(e) {
     var reader = new FileReader()
 
     var self = this
-    reader.onloadend = function () {
-      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete (
+    reader.onloadend = function() {
+      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(
         patternResult
       ) {
         self.setState(
@@ -164,16 +168,16 @@ class AddObjectScreen extends Component {
   handleUploadObject(e) {
     var reader = new FileReader()
 
-      reader.onloadend = () => {
-        this.setState({object3d: reader.result})
-      }
-      reader.readAsDataURL(e.target.files[0])
+    reader.onloadend = () => {
+      this.setState({ object3d: reader.result })
+    }
+    reader.readAsDataURL(e.target.files[0])
   }
 
-  encode () {
+  encode() {
     let imageResult = this.state.imageResult
     var self = this
-    THREEx.ArPatternFile.encodeImageUrl(imageResult, function onComplete (
+    THREEx.ArPatternFile.encodeImageUrl(imageResult, function onComplete(
       patternFileString
     ) {
       self.setState({
@@ -182,34 +186,42 @@ class AddObjectScreen extends Component {
     })
   }
 
-  handleDownload () {
+  handleDownload() {
     let patternImage = this.state.patternImage
     THREEx.ArPatternFile.triggerDownload(patternImage)
   }
 
-  handleClickSubmit () {
-    const {title, description, patternFileStr, patternImage, object3d, pages} = this.state
+  handleClickSubmit() {
+    const {
+      title,
+      description,
+      patternFileStr,
+      patternImage,
+      object3d,
+      pages
+    } = this.state
     const mid = this.props.match.params.mid
 
-    this.props.mutate({
-      variables: {
-        mid,
-        title,
-        description,
-        pages,
-        marker: patternFileStr,
-        img_marker: patternImage,
-        object3d
-      }
-    }).then(({ data }) => console.log(data) )
-    .catch(err => console.error('gagal', err))
+    this.props
+      .mutate({
+        variables: {
+          mid,
+          title,
+          description,
+          pages,
+          marker: patternFileStr,
+          img_marker: patternImage,
+          object3d
+        }
+      })
+      .then(({ data }) => console.log(data))
+      .catch(err => console.error('gagal', err))
   }
 
-  render () {
+  render() {
     var el = document.querySelector('app')
     return (
       <div style={styles.root}>
-
         <Header location={this.props.location.pathname} />
         <div style={styles.content}>
           <Grid container spacing={24}>
@@ -217,34 +229,37 @@ class AddObjectScreen extends Component {
               <Card>
                 <CardContent>
                   <TextField
-                    id='title'
-                    label='Title'
-                    helperText='ex: Your Title'
+                    id="title"
+                    label="Title"
+                    helperText="ex: Your Title"
                     fullWidth
-                    margin='normal'
+                    margin="normal"
                     value={this.state.title}
                     onChange={event =>
-                      this.setState({ title: event.target.value })}
+                      this.setState({ title: event.target.value })
+                    }
                   />
                   <TextField
-                    id='detail'
-                    label='Detail'
-                    helperText='ex: Description Detail'
+                    id="detail"
+                    label="Detail"
+                    helperText="ex: Description Detail"
                     fullWidth
-                    margin='normal'
+                    margin="normal"
                     value={this.state.description}
                     onChange={event =>
-                      this.setState({ description: event.target.value })}
+                      this.setState({ description: event.target.value })
+                    }
                   />
                   <TextField
-                    id='pages'
-                    label='Page'
-                    helperText='ex: Page Number'
+                    id="pages"
+                    label="Page"
+                    helperText="ex: Page Number"
                     fullWidth
-                    margin='normal'
+                    margin="normal"
                     value={this.state.pages}
                     onChange={event =>
-                      this.setState({ pages: Number(event.target.value) })}
+                      this.setState({ pages: Number(event.target.value) })
+                    }
                   />
                   <div
                     style={{
@@ -252,42 +267,39 @@ class AddObjectScreen extends Component {
                       display: 'flex',
                       justifyContent: 'center',
                       flexDirection: 'column'
-                    }}
-                  >
+                    }}>
                     <div>
                       <input
-                        accept='image/*'
-                        type='file'
-                        id='marker'
-                        name='marker'
+                        accept="image/*"
+                        type="file"
+                        id="marker"
+                        name="marker"
                         style={{ display: 'none' }}
                         onChange={this.handleUploadMarker}
                       />
-                      <label htmlFor='marker'>
+                      <label htmlFor="marker">
                         <Button
-                          variant='raised'
-                          component='span'
-                          syle={styles.button}
-                        >
+                          variant="raised"
+                          component="span"
+                          syle={styles.button}>
                           Marker Upload
                         </Button>
                       </label>
                     </div>
                     <div>
                       <input
-                        type='file'
-                        id='object'
-                        placeholder='object'
+                        type="file"
+                        id="object"
+                        placeholder="object"
                         style={{ display: 'none' }}
                         onChange={this.handleUploadObject}
                       />
-                      <label htmlFor='object'>
+                      <label htmlFor="object">
                         <br />
                         <Button
-                          variant='raised'
-                          component='span'
-                          syle={styles.button}
-                        >
+                          variant="raised"
+                          component="span"
+                          syle={styles.button}>
                           Object Upload
                         </Button>
                       </label>
@@ -298,13 +310,15 @@ class AddObjectScreen extends Component {
                       paddingTop: '4em',
                       display: 'flex',
                       justifyContent: 'center'
-                    }}
-                  >
+                    }}>
                     <div style={{ marginRight: 20 }}>
-                      <Button variant='raised' component='span' color='primary'
-                      onClick={() => this.handleClickSubmit()}>
+                      <Button
+                        variant="raised"
+                        component="span"
+                        color="primary"
+                        onClick={() => this.handleClickSubmit()}>
                         <i
-                          className='fa fa-check-square-o'
+                          className="fa fa-check-square-o"
                           style={{ marginRight: 10 }}
                         />
                         Save
@@ -312,9 +326,9 @@ class AddObjectScreen extends Component {
                     </div>
                     <div>
                       <Button
-                        variant='raised'
-                        component='span'
-                        color='secondary'
+                        variant="raised"
+                        component="span"
+                        color="secondary"
                         onClick={() =>
                           this.setState({
                             title: '',
@@ -322,31 +336,36 @@ class AddObjectScreen extends Component {
                             imageResult: '',
                             patternFileStr: '',
                             patternImage: ''
-                          })}
-                      >
+                          })
+                        }>
                         <i
-                          className='fa fa-window-close-o'
+                          className="fa fa-window-close-o"
                           style={{ marginRight: 10 }}
                         />
-
                         Clear
                       </Button>
                     </div>
                   </div>
-                  {this.state.patternFileStr && (<div style={{display:'flex', justifyContent:'center', paddingTop: '1.2em'}}>
+                  {this.state.patternFileStr && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        paddingTop: '1.2em'
+                      }}>
                       <Button
-                        variant='raised'
-                        component='span'
-                        color='secondary'
-                        onClick={this.handleDownload}
-                      >
+                        variant="raised"
+                        component="span"
+                        color="secondary"
+                        onClick={this.handleDownload}>
                         <i
-                          className='fa fa-cloud-download'
+                          className="fa fa-cloud-download"
                           style={{ marginRight: 10 }}
                         />
                         Download
                       </Button>
-                    </div>)}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
@@ -386,25 +405,32 @@ const mapDispatchToProps = dispatch => {
 }
 
 const query = gql`
-  mutation createObject3D (
-    $mid: String!,
-    $title: String!,
-    $description: String!,
-    $pages: Int!,
-    $marker: String!,
-    $img_marker: String!,
+  mutation createObject3D(
+    $mid: String!
+    $title: String!
+    $description: String!
+    $pages: Int!
+    $marker: String!
+    $img_marker: String!
     $object3d: String!
   ) {
-    createObject3D (
-      mid: $mid,
-      title: $title,
-      description: $description,
-      pages: $pages,
-      marker: $marker,
-      img_marker: $img_marker,
+    createObject3D(
+      mid: $mid
+      title: $title
+      description: $description
+      pages: $pages
+      marker: $marker
+      img_marker: $img_marker
       object3d: $object3d
     ) {
-      id mid title description pages marker img_marker object3d
+      id
+      mid
+      title
+      description
+      pages
+      marker
+      img_marker
+      object3d
     }
   }
 `
