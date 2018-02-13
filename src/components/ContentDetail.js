@@ -98,6 +98,7 @@ class ContentDetail extends Component {
                             <ListItemSecondaryAction>
                               <IconButton
                                 aria-label='Delete'
+                                color='secondary'
                                 onClick={() => this.handleDelete(object.id)}
                               >
                                 <DeleteIcon />
@@ -119,16 +120,6 @@ class ContentDetail extends Component {
                     >
                       <Button variant='raised' color='primary'>
                         Add Marker
-                      </Button>
-                    </Link>
-                  </div>
-                  <div style={styles.button}>
-                    <Link
-                      to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Button variant='raised' color='primary'>
-                        Delete
                       </Button>
                     </Link>
                   </div>

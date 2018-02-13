@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+import { LinearProgress } from 'material-ui/Progress'
 
 import Navigation from './Navigation'
 import Header from './Header'
@@ -14,22 +15,24 @@ import {
 } from '../redux/actions/detailCoverActions.js'
 
 class AddDetailScreen extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {
       title: '',
-      imagePreviewUrl: './assets/preview.png'
+      imagePreviewUrl: './assets/preview.png',
+      loading: false,
+      disabled: false
     }
     this.handleImageChange = this.handleImageChange.bind(this)
   }
 
-  componentWillMount() {
+  componentWillMount () {
     if (!localStorage.userData) {
       return this.props.history.push('/login')
     }
   }
 
-  handleImageChange(e) {
+  handleImageChange (e) {
     e.preventDefault()
 
     let reader = new FileReader()
@@ -41,9 +44,14 @@ class AddDetailScreen extends Component {
     reader.readAsDataURL(file)
   }
 
-  handleClickSubmit() {
+  handleClickSubmit () {
+    this.setState({
+      loading: true,
+      disabled: true
+    })
     const { title, imagePreviewUrl } = this.state
     const { email } = this.props.user
+    console.log('mail', email)
 
     this.props
       .mutate({
@@ -62,7 +70,11 @@ class AddDetailScreen extends Component {
       .catch(err => console.error(err))
   }
 
-  render() {
+  render () {
+    let loading = ''
+    if (this.state.loading) {
+      loading = <LinearProgress />
+    }
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -72,37 +84,37 @@ class AddDetailScreen extends Component {
               <Card>
                 <CardContent>
                   <TextField
-                    id="title"
-                    label="Title"
-                    helperText="Magazine, brochure title"
+                    id='title'
+                    label='Title'
+                    helperText='Magazine, brochure title'
                     fullWidth
-                    margin="normal"
+                    margin='normal'
                     value={this.state.title}
                     onChange={event =>
-                      this.setState({ title: event.target.value })
-                    }
+                      this.setState({ title: event.target.value })}
                   />
                   <input
-                    accept="image/*"
-                    type="file"
-                    id="marker"
-                    name="marker"
+                    accept='image/*'
+                    type='file'
+                    id='marker'
+                    name='marker'
                     style={{ display: 'none' }}
                     onChange={this.handleImageChange}
                   />
-                  <label htmlFor="marker">
+                  <label htmlFor='marker'>
                     <Button
-                      variant="raised"
-                      component="span"
-                      syle={styles.button}>
+                      variant='raised'
+                      component='span'
+                      syle={styles.button}
+                    >
                       Click to Upload Cover
                     </Button>
                   </label>
                   <img
                     src={this.state.imagePreviewUrl}
-                    alt="uploaded"
-                    width="100%"
-                    height="50%"
+                    alt='uploaded'
+                    width='100%'
+                    height='50%'
                     style={{ paddingTop: '1em' }}
                   />
                   <div
@@ -110,15 +122,18 @@ class AddDetailScreen extends Component {
                       paddingTop: '1em',
                       display: 'flex',
                       justifyContent: 'center'
-                    }}>
+                    }}
+                  >
                     <div style={{ marginRight: 20 }}>
                       <Button
-                        variant="raised"
-                        component="span"
-                        color="primary"
-                        onClick={() => this.handleClickSubmit()}>
+                        variant='raised'
+                        component='span'
+                        color='primary'
+                        disabled={this.state.disabled}
+                        onClick={() => this.handleClickSubmit()}
+                      >
                         <i
-                          className="fa fa-check-square-o"
+                          className='fa fa-check-square-o'
                           style={{ marginRight: 10 }}
                         />
                         Save
@@ -126,22 +141,26 @@ class AddDetailScreen extends Component {
                     </div>
                     <div>
                       <Button
-                        variant="raised"
-                        component="span"
-                        color="secondary"
+                        variant='raised'
+                        component='span'
+                        color='secondary'
+                        disabled={this.state.disabled}
                         onClick={() =>
                           this.setState({
                             title: '',
                             imagePreviewUrl: './assets/preview.png'
-                          })
-                        }>
+                          })}
+                      >
                         <i
-                          className="fa fa-window-close-o"
+                          className='fa fa-window-close-o'
                           style={{ marginRight: 10 }}
                         />
                         Clear
                       </Button>
                     </div>
+                  </div>
+                  <div style={styles.loading}>
+                    {loading}
                   </div>
                 </CardContent>
               </Card>
@@ -172,6 +191,9 @@ const styles = {
   },
   button: {
     paddingRight: '20px'
+  },
+  loading: {
+    marginTop: 10
   }
 }
 
