@@ -67,8 +67,8 @@ const App = () => (
   <Provider store={store}>
     <Router>
       <div style={styles.container}>
-        <Route exact path='/login' getComponent={LoginScreen} />
         <Route exact path='/' component={HomeScreen} />
+        <Route exact path='/login' getComponent={LoginScreen} />
         <Route exact path='/sketch' component={Sketch} />
         <Route exact path='/user-profile' component={UserProfile} />
         <Route exact path='/add-object' component={AddObjectScreen} />

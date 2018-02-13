@@ -3,18 +3,17 @@ import isEqual from 'lodash.isequal'
 import { Button } from 'material-ui'
 import KeyboardBackspace from 'material-ui-icons/KeyboardBackspace'
 
-import canvas from '../utils/initializeRenderer'
+import canvas  from '../utils/initializeRenderer'
 import SketchRenderer from './SketchRenderer'
 import MoveControl from './MoveControl'
 import MarkerSearch from './MarkerSearch'
 import ObjectTips from './ObjectTips'
-import hiro from '../assets/patt.dota'
+import hiro from  '../assets/patt.dota'
 
-var cancelAnimationFrame =
-  navigator.cancelAnimationFrame || navigator.mozCancelAnimationFrame
+var cancelAnimationFrame = navigator.cancelAnimationFrame || navigator.mozCancelAnimationFrame;
 
 class Sketch extends Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
       showTips: true,
@@ -30,29 +29,30 @@ class Sketch extends Component {
         z: 1
       }
     }
+    this.handleTranslateChange = this.handleTranslateChange.bind(this)
+    this.handleZoomChange = this.handleZoomChange.bind(this)
+    this.handleHideTips = this.handleHideTips.bind(this)
+    this.handleRotationChange = this.handleRotationChange.bind(this)
   }
+  
   shouldComponentUpdate (nextProps, state) {
     return !isEqual(state, this.state)
   }
 
-  goBack () {
-    window.location.reload()
-    this.props.history.push('/home')
-  }
-
+  
   handleTranslateChange ({ x, z }) {
     this.setState({ coord: { x, z } })
   }
 
-  handleZoomChange ({ x, y, z }) {
+  handleZoomChange  ({ x, y, z }) {
     this.setState({ scale: { x, y, z } })
   }
-  handleRotationChange (rotation) {
+  handleRotationChange (rotation){
     this.setState({ rotation })
   }
 
-  handleHideTips () {
-    this.setState({ showTips: false })
+  handleHideTips() {
+    this.setState({ showTips: false });
   }
 
   handleMarkerFound () {
@@ -78,7 +78,7 @@ class Sketch extends Component {
           onMarkerFound={this.handleMarkerFound}
           pattern={hiro}
         />
-        {!markerFound && <MarkerSearch style={styles.MarkerSearch} />}
+        {!markerFound && <MarkerSearch style={styles.MarkerSearch}/>}
         {markerFound &&
           <MoveControl
             coordX={coordX}
@@ -88,12 +88,10 @@ class Sketch extends Component {
             scaleZ={scaleZ}
             rotation={rotation}
             onTranslateChange={() => this.handleTranslateChange()}
-            onZoomChange={() => this.handleZoomChange()}
+            onZoomChange={() => this.handleZoomChange ()}
             onRotationChange={() => this.handleRotationChange()}
           />}
-        {markerFound &&
-          this.state.showTips &&
-          <ObjectTips onHide={() => this.handleHideTips()} />}
+        {markerFound && this.state.showTips && <ObjectTips onHide={() => this.handleHideTips()} />}
         <Button
           variant='fab'
           aria-label='back'
@@ -119,13 +117,13 @@ const styles = {
     top: '1em'
   },
   MarkerSearch: {
-    position: 'absolute',
-    bottom: '5rem',
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-    padding: 'auto auto'
-  }
+        position: 'absolute',
+        bottom: '5rem',
+        left: 0,
+        right: 0,
+        textAlign: 'center',
+        padding: 'auto auto',
+    }
 }
 
 export default Sketch
