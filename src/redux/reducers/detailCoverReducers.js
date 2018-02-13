@@ -1,6 +1,7 @@
 const initialState = {
   user: {},
-  cover: []
+  cover: [],
+  page: 0
 }
 
 const detailCoverReducers = (state = initialState, { type, payload }) => {
@@ -13,6 +14,8 @@ const detailCoverReducers = (state = initialState, { type, payload }) => {
       return { ...state, cover: state.cover.concat(payload.cover) }
     case 'MODIFY_COVER':
       return { ...state, cover: payload.cover }
+    case 'CHANGE_PAGE':
+      return { ...state, page: payload.page }
     default:
       return state
   }

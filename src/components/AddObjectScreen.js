@@ -371,7 +371,7 @@ class AddObjectScreen extends Component {
             </Grid>
           </Grid>
         </div>
-        <Navigation />
+        <Navigation history={this.props.history} />
       </div>
     )
   }
