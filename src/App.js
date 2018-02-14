@@ -8,11 +8,11 @@ import { InMemoryCache } from 'apollo-client-preset'
 
 import store from './redux'
 import HomeScreen from './components/HomeScreen'
-import Sketch from './components/Sketch'
+// import Sketch from './components/Sketch'
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'http://localhost:3001/graphql'
+    uri: 'https://ardy.dhnlr.com/graphql'
   }),
   cache: new InMemoryCache()
 })
@@ -28,12 +28,12 @@ const styles = {
   }
 }
 
-function asyncComponent (getComponent) {
+function asyncComponent(getComponent) {
   return class AsyncComponent extends React.Component {
     static Component = null
     state = { Component: AsyncComponent.Component }
 
-    componentWillMount () {
+    componentWillMount() {
       if (!this.state.Component) {
         getComponent().then(Component => {
           AsyncComponent.Component = Component
@@ -41,7 +41,7 @@ function asyncComponent (getComponent) {
         })
       }
     }
-    render () {
+    render() {
       const { Component } = this.state
       if (Component) {
         return <Component {...this.props} />
@@ -55,9 +55,9 @@ const LoginScreen = asyncComponent(() =>
   import('./components/LoginScreen').then(module => module.default)
 )
 
-/* const Sketch = asyncComponent(() =>
+const Sketch = asyncComponent(() =>
   import('./components/Sketch').then(module => module.default)
-) */
+)
 
 const UserProfile = asyncComponent(() =>
   import('./components/UserProfile').then(module => module.default)
@@ -80,13 +80,13 @@ const App = () => (
     <ApolloProvider client={client}>
       <Router>
         <div style={styles.container}>
-          <Route exact path='/login' component={LoginScreen} />
-          <Route exact path='/' component={HomeScreen} />
-          <Route exact path='/sketch/:id' component={Sketch} />
-          <Route exact path='/user-profile' component={UserProfile} />
-          <Route exact path='/add-object/:mid' component={AddObjectScreen} />
-          <Route exact path='/add-magazine' component={AddDetailScreen} />
-          <Route exact path='/content/:name' component={ContentDetail} />
+          <Route exact path="/login" component={LoginScreen} />
+          <Route exact path="/" component={HomeScreen} />
+          <Route exact path="/sketch/:id" component={Sketch} />
+          <Route exact path="/user-profile" component={UserProfile} />
+          <Route exact path="/add-object/:mid" component={AddObjectScreen} />
+          <Route exact path="/add-magazine" component={AddDetailScreen} />
+          <Route exact path="/content/:name" component={ContentDetail} />
         </div>
       </Router>
     </ApolloProvider>

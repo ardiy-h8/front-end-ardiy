@@ -14,16 +14,18 @@ import Navigation from './Navigation'
 import Header from './Header'
 
 class HomeScreen extends Component {
-  componentWillMount () {
+  componentWillMount() {
     this.props.fetchAllMagazines()
     let objUserData = localStorage.userData
     if (objUserData) {
       objUserData = JSON.parse(objUserData)
       this.props.getUser(objUserData)
+    } else {
+      this.props.getUser({ email: '' })
     }
   }
 
-  handleDelete (id) {
+  handleDelete(id) {
     this.props
       .mutate({
         variables: { id }
@@ -37,7 +39,7 @@ class HomeScreen extends Component {
       .catch(err => console.error(err))
   }
 
-  render () {
+  render() {
     const fetchCover = this.props.fetchCover
 
     return (
@@ -50,8 +52,7 @@ class HomeScreen extends Component {
                 <GridListTile key={index}>
                   <Link
                     to={`/content/${cover.title}`}
-                    style={{ textDecoration: 'none' }}
-                  >
+                    style={{ textDecoration: 'none' }}>
                     <img
                       src={cover.imagePreviewUrl}
                       width={'100%'}

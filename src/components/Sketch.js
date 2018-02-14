@@ -22,9 +22,9 @@ class Sketch extends Component {
       },
       rotation: 0,
       scale: {
-        x: 1,
-        y: 1,
-        z: 1
+        x: 0.5,
+        y: 0.5,
+        z: 0.5
       }
     }
     this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this)

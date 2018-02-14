@@ -38,8 +38,9 @@
       "type": "image/png"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#1488CC",
   "background_color": "#ffffff"
 }

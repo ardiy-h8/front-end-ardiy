@@ -5,7 +5,7 @@ export const getUser = user => ({
   payload: { user }
 })
 
-const url = 'http://localhost:3001/graphql'
+const url = 'https://ardy.dhnlr.com/graphql'
 const queryAllMagazines = `
   query {
     allMagazines {

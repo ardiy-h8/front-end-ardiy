@@ -25,9 +25,9 @@ export const moveControlFactory = Hammer =>
         start: 0
       },
       scale: {
-        startX: 1,
-        startY: 1,
-        startZ: 1
+        startX: 0.5,
+        startY: 0.5,
+        startZ: 0.5
       }
     }
 
