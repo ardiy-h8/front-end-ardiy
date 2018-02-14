@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import { Button, Grid, Paper } from 'material-ui'
 import { connect } from 'react-redux'
 
-import { getUser } from '../redux/actions/detailCoverActions'
+import { getUser, changeNumber } from '../redux/actions/detailCoverActions'
 import { loginWithGoogle, loginWithFacebook } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
 
 const firebaseAuthKey = 'firebaseAuthInProgress'
-const appTokenKey = 'appToken'
 
 class LoginScreen extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       splashScreen: false
@@ -18,7 +17,7 @@ class LoginScreen extends Component {
     // this.handleGooleLogin = this.handleGooleLogin.bind(this)
   }
 
-  handleGoogleLogin() {
+  handleGoogleLogin () {
     loginWithGoogle().catch(err => {
       alert(err)
       localStorage.removeItem(firebaseAuth)
@@ -26,7 +25,7 @@ class LoginScreen extends Component {
     localStorage.setItem(firebaseAuthKey, '1')
   }
 
-  handleFacebookLogin() {
+  handleFacebookLogin () {
     loginWithFacebook().catch(err => {
       alert(err)
       localStorage.removeItem(firebaseAuth)
@@ -34,8 +33,10 @@ class LoginScreen extends Component {
     })
   }
 
-  componentWillMount() {
+  componentWillMount () {
     if (localStorage.getItem('userData')) {
+      this.props.getUser({})
+      this.props.changeNumber(0)
       return this.props.history.push('/')
     }
 
@@ -47,6 +48,7 @@ class LoginScreen extends Component {
         }
         localStorage.removeItem(firebaseAuthKey)
         localStorage.setItem('userData', JSON.stringify(objUserData))
+        this.props.changeNumber(0)
         this.props.history.push('/')
         this.props.getUser({
           email: user.email,
@@ -56,7 +58,7 @@ class LoginScreen extends Component {
     })
   }
 
-  render() {
+  render () {
     return (
       <div style={styles.root}>
         <Grid container spacing={24}>
@@ -64,26 +66,25 @@ class LoginScreen extends Component {
             <div style={styles.bg} />
             <Paper style={styles.paper}>
               <div>
-                <img src="./assets/logo.png" alt="logo" style={styles.logo} />
+                <img src='./assets/logo.png' alt='logo' style={styles.logo} />
               </div>
               <div>
                 <Button
                   style={styles.btnGoogle}
-                  variant="raised"
-                  onClick={() => this.handleGoogleLogin()}>
-                  <i className="fab fa-google" style={{ marginRight: 30 }} />
+                  variant='raised'
+                  onClick={() => this.handleGoogleLogin()}
+                >
+                  <i className='fa fa-google' style={{ marginRight: 30 }} />
                   Login With Google
                 </Button>
               </div>
               <div>
                 <Button
                   style={styles.btnFacebook}
-                  variant="raised"
-                  onClick={() => this.handleFacebookLogin()}>
-                  <i
-                    className="fab fa-facebook-f"
-                    style={{ marginRight: 30 }}
-                  />
+                  variant='raised'
+                  onClick={() => this.handleFacebookLogin()}
+                >
+                  <i className='fa fa-facebook-f' style={{ marginRight: 30 }} />
                   Login With Facebook
                 </Button>
               </div>
@@ -135,7 +136,8 @@ const styles = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getUser: user => dispatch(getUser(user))
+  getUser: user => dispatch(getUser(user)),
+  changeNumber: page => dispatch(changeNumber(page))
 })
 
 export default connect(null, mapDispatchToProps)(LoginScreen)

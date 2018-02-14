@@ -63,7 +63,6 @@ THREEx.ArPatternFile.encodeImage = function (image) {
 }
 
 THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
-
   var domElement = window.document.createElement('a')
   domElement.href = window.URL.createObjectURL(
     new Blob([patternFileString], { type: 'text/plain' })
@@ -72,7 +71,6 @@ THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
   document.body.appendChild(domElement)
   domElement.click()
   document.body.removeChild(domElement)
-  console.log('donlot')
   var e = document.createElement('a')
   var href = newUrl
   e.setAttribute('href', href)
@@ -127,55 +125,59 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
 }
 
 class UserScreen extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {
-      imageResult: '', //Image base64 without border for patt file
-      patternFileStr: '', //Pattern string for patt file
-      patternImage: '' //Image with border to download
+      imageResult: '', // Image base64 without border for patt file
+      patternFileStr: '', // Pattern string for patt file
+      patternImage: '' // Image with border to download
     }
     this.handleUpload = this.handleUpload.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
     this.encode = this.encode.bind(this)
   }
 
-  handleUpload(e) {
+  handleUpload (e) {
     var reader = new FileReader()
 
     var self = this
     reader.onloadend = function () {
-      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(patternResult) {
-        self.setState({
-          imageResult: reader.result,
-          patternImage: patternResult
-        }, self.encode)
+      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete (
+        patternResult
+      ) {
+        self.setState(
+          {
+            imageResult: reader.result,
+            patternImage: patternResult
+          },
+          self.encode
+        )
       })
     }
     reader.readAsDataURL(e.target.files[0])
   }
   encode () {
-
     let imageResult = this.state.imageResult
     var self = this
-    THREEx.ArPatternFile.encodeImageUrl(imageResult, function onComplete(patternFileString) {
+    THREEx.ArPatternFile.encodeImageUrl(imageResult, function onComplete (
+      patternFileString
+    ) {
       self.setState({
         patternFileStr: patternFileString
       })
     })
   }
 
-  componentWillMount() {
+  componentWillMount () {}
 
-  }
-
-  handleDownload() {
+  handleDownload () {
     let patternImage = this.state.patternImage
     let patternFileStr = this.state.patternFileStr
     THREEx.ArPatternFile.triggerDownload(patternFileStr, patternImage)
   }
 
   render () {
-    var el = document.querySelector("app");
+    var el = document.querySelector('app')
     console.log(el)
     return (
       <div>
@@ -204,10 +206,7 @@ class UserScreen extends Component {
             onChange={this.handleUpload}
           />
           <label htmlFor='marker'>
-            <Button
-            variant='raised'
-            component='span'
-            syle={styles.button}>
+            <Button variant='raised' component='span' syle={styles.button}>
               Marker Upload
             </Button>
           </label>
@@ -233,9 +232,16 @@ class UserScreen extends Component {
             >
               Save
             </Button>
-            {(this.state.patternImage && this.state.patternFileStr) && <Button variant='raised'
-            component='span'
-            color='secondary' onClick={this.handleDownload}>download</Button>}
+            {this.state.patternImage &&
+              this.state.patternFileStr &&
+              <Button
+                variant='raised'
+                component='span'
+                color='secondary'
+                onClick={this.handleDownload}
+              >
+                download
+              </Button>}
           </div>
         </div>
         <Navigation />

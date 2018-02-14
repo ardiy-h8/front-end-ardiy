@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
-import { Typography, Divider } from 'material-ui'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
-import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
-import Subheader from 'material-ui/List/ListSubheader'
-import InfoIcon from 'material-ui-icons/Info'
 
 import {
   fetchAllMagazines,
@@ -72,39 +67,6 @@ class HomeScreen extends Component {
               )
             })}
           </GridList>
-          {/* <Grid container spacing={24}>
-            {fetchCover.map((cover, index) => {
-              return (
-                <Grid item xs={6} sm={2} key={index}>
-                  <div style={styles.card}>
-                    <Link
-                      to={`/content/${cover.title}`}
-                      style={{ textDecoration: 'none' }}>
-                      <Card>
-                        <Button
-                          variant="flat"
-                          style={{
-                            width: '100%',
-                            padding: 0
-                          }}>
-                          <img src={cover.imagePreviewUrl} width="100%" />
-                        </Button>
-                        <Divider />
-                        <CardContent>
-                          <Typography component="p" style={{ fontSize: 15 }}>
-                            {cover.title}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                    <Button onClick={() => this.handleDelete(cover.id)}>
-                      Delete
-                    </Button>
-                  </div>
-                </Grid>
-              )
-            })}
-          </Grid> */}
         </div>
         <Navigation style={styles.navigation} />
       </div>

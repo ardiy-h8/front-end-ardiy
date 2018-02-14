@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Card, {
-  CardHeader,
   CardMedia,
   CardContent,
   CardActions
@@ -8,8 +7,6 @@ import Card, {
 import {
   Button,
   Grid,
-  Paper,
-  ButtonBase,
   Avatar,
   Divider,
   ListItemSecondaryAction,
@@ -17,9 +14,7 @@ import {
 } from 'material-ui'
 import List, {
   ListItem,
-  ListItemIcon,
   ListItemText,
-  ListItemAvatar
 } from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { Link } from 'react-router-dom'
@@ -53,12 +48,9 @@ class ContentDetail extends Component {
     const data = this.props.fetchCover
     let filterCover = data.filter(
       newData =>
-        newData.title.toLocaleLowerCase() ==
+        newData.title.toLocaleLowerCase() ===
         this.props.match.params.name.toLocaleLowerCase()
     )
-    const image =
-      'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
-
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -73,58 +65,67 @@ class ContentDetail extends Component {
                 />
                 <CardContent>
                   <List component='nav'>
-                    {filterCover[0].object3d.map((object, index) => {
-                      return (
-                        <div key={index}>
+                    {filterCover[0].object3d.length
+                      ? filterCover[0].object3d.map((object, index) => {
+                        return (
+                          <div key={index}>
 
-                          <ListItem>
+                            <ListItem>
 
-                            <Avatar
-                              alt='Eric Hoffman'
-                              src={object.img_marker}
-                            />
-                            <Link
-                              to={`/sketch/${object.id}`}
-                              style={{ textDecoration: 'none' }}
-                            >
-                              <ListItemText
-                                inset
-                                primary={object.title}
-                                secondary={object.description}
-                              />
+                              <Avatar
+                                alt='Eric Hoffman'
+                                src={object.img_marker}
+                                />
+                              <Link
+                                to={`/sketch/${object.id}`}
+                                style={{ textDecoration: 'none' }}
+                                >
+                                <ListItemText
+                                  inset
+                                  primary={
+                                      object.pages + ' - ' + object.title
+                                    }
+                                  secondary={object.description}
+                                  />
 
-                            </Link>
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                aria-label='Delete'
-                                onClick={() => this.handleDelete(object.id)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                          <Divider />
-                        </div>
-                      )
-                    })}
+                              </Link>
+                              {filterCover[0].email ===
+                                  this.props.userProfile.email &&
+                                  <ListItemSecondaryAction>
+                                    <IconButton
+                                      aria-label='Delete'
+                                      color='secondary'
+                                      onClick={() =>
+                                        this.handleDelete(object.id)}
+                                    >
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  </ListItemSecondaryAction>}
+                            </ListItem>
+                            <Divider />
+                          </div>
+                        )
+                      })
+                      : 'No objects yet'}
                   </List>
                 </CardContent>
-                <CardActions>
-                  <div style={styles.button}>
-                    <Link
-                      to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <Button variant='raised' color='primary'>
-                        Add Marker
-                      </Button>
-                    </Link>
-                  </div>
-                </CardActions>
+                {filterCover[0].email === this.props.userProfile.email &&
+                  <CardActions>
+                    <div style={styles.button}>
+                      <Link
+                        to={`/add-object/${filterCover[0].id}`}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <Button variant='raised' color='primary'>
+                          Add Marker
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardActions>}
               </Card>
             </Grid>
           </Grid>
-          <Navigation style={styles.navigation} />
+          <Navigation style={styles.navigation} history={this.props.history} />
         </div>
       </div>
     )
@@ -159,7 +160,8 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover
+    fetchCover: state.detailCoverReducers.cover,
+    userProfile: state.detailCoverReducers.user
   }
 }
 

@@ -18,7 +18,6 @@ function authenticate (promise) {
       let token = result.credential.accessToken
       let user = result.user
 
-      console.log('login happened with firebase ', JSON.stringify(user))
       localStorage.setItem('firebaseUser', JSON.stringify(result))
       return Promise.resolve(result)
     })

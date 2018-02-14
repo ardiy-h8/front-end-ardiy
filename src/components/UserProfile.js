@@ -1,23 +1,16 @@
 import React, { Component } from 'react'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
-import {
-  Button,
-  Grid,
-  Paper,
-  ButtonBase,
-  Avatar,
-  Typography,
-  IconButton
-} from 'material-ui'
+import Card, { CardContent } from 'material-ui/Card'
+import { Button, Grid, Avatar, IconButton } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
-import Subheader from 'material-ui/List/ListSubheader'
-import InfoIcon from 'material-ui-icons/Info'
 import DeleteIcon from 'material-ui-icons/DeleteForever'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import Navigation from './Navigation'
 import Header from './Header'
+import { modifyCover, changeNumber } from '../redux/actions/detailCoverActions'
 
 class UserPofile extends Component {
   componentWillMount () {
@@ -27,13 +20,27 @@ class UserPofile extends Component {
   }
   handleClickLogut () {
     localStorage.clear()
+    this.props.changeNumber(0)
+    this.props.history.push('/')
   }
-  handleClickDelete () {
-    console.log('delete')
+  handleClickDelete (id) {
+    this.props
+      .mutate({
+        variables: { id }
+      })
+      .then(res => {
+        let newCover = this.props.fetchCover.filter(
+          newData => newData.id !== id
+        )
+        this.props.modifyCover(newCover)
+      })
+      .catch(err => console.error(err))
   }
 
   render () {
-    const fetchCover = this.props.fetchCover
+    const fetchCover = this.props.fetchCover.filter(
+      newData => newData.email === this.props.userProfile.email
+    )
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -43,13 +50,13 @@ class UserPofile extends Component {
               <Card style={styles.profile}>
                 <CardContent style={styles.row}>
                   <Avatar
-                    alt='Remy Sharp'
-                    src='https://www.bigmouthvoices.com/profile_picture/large/default-profile_picture.jpg'
+                    alt={this.props.userProfile.email}
+                    src={this.props.userProfile.avatar}
                     style={styles.avatar}
                   />
 
                   <p style={{ fontSize: 20, color: 'white' }}>
-                    Joko Sampurno Widodo
+                    {this.props.userProfile.email}
                   </p>
                   <div
                     style={{
@@ -58,12 +65,16 @@ class UserPofile extends Component {
                     }}
                   >
                     <div>
-                      <Button variant='raised' component='span' color='default'>
+                      <Button
+                        variant='raised'
+                        component='span'
+                        color='default'
+                        onClick={() => this.handleClickLogut()}
+                      >
                         Logout
                         <i
                           className='fa fa fa-sign-out'
                           style={{ paddingLeft: 10 }}
-                          onClick={() => this.handleClickLogut()}
                         />
                       </Button>
                     </div>
@@ -73,6 +84,21 @@ class UserPofile extends Component {
             </Grid>
           </Grid>
         </div>
+        {!fetchCover.length &&
+          <div>
+            <p>No magazines yet</p>
+            <Button
+              variant='raised'
+              component='span'
+              color='secondary'
+              onClick={() => {
+                this.props.changeNumber(4)
+                this.props.history.push('/add-magazine')
+              }}
+            >
+              Create Magazine
+            </Button>
+          </div>}
         <div style={styles.content}>
           <GridList cellHeight={260} style={styles.gridList}>
             {fetchCover.map((cover, index) => {
@@ -88,15 +114,14 @@ class UserPofile extends Component {
                       height={'100%'}
                       alt={cover.title}
                     />
-
                   </Link>
                   <GridListTileBar
-                    style={{ paddingLeft: 8 }}
+                    style={{ paddingLeft: 10 }}
                     title={cover.title}
                     actionIcon={
                       <IconButton
                         style={styles.icon}
-                        onClick={() => this.handleClickDelete()}
+                        onClick={() => this.handleClickDelete(cover.id)}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -107,7 +132,7 @@ class UserPofile extends Component {
             })}
           </GridList>
         </div>
-        <Navigation style={styles.navigation} />
+        <Navigation style={styles.navigation} history={this.props.history} />
       </div>
     )
   }
@@ -162,10 +187,26 @@ const styles = {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  modifyCover: cover => dispatch(modifyCover(cover)),
+  changeNumber: page => dispatch(changeNumber(page))
+})
+
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover
+    fetchCover: state.detailCoverReducers.cover,
+    userProfile: state.detailCoverReducers.user
   }
 }
 
-export default connect(mapStateToProps)(UserPofile)
+const query = gql`
+  mutation deleteMagazine($id: String!) {
+    deleteMagazine(id: $id) {
+      id
+    }
+  }
+`
+
+const graphqlQuery = graphql(query)(UserPofile)
+
+export default connect(mapStateToProps, mapDispatchToProps)(graphqlQuery)
