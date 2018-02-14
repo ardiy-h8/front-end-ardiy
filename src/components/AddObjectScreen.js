@@ -303,6 +303,7 @@ class AddObjectScreen extends Component {
                     </div>
                     <div>
                       <input
+                        accept='application/zip'
                         type='file'
                         id='object'
                         placeholder='object'
