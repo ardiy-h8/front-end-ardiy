@@ -15,7 +15,12 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from 'material-ui'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemAvatar
+} from 'material-ui/List'
 import DeleteIcon from 'material-ui-icons/Delete'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -27,7 +32,7 @@ import Header from './Header'
 import { modifyCover } from '../redux/actions/detailCoverActions'
 
 class ContentDetail extends Component {
-  handleDelete(id) {
+  handleDelete (id) {
     this.props
       .mutate({
         variables: { id }
@@ -44,7 +49,7 @@ class ContentDetail extends Component {
       .catch(err => console.error(err))
   }
 
-  render() {
+  render () {
     const data = this.props.fetchCover
     let filterCover = data.filter(
       newData =>
@@ -53,7 +58,6 @@ class ContentDetail extends Component {
     )
     const image =
       'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png'
-
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -67,58 +71,54 @@ class ContentDetail extends Component {
                   title={filterCover[0].title}
                 />
                 <CardContent>
-                  <List component="nav">
-                    {filterCover[0].object3d.map((object, index) => {
-                      return (
-                        <div key={index}>
-                          <Link
-                            to={`/sketch/${object.id}`}
-                            style={{ textDecoration: 'none' }}>
-                            <ListItem
-                              button
-                              onClick={() => console.log('Lorem ipsum')}>
-                              <ListItemIcon>
-                                <Avatar
-                                  alt="Eric Hoffman"
-                                  src={object.img_marker}
+                  <List component='nav'>
+                    {filterCover[0].object3d.length
+                      ? filterCover[0].object3d.map((object, index) => {
+                        return (
+                          <div key={index}>
+
+                            <ListItem>
+
+                              <Avatar
+                                alt='Eric Hoffman'
+                                src={object.img_marker}
                                 />
-                              </ListItemIcon>
-                              <ListItemText
-                                inset
-                                primary={object.title}
-                                secondary={object.description}
-                              />
+                              <Link
+                                to={`/sketch/${object.id}`}
+                                style={{ textDecoration: 'none' }}
+                                >
+                                <ListItemText
+                                  inset
+                                  primary={object.title}
+                                  secondary={object.description}
+                                  />
+
+                              </Link>
+                              <ListItemSecondaryAction>
+                                <IconButton
+                                  aria-label='Delete'
+                                  color='secondary'
+                                  onClick={() => this.handleDelete(object.id)}
+                                  >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </ListItemSecondaryAction>
                             </ListItem>
-                          </Link>
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              aria-label="Delete"
-                              onClick={() => this.handleDelete(object.id)}>
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                          <Divider />
-                        </div>
-                      )
-                    })}
+                            <Divider />
+                          </div>
+                        )
+                      })
+                      : 'No objects yet'}
                   </List>
                 </CardContent>
                 <CardActions>
                   <div style={styles.button}>
                     <Link
                       to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}>
-                      <Button variant="raised" color="primary">
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Button variant='raised' color='primary'>
                         Add Marker
-                      </Button>
-                    </Link>
-                  </div>
-                  <div style={styles.button}>
-                    <Link
-                      to={`/add-object/${filterCover[0].id}`}
-                      style={{ textDecoration: 'none' }}>
-                      <Button variant="raised" color="primary">
-                        Delete
                       </Button>
                     </Link>
                   </div>
@@ -126,7 +126,7 @@ class ContentDetail extends Component {
               </Card>
             </Grid>
           </Grid>
-          <Navigation style={styles.navigation} />
+          <Navigation style={styles.navigation} history={this.props.history} />
         </div>
       </div>
     )
@@ -161,7 +161,8 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover
+    fetchCover: state.detailCoverReducers.cover,
+    userProfile: state.detailCoverReducers.user
   }
 }
 

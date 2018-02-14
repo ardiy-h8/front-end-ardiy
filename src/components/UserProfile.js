@@ -15,25 +15,43 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
 import Subheader from 'material-ui/List/ListSubheader'
 import InfoIcon from 'material-ui-icons/Info'
 import DeleteIcon from 'material-ui-icons/DeleteForever'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import Navigation from './Navigation'
 import Header from './Header'
+import { modifyCover, changeNumber } from '../redux/actions/detailCoverActions'
 
 class UserPofile extends Component {
-  componentWillMount () {
+  componentWillMount() {
     if (!localStorage.userData) {
       return this.props.history.push('/login')
     }
   }
-  handleClickLogut () {
+  handleClickLogut() {
     localStorage.clear()
+    this.props.changeNumber(0)
+    this.props.history.push('/')
   }
-  handleClickDelete () {
-    console.log('delete')
+  handleClickDelete(id) {
+    this.props
+      .mutate({
+        variables: { id }
+      })
+      .then(res => {
+        let newCover = this.props.fetchCover.filter(
+          newData => newData.id !== id
+        )
+        this.props.modifyCover(newCover)
+      })
+      .catch(err => console.error(err))
   }
 
-  render () {
-    const fetchCover = this.props.fetchCover
+  render() {
+    const fetchCover = this.props.fetchCover.filter(
+      newData => newData.email === this.props.userProfile.email
+    )
+    console.log(fetchCover)
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -43,27 +61,29 @@ class UserPofile extends Component {
               <Card style={styles.profile}>
                 <CardContent style={styles.row}>
                   <Avatar
-                    alt='Remy Sharp'
-                    src='https://www.bigmouthvoices.com/profile_picture/large/default-profile_picture.jpg'
+                    alt={this.props.userProfile.email}
+                    src={this.props.userProfile.avatar}
                     style={styles.avatar}
                   />
 
                   <p style={{ fontSize: 20, color: 'white' }}>
-                    Joko Sampurno Widodo
+                    {this.props.userProfile.email}
                   </p>
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'center'
-                    }}
-                  >
+                    }}>
                     <div>
-                      <Button variant='raised' component='span' color='default'>
+                      <Button
+                        variant="raised"
+                        component="span"
+                        color="default"
+                        onClick={() => this.handleClickLogut()}>
                         Logout
                         <i
-                          className='fa fa fa-sign-out'
+                          className="fa fa fa-sign-out"
                           style={{ paddingLeft: 10 }}
-                          onClick={() => this.handleClickLogut()}
                         />
                       </Button>
                     </div>
@@ -73,6 +93,21 @@ class UserPofile extends Component {
             </Grid>
           </Grid>
         </div>
+        {!fetchCover.length && (
+          <div>
+            <p>No magazines yet</p>
+            <Button
+              variant="raised"
+              component="span"
+              color="secondary"
+              onClick={() => {
+                this.props.changeNumber(4)
+                this.props.history.push('/add-magazine')
+              }}>
+              Create Magazine
+            </Button>
+          </div>
+        )}
         <div style={styles.content}>
           <GridList cellHeight={260} style={styles.gridList}>
             {fetchCover.map((cover, index) => {
@@ -80,8 +115,7 @@ class UserPofile extends Component {
                 <GridListTile key={index}>
                   <Link
                     to={`/content/${cover.title}`}
-                    style={{ textDecoration: 'none' }}
-                  >
+                    style={{ textDecoration: 'none' }}>
                     <img
                       src={cover.imagePreviewUrl}
                       width={'100%'}
@@ -94,19 +128,30 @@ class UserPofile extends Component {
                       actionIcon={
                         <IconButton
                           style={styles.icon}
-                          onClick={() => this.handleClickDelete()}
-                        >
+                          onClick={() => this.handleClickDelete(cover.id)}>
                           <DeleteIcon />
                         </IconButton>
                       }
                     />
                   </Link>
+                  <GridListTileBar
+                    style={{ paddingLeft: 10 }}
+                    title={cover.title}
+                    actionIcon={
+                      <IconButton
+                        style={styles.icon}
+                        onClick={() => this.handleClickDelete()}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  />
                 </GridListTile>
               )
             })}
           </GridList>
         </div>
-        <Navigation style={styles.navigation} />
+        <Navigation style={styles.navigation} history={this.props.history} />
       </div>
     )
   }
@@ -131,12 +176,15 @@ const styles = {
     height: 510
   },
   icon: {
-    color: 'white'
+    color: 'white',
+    marginRight: 10
   },
   profile: {
     background: '#1488CC' /* fallback for old browsers */,
-    background: '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
-    background: 'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background:
+      '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
+    background:
+      'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   },
   content: {
     paddingTop: 5,
@@ -160,10 +208,26 @@ const styles = {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  modifyCover: cover => dispatch(modifyCover(cover)),
+  changeNumber: page => dispatch(changeNumber(page))
+})
+
 const mapStateToProps = state => {
   return {
-    fetchCover: state.detailCoverReducers.cover
+    fetchCover: state.detailCoverReducers.cover,
+    userProfile: state.detailCoverReducers.user
   }
 }
 
-export default connect(mapStateToProps)(UserPofile)
+const query = gql`
+  mutation deleteMagazine($id: String!) {
+    deleteMagazine(id: $id) {
+      id
+    }
+  }
+`
+
+const graphqlQuery = graphql(query)(UserPofile)
+
+export default connect(mapStateToProps, mapDispatchToProps)(graphqlQuery)
