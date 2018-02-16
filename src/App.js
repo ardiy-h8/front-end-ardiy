@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client-preset'
@@ -8,11 +8,11 @@ import { InMemoryCache } from 'apollo-client-preset'
 
 import store from './redux'
 import HomeScreen from './components/HomeScreen'
-import Sketch from './components/Sketch'
+// import Sketch from './components/Sketch'
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'http://localhost:3001/graphql'
+    uri: 'https://ardy.dhnlr.com/graphql'
   }),
   cache: new InMemoryCache()
 })
@@ -55,9 +55,9 @@ const LoginScreen = asyncComponent(() =>
   import('./components/LoginScreen').then(module => module.default)
 )
 
-/* const Sketch = asyncComponent(() =>
+const Sketch = asyncComponent(() =>
   import('./components/Sketch').then(module => module.default)
-) */
+)
 
 const UserProfile = asyncComponent(() =>
   import('./components/UserProfile').then(module => module.default)

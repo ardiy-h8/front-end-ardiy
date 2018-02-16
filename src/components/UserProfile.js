@@ -1,19 +1,9 @@
 import React, { Component } from 'react'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
-import {
-  Button,
-  Grid,
-  Paper,
-  ButtonBase,
-  Avatar,
-  Typography,
-  IconButton
-} from 'material-ui'
+import Card, { CardContent } from 'material-ui/Card'
+import { Button, Grid, Avatar, IconButton } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
-import Subheader from 'material-ui/List/ListSubheader'
-import InfoIcon from 'material-ui-icons/Info'
 import DeleteIcon from 'material-ui-icons/DeleteForever'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -23,17 +13,17 @@ import Header from './Header'
 import { modifyCover, changeNumber } from '../redux/actions/detailCoverActions'
 
 class UserPofile extends Component {
-  componentWillMount() {
+  componentWillMount () {
     if (!localStorage.userData) {
       return this.props.history.push('/login')
     }
   }
-  handleClickLogut() {
+  handleClickLogut () {
     localStorage.clear()
     this.props.changeNumber(0)
     this.props.history.push('/')
   }
-  handleClickDelete(id) {
+  handleClickDelete (id) {
     this.props
       .mutate({
         variables: { id }
@@ -47,11 +37,10 @@ class UserPofile extends Component {
       .catch(err => console.error(err))
   }
 
-  render() {
+  render () {
     const fetchCover = this.props.fetchCover.filter(
       newData => newData.email === this.props.userProfile.email
     )
-    console.log(fetchCover)
     return (
       <div style={styles.root}>
         <Header location={this.props.location.pathname} />
@@ -73,16 +62,18 @@ class UserPofile extends Component {
                     style={{
                       display: 'flex',
                       justifyContent: 'center'
-                    }}>
+                    }}
+                  >
                     <div>
                       <Button
-                        variant="raised"
-                        component="span"
-                        color="default"
-                        onClick={() => this.handleClickLogut()}>
+                        variant='raised'
+                        component='span'
+                        color='default'
+                        onClick={() => this.handleClickLogut()}
+                      >
                         Logout
                         <i
-                          className="fa fa fa-sign-out"
+                          className='fa fa fa-sign-out'
                           style={{ paddingLeft: 10 }}
                         />
                       </Button>
@@ -93,21 +84,21 @@ class UserPofile extends Component {
             </Grid>
           </Grid>
         </div>
-        {!fetchCover.length && (
+        {!fetchCover.length &&
           <div>
             <p>No magazines yet</p>
             <Button
-              variant="raised"
-              component="span"
-              color="secondary"
+              variant='raised'
+              component='span'
+              color='secondary'
               onClick={() => {
                 this.props.changeNumber(4)
                 this.props.history.push('/add-magazine')
-              }}>
+              }}
+            >
               Create Magazine
             </Button>
-          </div>
-        )}
+          </div>}
         <div style={styles.content}>
           <GridList cellHeight={260} style={styles.gridList}>
             {fetchCover.map((cover, index) => {
@@ -115,23 +106,13 @@ class UserPofile extends Component {
                 <GridListTile key={index}>
                   <Link
                     to={`/content/${cover.title}`}
-                    style={{ textDecoration: 'none' }}>
+                    style={{ textDecoration: 'none' }}
+                  >
                     <img
                       src={cover.imagePreviewUrl}
                       width={'100%'}
                       height={'100%'}
                       alt={cover.title}
-                    />
-                    <GridListTileBar
-                      style={{ paddingLeft: 10 }}
-                      title={cover.title}
-                      actionIcon={
-                        <IconButton
-                          style={styles.icon}
-                          onClick={() => this.handleClickDelete(cover.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      }
                     />
                   </Link>
                   <GridListTileBar
@@ -140,7 +121,7 @@ class UserPofile extends Component {
                     actionIcon={
                       <IconButton
                         style={styles.icon}
-                        onClick={() => this.handleClickDelete()}
+                        onClick={() => this.handleClickDelete(cover.id)}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -181,10 +162,8 @@ const styles = {
   },
   profile: {
     background: '#1488CC' /* fallback for old browsers */,
-    background:
-      '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
-    background:
-      'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: '-webkit-linear-gradient(to right, #2B32B2, #1488CC)' /* Chrome 10-25, Safari 5.1-6 */,
+    background: 'linear-gradient(to right, #2B32B2, #1488CC)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   },
   content: {
     paddingTop: 5,

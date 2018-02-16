@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
-import { Button, Grid, Paper, ButtonBase, TextField } from 'material-ui'
-import { Link } from 'react-router-dom'
+import Card, { CardContent } from 'material-ui/Card'
+import { Button, Grid, TextField } from 'material-ui'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -51,7 +50,6 @@ class AddDetailScreen extends Component {
     })
     const { title, imagePreviewUrl } = this.state
     const { email } = this.props.user
-    console.log('mail', email)
 
     this.props
       .mutate({
@@ -86,7 +84,7 @@ class AddDetailScreen extends Component {
                   <TextField
                     id='title'
                     label='Title'
-                    helperText='Magazine, brochure title'
+                    helperText='Magazine title'
                     fullWidth
                     margin='normal'
                     value={this.state.title}
@@ -107,7 +105,7 @@ class AddDetailScreen extends Component {
                       component='span'
                       syle={styles.button}
                     >
-                      Click to Upload Cover
+                      Click to Upload Magazine Cover
                     </Button>
                   </label>
                   <img

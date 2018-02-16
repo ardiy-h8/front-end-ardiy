@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
-import { Typography, Divider } from 'material-ui'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
-import { Button, Grid, Paper, ButtonBase } from 'material-ui'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
-import Subheader from 'material-ui/List/ListSubheader'
-import InfoIcon from 'material-ui-icons/Info'
 
 import {
   fetchAllMagazines,
@@ -19,15 +14,17 @@ import Navigation from './Navigation'
 import Header from './Header'
 
 class HomeScreen extends Component {
-  componentWillMount () {
+  componentWillMount() {
     this.props.fetchAllMagazines()
     let objUserData = localStorage.userData
     if (objUserData) {
       objUserData = JSON.parse(objUserData)
       this.props.getUser(objUserData)
+    } else {
+      this.props.getUser({ email: '' })
     }
   }
-  
+
   handleDelete(id) {
     this.props
       .mutate({
@@ -42,7 +39,7 @@ class HomeScreen extends Component {
       .catch(err => console.error(err))
   }
 
-  render () {
+  render() {
     const fetchCover = this.props.fetchCover
 
     return (
@@ -55,8 +52,7 @@ class HomeScreen extends Component {
                 <GridListTile key={index}>
                   <Link
                     to={`/content/${cover.title}`}
-                    style={{ textDecoration: 'none' }}
-                  >
+                    style={{ textDecoration: 'none' }}>
                     <img
                       src={cover.imagePreviewUrl}
                       width={'100%'}

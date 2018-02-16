@@ -65,12 +65,11 @@ THREEx.ArPatternFile.encodeImage = function (image) {
   return patternFileString
 }
 
-//////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 //    trigger download
-//////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
 THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
-
   var domElement = window.document.createElement('a')
   domElement.href = window.URL.createObjectURL(
     new Blob([patternFileString], { type: 'text/plain' })
@@ -79,7 +78,6 @@ THREEx.ArPatternFile.triggerDownload = (patternFileString, newUrl) => {
   document.body.appendChild(domElement)
   domElement.click()
   document.body.removeChild(domElement)
-  console.log('donlot')
   var e = document.createElement('a')
   var href = newUrl
   e.setAttribute('href', href)
@@ -139,7 +137,7 @@ THREEx.ArPatternFile.buildFullMarker = function (innerImageURL, onComplete) {
 }
 
 class markerGenerator extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {
       readerResult: '',
@@ -151,15 +149,20 @@ class markerGenerator extends Component {
     this.encode = this.encode.bind(this)
   }
 
-  handleUpload(e) {
+  handleUpload (e) {
     var reader = new FileReader()
     var self = this
     reader.onloadend = function () {
-      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete(newUrl) {
-        self.setState({
-          readerResult: reader.result,
-          img: newUrl
-        }, self.encode)
+      THREEx.ArPatternFile.buildFullMarker(reader.result, function onComplete (
+        newUrl
+      ) {
+        self.setState(
+          {
+            readerResult: reader.result,
+            img: newUrl
+          },
+          self.encode
+        )
       })
     }
     reader.readAsDataURL(e.target.files[0])
@@ -168,23 +171,25 @@ class markerGenerator extends Component {
   encode () {
     let newUrl = this.state.readerResult
     var self = this
-    THREEx.ArPatternFile.encodeImageUrl(newUrl, function onComplete(patternFileString) {
+    THREEx.ArPatternFile.encodeImageUrl(newUrl, function onComplete (
+      patternFileString
+    ) {
       self.setState({
         patternFileStr: patternFileString
       })
     })
   }
 
-  handleDownload() {
+  handleDownload () {
     let newUrl = this.state.img
     let patternHiro = this.state.patternFileStr
     THREEx.ArPatternFile.triggerDownload(patternHiro, newUrl)
   }
 
-  render() {
+  render () {
     return (
       <div>
-        <input type="file" name="upload" onChange={this.handleUpload} />
+        <input type='file' name='upload' onChange={this.handleUpload} />
         <button onClick={this.handleDownload}>download</button>
       </div>
     )

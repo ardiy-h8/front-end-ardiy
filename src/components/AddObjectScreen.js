@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Grid, Paper, ButtonBase, TextField } from 'material-ui'
-import Card, { CardHeader, CardMedia, CardContent } from 'material-ui/Card'
+import { Button, Grid, TextField } from 'material-ui'
+import Card, { CardContent } from 'material-ui/Card'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -246,7 +246,7 @@ class AddObjectScreen extends Component {
                   <TextField
                     id='title'
                     label='Title'
-                    helperText='ex: Your Title'
+                    helperText='Article title'
                     fullWidth
                     margin='normal'
                     value={this.state.title}
@@ -254,9 +254,9 @@ class AddObjectScreen extends Component {
                       this.setState({ title: event.target.value })}
                   />
                   <TextField
-                    id='detail'
-                    label='Detail'
-                    helperText='ex: Description Detail'
+                    id='description'
+                    label='Description'
+                    helperText='Article description'
                     fullWidth
                     margin='normal'
                     value={this.state.description}
@@ -266,7 +266,7 @@ class AddObjectScreen extends Component {
                   <TextField
                     id='pages'
                     label='Page'
-                    helperText='ex: Page Number'
+                    helperText='Article page number'
                     fullWidth
                     margin='normal'
                     value={this.state.pages}
@@ -302,10 +302,10 @@ class AddObjectScreen extends Component {
                     </div>
                     <div>
                       <input
-                        accept="application/zip"
-                        type="file"
-                        id="object"
-                        placeholder="object"
+                        accept='application/zip'
+                        type='file'
+                        id='object'
+                        placeholder='object'
                         style={{ display: 'none' }}
                         onChange={this.handleUploadObject}
                       />
@@ -316,7 +316,7 @@ class AddObjectScreen extends Component {
                           component='span'
                           syle={styles.button}
                         >
-                          Object Upload
+                          Object 3D Upload
                         </Button>
                       </label>
                     </div>

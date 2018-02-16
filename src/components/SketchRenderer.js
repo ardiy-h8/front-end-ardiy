@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import initializeRenderer from '../utils/initializeRenderer'
 import { initializeArToolkit, getMarker } from '../utils/arToolkit'
 import { connect } from 'react-redux'
-import detectEdge from '../utils/detectEdge'
 import ColladaLoader from 'three-collada-loader-2'
 
 export const sketchRendererFactory = ({
@@ -16,13 +15,13 @@ export const sketchRendererFactory = ({
   const { Camera, Group, Scene } = THREE
 
   return class SketchRenderer extends Component {
-    componentDidMount() {
-      console.log('Props', this.props.objectReducers)
+    componentDidMount () {
       const {
         coordX,
         coordZ,
         scaleX,
         scaleY,
+        scaleZ,
         rotation,
         onMarkerFound
       } = this.props
@@ -49,22 +48,19 @@ export const sketchRendererFactory = ({
 
       marker.addEventListener('markerFound', onMarkerFound)
 
-      console.log('Marker root>>>>>', markerRoot)
-
       // ColladaLoader(THREE)
       this.loader = new ColladaLoader()
       this.loader.options.convertUpAxis = true
       let that = this
-      this.loader.load(this.props.objectReducers.dae, function(collada) {
-        console.log('MASUUUUK!', collada)
-
+      this.loader.load(this.props.objectReducers.dae, function (collada) {
+        console.log(collada.scene)
         that.avatar = collada.scene
-        that.avatar.rotation.x = -Math.PI / 2 // -90°
-        that.avatar.rotation.z = rotation
-        that.avatar.position.x = coordX
-        that.avatar.position.z = coordZ
-        that.avatar.scale.x = scaleX
-        that.avatar.scale.y = scaleY
+        // that.avatar.rotation.x = -Math.PI / 2 // -90°
+        // that.avatar.rotation.z = rotation
+        // that.avatar.position.x = coordX
+        // that.avatar.position.z = coordZ
+        // that.avatar.scale.x = scaleX
+        // that.avatar.scale.y = scaleY
         that.avatar.needsUpdate = true
         scene.add(that.avatar)
         markerRoot.add(that.avatar)
@@ -76,14 +72,14 @@ export const sketchRendererFactory = ({
       scene.add(directionalLight)
 
       // render the scene
-      onRenderFcts.push(function() {
+      onRenderFcts.push(function () {
         renderer.render(scene, camera)
       })
 
       // run the rendering loop
       var lastTimeMsec = null
 
-      function animate(nowMsec) {
+      function animate (nowMsec) {
         // keep looping
         requestAnimationFrame(animate)
         // measure time
@@ -98,7 +94,7 @@ export const sketchRendererFactory = ({
       requestAnimationFrame(animate)
     }
 
-    componentWillUnmount() {
+    componentWillUnmount () {
       this.renderer.dispose()
     }
 
@@ -106,18 +102,19 @@ export const sketchRendererFactory = ({
       this.canvas = node
     }
 
-    componentDidUpdate() {
-      const { coordX, coordZ, scaleX, scaleY, rotation } = this.props
+    componentDidUpdate () {
+      const { coordX, coordZ, scaleX, scaleY, scaleZ, rotation } = this.props
       this.avatar.position.x = coordX
       this.avatar.position.z = coordZ
       this.avatar.scale.x = scaleX
       this.avatar.scale.y = scaleY
+      this.avatar.scale.z = scaleZ
       this.avatar.rotation.z = rotation
       this.avatar.needsUpdate = true
     }
 
-    render() {
-      return <canvas id="root" ref={this.storeRef} />
+    render () {
+      return <canvas id='root' ref={this.storeRef} />
     }
   }
 }
