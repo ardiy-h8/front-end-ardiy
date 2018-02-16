@@ -130,11 +130,11 @@ class AddObjectScreen extends Component {
     this.state = {
       title: '',
       description: '',
+      pages: '',
       imageResult: '', // Image base64 without border for patt file
       patternFileStr: '', // Pattern string for patt file
       patternImage: '', // Image with border to download
       object3d: '',
-      pages: '',
       loading: false,
       disabled: false
     }
@@ -170,13 +170,12 @@ class AddObjectScreen extends Component {
     reader.readAsDataURL(e.target.files[0])
   }
 
-  handleUploadObject (e) {
-    var reader = new FileReader()
+  handleUploadObject(e) {
+    const file = e.target.files[0]
+    const reader = new FileReader()
 
-    reader.onloadend = () => {
-      this.setState({ object3d: reader.result })
-    }
-    reader.readAsDataURL(e.target.files[0])
+    reader.onloadend = () => this.setState({ object3d: reader.result })
+    reader.readAsDataURL(file)
   }
 
   encode () {
@@ -204,10 +203,10 @@ class AddObjectScreen extends Component {
     const {
       title,
       description,
+      pages,
       patternFileStr,
       patternImage,
-      object3d,
-      pages
+      object3d
     } = this.state
     const mid = this.props.match.params.mid
 
@@ -405,11 +404,9 @@ const styles = {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addDetailObject: payload => dispatch(addObject(payload))
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  addDetailObject: payload => dispatch(addObject(payload))
+})
 
 const query = gql`
   mutation createObject3D(
